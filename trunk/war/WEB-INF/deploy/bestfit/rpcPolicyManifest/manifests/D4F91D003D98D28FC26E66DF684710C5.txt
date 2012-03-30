@@ -1,0 +1,2 @@
+serviceClass: cs5103.cloudmonkeys.bestfit.client.GreetingService
+path: 002EDD80A91B914CB102A168B3097B9B.gwt.rpc
