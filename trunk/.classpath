@@ -5,5 +5,9 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/eclipselink-jpa-modelgen_2.3.2.v20111125-r10461.jar"/>
+	<classpathentry kind="lib" path="libs/eclipselink.jar"/>
+	<classpathentry kind="lib" path="libs/javax.persistence_1.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/javax.persistence_2.0.3.v201010191057.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
