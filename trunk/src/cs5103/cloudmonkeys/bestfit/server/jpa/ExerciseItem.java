@@ -4,18 +4,17 @@ package cs5103.cloudmonkeys.bestfit.server.jpa;
 
 import java.io.Serializable;
 import java.lang.String;
-import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: ExerciseItem
  *
  */
-@Entity
+//@Entity
 
 public class ExerciseItem implements Serializable {
 
 	   
-	@Id
+	//@Id
 	private long id;
 	private String name;
 	private double burnRate;

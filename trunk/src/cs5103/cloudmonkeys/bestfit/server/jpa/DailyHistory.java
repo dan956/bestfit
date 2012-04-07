@@ -2,8 +2,6 @@ package cs5103.cloudmonkeys.bestfit.server.jpa;
 
 import java.io.Serializable;
 import java.lang.String;
-import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,12 +9,12 @@ import java.util.Date;
  * Entity implementation class for Entity: DailyHistory
  *
  */
-@Entity
+//@Entity
 
 public class DailyHistory implements Serializable {
 
 	   
-	@Id
+	///@Id
 	private long id;
 	private Date date;
 	private String item;

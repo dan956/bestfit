@@ -6,17 +6,15 @@ import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
 
-import javax.persistence.*;
-
 /**
  * Entity implementation class for Entity: User
  *
  */
-@Entity
+//@Entity
 
 public class User implements Serializable {
 
-	@Id
+	//@Id
 	private long id;
 	private String email;
 	private String firstName;

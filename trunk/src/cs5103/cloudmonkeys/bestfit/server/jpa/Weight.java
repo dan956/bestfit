@@ -3,19 +3,18 @@ package cs5103.cloudmonkeys.bestfit.server.jpa;
 
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Entity implementation class for Entity: Weight
  *
  */
-@Entity
+//@Entity
 
 public class Weight implements Serializable {
 
 	   
-	@Id
+	//@Id
 	private long id;
 	private double weight;
 	private Date date;

@@ -2,19 +2,18 @@ package cs5103.cloudmonkeys.bestfit.server.jpa;
 
 import java.io.Serializable;
 import java.lang.String;
-import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Entity implementation class for Entity: GoalHistory
  *
  */
-@Entity
+//@Entity
 
 public class GoalHistory implements Serializable {
 
 	
-	@Id
+	//@Id
 	private long id;
 	private String email;
 	private Date startDate;

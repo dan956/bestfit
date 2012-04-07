@@ -4,18 +4,17 @@ package cs5103.cloudmonkeys.bestfit.server.jpa;
 
 import java.io.Serializable;
 import java.lang.String;
-import javax.persistence.*;
 import java.util.*;
 
 /**
  * Entity implementation class for Entity: Meal
  *
  */
-@Entity
+//@Entity
 
 public class Meal implements Serializable {
 
-	@Id
+	//@Id
 	private long id;
 	private String label;
 	private ArrayList<FoodItem> foods;
