@@ -7,18 +7,18 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>cs5103.cloudmonkeys.bestfit.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>RpcServlet</servlet-name>
+    <servlet-class>cs5103.cloudmonkeys.bestfit.server.RpcServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
+    <servlet-name>RpcServlet</servlet-name>
     <url-pattern>/bestfit/greet</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>BestFit.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
