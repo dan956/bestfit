@@ -32,13 +32,17 @@ public class Calculator implements EntryPoint {
 	private RootPanel rootPanel;
 	private TextBox MealNameTextBox;
 	private ListBox NewFoodItem;
+	private ListBox NewExerciseItem;
 	private Button AddFoodPshbtnAdd;
 	private TextBox TotalCalsTextBox;
 	private Button pshbtnSave;
 	private ArrayList <String> foods = new ArrayList<String>();
+	private ArrayList <String> exercises = new ArrayList<String>();
 	private FlexTable FoodsFlexTable;
+	private FlexTable ExercisesFlexTable;
 	
 	private int calCount = 0;
+	private int calsBurnedCount = 0;
 
 	
 	public void onModuleLoad() {
@@ -99,10 +103,10 @@ public class Calculator implements EntryPoint {
 		pshbtnSave.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				// send array and meal name to server
-//				DialogBox dialog = new DialogBox();
-//				dialog.setText("hello world,\nyou are adding meal " + MealNameTextBox.getText());
-//				dialog.setModal(true);
-//				dialog.show();
+				DialogBox dialog = new DialogBox();
+				dialog.setText("hello world,\nyou are adding meal " + MealNameTextBox.getText());
+				dialog.setModal(false);
+				dialog.show();
 			}
 		});
 		MealFlexTable.setWidget(4, 2, pshbtnSave);
@@ -172,5 +176,34 @@ public class Calculator implements EntryPoint {
 	    }
 	    });
 	    FoodsFlexTable.setWidget(row, 2, removeFood); 
+	}	
+
+	protected void addWorkout() {
+	    final String ExerciseItem = NewExerciseItem.getItemText(NewExerciseItem.getSelectedIndex());
+	    NewExerciseItem.setFocus(true);
+	     
+	    NewExerciseItem.setTitle("");
+	    int cals = new Random().nextInt(200);
+	    String ExerciseCals = Integer.toString(cals);
+	    calsBurnedCount += cals;
+	    TotalCalsTextBox.setText(Integer.toString(calsBurnedCount));
+	    
+	    // add the stock to the list
+	    int row = ExercisesFlexTable.getRowCount();
+	    exercises.add(ExerciseItem);
+	    ExercisesFlexTable.setText(row, 0, ExerciseItem);
+	    ExercisesFlexTable.setText(row, 1, ExerciseCals);
+
+	    // add button to remove this stock from the list
+	    Button removeExercise = new Button("x");
+	    removeExercise.addClickHandler(new ClickHandler() {
+	    public void onClick(ClickEvent event) {                    
+	        int removedIndex = exercises.lastIndexOf(ExerciseItem);
+	        exercises.remove(removedIndex);
+	        ExercisesFlexTable.removeRow(removedIndex);
+		    TotalCalsTextBox.setText(Integer.toString(calsBurnedCount));
+	    }
+	    });
+	    ExercisesFlexTable.setWidget(row, 2, removeExercise); 
 	}	
 }
