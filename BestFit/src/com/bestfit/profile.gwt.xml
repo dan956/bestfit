@@ -4,4 +4,6 @@
 	<inherits name="com.google.gwt.user.User" />
 	<source path="client" />
 	<entry-point class="com.bestfit.client.Profile"></entry-point>
+  	 <source path='shared'/>
+	
 </module>

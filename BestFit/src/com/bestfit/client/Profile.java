@@ -1,18 +1,27 @@
 package com.bestfit.client;
 
+import com.bestfit.shared.Users;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class Profile implements EntryPoint {
+	private Label lblNewLabel_7;
+	private TextBox WeightTextBox;
 
-	@Override
+	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
+	
 	public void onModuleLoad() {
-		RootPanel rootPanel = RootPanel.get();
+		RootPanel rootPanel = RootPanel.get("profCom");
 		
 		FlexTable flexTable = new FlexTable();
 		rootPanel.add(flexTable);
@@ -56,8 +65,34 @@ public class Profile implements EntryPoint {
 		Label lblNewLabel_6 = new Label("Weight");
 		flexTable.setWidget(6, 0, lblNewLabel_6);
 		
-		TextBox WeightTextBox = new TextBox();
+		WeightTextBox = new TextBox();
 		flexTable.setWidget(6, 1, WeightTextBox);
+		
+		Button btnNewButton = new Button("New button");
+		btnNewButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+				rpc.getUsers("aaaa", new AsyncCallback<Users>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						lblNewLabel_7.setText(caught.getMessage());
+						
+					}
+
+					@Override
+					public void onSuccess(Users result) {
+						lblNewLabel_7.setText(result.LastName +" - " + result.Name);
+						
+					}
+					
+				});
+			}
+		});
+		flexTable.setWidget(7, 1, btnNewButton);
+		
+		lblNewLabel_7 = new Label("New label");
+		flexTable.setWidget(8, 1, lblNewLabel_7);
 
 	}
 }
