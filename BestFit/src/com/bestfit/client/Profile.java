@@ -1,6 +1,8 @@
 package com.bestfit.client;
 
-import com.bestfit.shared.Users;
+
+import com.bestfit.shared.BridgeUsers;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -72,7 +74,7 @@ public class Profile implements EntryPoint {
 		btnNewButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				
-				rpc.getUsers("aaaa", new AsyncCallback<Users>(){
+				rpc.getUsers("aaaa", new AsyncCallback<BridgeUsers>(){
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -81,8 +83,8 @@ public class Profile implements EntryPoint {
 					}
 
 					@Override
-					public void onSuccess(Users result) {
-						lblNewLabel_7.setText(result.LastName +" - " + result.Name);
+					public void onSuccess(BridgeUsers result) {
+						lblNewLabel_7.setText(result.LastName);
 						
 					}
 					
