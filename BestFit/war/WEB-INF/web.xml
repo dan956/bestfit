@@ -10,12 +10,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	
 		  <servlet>
-    <servlet-name>services</servlet-name>
+    <servlet-name>RpcImpl</servlet-name>
     <servlet-class>com.bestfit.server.RpcImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>services</servlet-name>
+    <servlet-name>RpcImpl</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 	
