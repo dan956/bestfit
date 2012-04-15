@@ -311,12 +311,12 @@ function com_bestfit_calculator(){
   $stats && $stats({moduleName:'com.bestfit.calculator', sessionId:$sessionId_0, subSystem:'startup', evtGroup:'bootstrap', millis:(new Date).getTime(), type:'selectingPermutation'});
   if (!isHostedMode()) {
     try {
-      unflattenKeylistIntoAnswers(['opera'], '42767B892383AC4680B32FFC8C33016F');
-      unflattenKeylistIntoAnswers(['ie8'], '73D204A79B00304B088455FB71A695E3');
-      unflattenKeylistIntoAnswers(['ie6'], '945CC028DA9835585B2E06F1FCDC2FCC');
-      unflattenKeylistIntoAnswers(['safari'], 'DDA4D945C019D1781EB25E9B4B9772BF');
-      unflattenKeylistIntoAnswers(['gecko1_8'], 'DF54647F9ABECA89AB314BC42A111CE2');
-      unflattenKeylistIntoAnswers(['ie9'], 'F3CFBD0EA751C58CAD8EF17AB1551D97');
+      unflattenKeylistIntoAnswers(['gecko1_8'], '1D2D871FB490ED35E77D619D4CA828C9');
+      unflattenKeylistIntoAnswers(['ie9'], '58970C835A514ED630093173078264FD');
+      unflattenKeylistIntoAnswers(['safari'], '654FA66498E1FC168FDE540986FFB27D');
+      unflattenKeylistIntoAnswers(['opera'], '67A34843A9BFFE4927BA6FA8B2AE19D2');
+      unflattenKeylistIntoAnswers(['ie8'], 'C910FF38FAADF4DC37019DDF458F9E06');
+      unflattenKeylistIntoAnswers(['ie6'], 'D254C7A8F81839CAA3D2BB640F4680A1');
       strongName = answers[computePropValue('user.agent')];
       var idx = strongName.indexOf(':');
       if (idx != -1) {

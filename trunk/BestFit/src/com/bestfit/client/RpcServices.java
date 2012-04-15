@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("services")
 public interface RpcServices extends RemoteService {
-	BridgeUsers getUsers(String email) throws IllegalArgumentException; 
+	BridgeUsers getUsers(String email) throws IllegalArgumentException;
+	BridgeUsers saveUsers(String email) throws IllegalArgumentException; 
 
 }

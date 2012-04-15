@@ -1,15 +1,15 @@
 package com.bestfit.data;
 
-import java.util.ArrayList;
-import javax.jdo.annotations.*;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@PersistenceCapable
 public class Users {
 	
-    @PrimaryKey 
-	@Persistent
+    @PrimaryKey
 	private String email;
 	@Persistent
 	private String firstName;
@@ -22,13 +22,16 @@ public class Users {
 	@Persistent
 	private String gender;
 
+	public Users(String _email,String _firstName,String _lastName,int _age,double _height,String _gender){
+		
+		email= _email;
+		firstName= _firstName;
+		lastName= _lastName;
+		age= _age;
+		height= _height;
+		gender= _gender;
+	}
 	
-	//private ArrayList<Weight> weights;
-	
-//	private ArrayList<GoalHistory> goals;
-	
-	//private ArrayList<DailyHistory> history;
- 
 
 	public String getEmail() {
 		return this.email;

@@ -1,12 +1,10 @@
 package com.bestfit.shared;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class BridgeUsers implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
+public class BridgeUsers implements IsSerializable {
+
 	public String Name;
 	public String LastName;
 

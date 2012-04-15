@@ -71,10 +71,11 @@ public class Profile implements EntryPoint {
 		flexTable.setWidget(6, 1, WeightTextBox);
 		
 		Button btnNewButton = new Button("New button");
+		btnNewButton.setText("Save");
 		btnNewButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				
-				rpc.getUsers("aaaa", new AsyncCallback<BridgeUsers>(){
+				rpc.saveUsers("aaaa", new AsyncCallback<BridgeUsers>(){
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -91,6 +92,31 @@ public class Profile implements EntryPoint {
 				});
 			}
 		});
+		
+		Button btnNewButton_1 = new Button("New button");
+		btnNewButton_1.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+				rpc.getUsers("aaaa", new AsyncCallback<BridgeUsers>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						lblNewLabel_7.setText(caught.getMessage());
+						
+					}
+
+					@Override
+					public void onSuccess(BridgeUsers result) {
+						lblNewLabel_7.setText(result.Name);
+						
+					}
+					
+				});
+				
+			}
+		});
+		btnNewButton_1.setText("Get");
+		flexTable.setWidget(7, 0, btnNewButton_1);
 		flexTable.setWidget(7, 1, btnNewButton);
 		
 		lblNewLabel_7 = new Label("New label");
