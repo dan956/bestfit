@@ -13,6 +13,8 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import java.util.Date;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class Goal implements EntryPoint {
 	private Label lblNewLabel;
@@ -22,16 +24,15 @@ public class Goal implements EntryPoint {
 	private TextBox textBox;
 	private TextBox textBox_1;
 	private TextBox textBox_3;
-	private FlexTable flexTable_1;
-	private Button btnNewButton;
 	private Button btnNewButton_1;
 	private DateBox dateBox;
 
 	
 	public void onModuleLoad() {
-		RootPanel rootPanel = RootPanel.get();
+		RootPanel rootPanel = RootPanel.get("goalCont");
 		FlexTable flexTable = new FlexTable();
-		rootPanel.add(flexTable);
+		rootPanel.add(flexTable, 0, 0);
+		flexTable.setSize("374px", "259px");
 		
 		lblNewLabel = new Label("Current Weight:");
 		flexTable.setWidget(0, 0, lblNewLabel);
@@ -39,12 +40,14 @@ public class Goal implements EntryPoint {
 		textBox = new TextBox();
 		textBox.setReadOnly(true);
 		flexTable.setWidget(0, 1, textBox);
+		textBox.setHeight("25px");
 		
 		lblNewLabel_1 = new Label("Target Weight:");
 		flexTable.setWidget(1, 0, lblNewLabel_1);
 		
 		textBox_1 = new TextBox();
 		flexTable.setWidget(1, 1, textBox_1);
+		textBox_1.setHeight("25px");
 		
 		lblNewLabel_2 = new Label("Target Date: (MM-DD-YYYY)");
 		flexTable.setWidget(2, 0, lblNewLabel_2);
@@ -52,6 +55,7 @@ public class Goal implements EntryPoint {
 		dateBox = new DateBox();
 		dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("MM-dd-yyyy")));
 		flexTable.setWidget(2, 1, dateBox);
+		dateBox.setHeight("25px");
 		
 		lblNewLabel_3 = new Label("Daily net calories to achieve goal:");
 		flexTable.setWidget(3, 0, lblNewLabel_3);
@@ -59,15 +63,11 @@ public class Goal implements EntryPoint {
 		textBox_3 = new TextBox();
 		textBox_3.setReadOnly(true);
 		flexTable.setWidget(3, 1, textBox_3);
-		
-		flexTable_1 = new FlexTable();
-		flexTable.setWidget(4, 1, flexTable_1);
-		
-		btnNewButton = new Button("New button");
-		btnNewButton.setText("Cancel");
-		flexTable_1.setWidget(0, 0, btnNewButton);
+		textBox_3.setHeight("25px");
 		
 		btnNewButton_1 = new Button("New button");
+		flexTable.setWidget(4, 1, btnNewButton_1);
+		btnNewButton_1.setSize("76px", "25px");
 		btnNewButton_1.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				DialogBox dialog = new DialogBox();
@@ -77,6 +77,10 @@ public class Goal implements EntryPoint {
 			}
 		});
 		btnNewButton_1.setText("Save");
-		flexTable_1.setWidget(0, 1, btnNewButton_1);
+		flexTable.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+		flexTable.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+		flexTable.getCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+		flexTable.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+		flexTable.getCellFormatter().setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 	}
 }

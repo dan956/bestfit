@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -23,6 +24,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 
 public class Calculator implements EntryPoint {
 	private TextBox WorkoutNameTextBox;
@@ -46,19 +49,31 @@ public class Calculator implements EntryPoint {
 
 	
 	public void onModuleLoad() {
-		rootPanel = RootPanel.get("profCom");
+		rootPanel = RootPanel.get("calculatorCont");
+		
+		
+		
 		
 		tabPanel = new TabPanel();
-		rootPanel.add(tabPanel, 0, 0);
-		tabPanel.setSize("", "");
+		rootPanel.add(tabPanel, 26, 0);
+		tabPanel.setSize("382px", "214px");
 		
 		MealFlexTable = new FlexTable();
-		tabPanel.add(MealFlexTable, "Meal", false);
-		MealFlexTable.setSize("5cm", "3cm");
+		tabPanel.add(MealFlexTable, "|    Meal   |", false);
+		MealFlexTable.setSize("364px", "144px");
 		
 		Label lblFoodItem = new Label("Food Item:");
 		MealFlexTable.setWidget(0, 0, lblFoodItem);
-		lblFoodItem.setWidth("84px");
+		lblFoodItem.setWidth("121px");
+		
+		tabPanel.selectTab(0);
+		tabPanel.addStyleName("table-center");
+		AddFoodPshbtnAdd = new Button("Add");
+		AddFoodPshbtnAdd.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				addFood();
+			}
+		});
 		
 		NewFoodItem = new ListBox();
 		NewFoodItem.addItem("Egg");
@@ -71,21 +86,16 @@ public class Calculator implements EntryPoint {
 				}
 			}
 		});
-		MealFlexTable.setWidget(1, 0, NewFoodItem);
-		
-		AddFoodPshbtnAdd = new Button("Add");
-		AddFoodPshbtnAdd.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				addFood();
-			}
-		});
-		MealFlexTable.setWidget(1, 1, AddFoodPshbtnAdd);
+		MealFlexTable.setWidget(0, 1, NewFoodItem);
+		MealFlexTable.setWidget(0, 2, AddFoodPshbtnAdd);
+		AddFoodPshbtnAdd.setWidth("50px");
 		
 		FoodsFlexTable = new FlexTable();
-		MealFlexTable.setWidget(2, 0, FoodsFlexTable);
+		MealFlexTable.setWidget(1, 0, FoodsFlexTable);
 		FoodsFlexTable.setWidth("188px");
 		
 		Label lblTotalCalories = new Label("Total Calories:");
+		lblTotalCalories.setStylePrimaryName("gwt-TotalCa");
 		MealFlexTable.setWidget(3, 0, lblTotalCalories);
 		lblTotalCalories.setWidth("103px");
 		
@@ -110,41 +120,47 @@ public class Calculator implements EntryPoint {
 			}
 		});
 		MealFlexTable.setWidget(4, 2, pshbtnSave);
+		pshbtnSave.setSize("60px", "25px");
 		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 5);
 		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 2);
 		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 5);
 		
 		WorkoutFlexTable = new FlexTable();
-		tabPanel.add(WorkoutFlexTable, "Workout", false);
-		WorkoutFlexTable.setSize("5cm", "3cm");
+		tabPanel.add(WorkoutFlexTable, "  Workout  |", false);
+		WorkoutFlexTable.setSize("379px", "154px");
 		
-		Label lblExercise = new Label("Exercise:");
+		Label lblExercise = new Label("  Exercise:");
 		WorkoutFlexTable.setWidget(0, 0, lblExercise);
-		lblExercise.setWidth("84px");
+		lblExercise.setWidth("69px");
 		
 		ListBox ExerciseListBox = new ListBox();
-		WorkoutFlexTable.setWidget(1, 0, ExerciseListBox);
+		WorkoutFlexTable.setWidget(0, 1, ExerciseListBox);
 		
-		PushButton pushButton = new PushButton("Add");
-		WorkoutFlexTable.setWidget(1, 1, pushButton);
+		Button btnNewButton = new Button("New button");
+		btnNewButton.setText("Add");
+		WorkoutFlexTable.setWidget(0, 2, btnNewButton);
+		btnNewButton.setSize("43px", "23px");
 		
-		Label label_2 = new Label("Total Calories:");
-		WorkoutFlexTable.setWidget(4, 0, label_2);
-		label_2.setWidth("103px");
+		Label lblTotalCalories_1 = new Label("  Total Calories:");
+		WorkoutFlexTable.setWidget(4, 0, lblTotalCalories_1);
+		lblTotalCalories_1.setWidth("85px");
 		
 		TextBox TotalCaloriesTextBox = new TextBox();
 		TotalCaloriesTextBox.setReadOnly(true);
 		TotalCaloriesTextBox.setValue(Integer.toString(calCount));
 		WorkoutFlexTable.setWidget(4, 1, TotalCaloriesTextBox);
 		
-		PushButton pushButton_1 = new PushButton("Save");
-		WorkoutFlexTable.setWidget(4, 4, pushButton_1);
-		
 		Label lblWorkoutName = new Label("Workout Name:");
 		WorkoutFlexTable.setWidget(5, 0, lblWorkoutName);
+		lblWorkoutName.setWidth("94px");
 		
 		WorkoutNameTextBox = new TextBox();
 		WorkoutFlexTable.setWidget(5, 1, WorkoutNameTextBox);
+		
+		Button btnNewButton_1 = new Button("New button");
+		btnNewButton_1.setText("Save");
+		WorkoutFlexTable.setWidget(5, 2, btnNewButton_1);
+		btnNewButton_1.setSize("47px", "24px");
 		WorkoutFlexTable.getFlexCellFormatter().setColSpan(1, 0, 2);
 		WorkoutFlexTable.getFlexCellFormatter().setColSpan(1, 0, 5);
 
