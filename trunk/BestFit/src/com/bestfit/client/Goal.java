@@ -9,11 +9,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import java.util.Date;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class Goal implements EntryPoint {

@@ -16,14 +16,6 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class Landing implements EntryPoint {
 
-	private TextBox WeightTextBox;
-	private Button SaveButton;
-	private TextBox FirstNameTextBox;
-	private TextBox LastNameTextBox;
-	private TextBox EmailAddressTextBox;
-	private DateBox BirthDayDateBox;
-	private ListBox comboBox;
-	private TextBox HeightTextBox;
 	private TextBox WTextBox;
 	
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
