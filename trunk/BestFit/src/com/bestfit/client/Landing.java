@@ -23,8 +23,6 @@ public class Landing implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		
-		//CheckLogin();
-		
 		RootPanel rootPanel = RootPanel.get("WeightCon");
 		
 		FlexTable flexTable_1 = new FlexTable();
@@ -74,7 +72,7 @@ public class Landing implements EntryPoint {
 	
 	public void getCurrentWeight()
 	{
-		rpc.getCurrentWeight("alrowaithy@gmail.com",new AsyncCallback<String>(){
+		rpc.getCurrentWeight(new AsyncCallback<String>(){
 
 			@Override
 			public void onFailure(Throwable caught) {

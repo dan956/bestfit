@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOHelper;
-import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import java.util.ArrayList;
@@ -116,30 +115,91 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 	}
 
 	@Override
-	public String getCurrentWeight(String email)
-			throws IllegalArgumentException {
-	
+	public String getCurrentWeight() throws IllegalArgumentException {
+
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
 		String wt = "";
-		PersistenceManager pm = getPersistenceManager();
 
-		List<Double> weight = new ArrayList<Double>();
+		if (user != null) {
 
-		try {
-			Query q = pm.newQuery(Users.class, "email == u");
-			q.declareParameters("com.bestfit.data.Users u");
+			PersistenceManager pm = getPersistenceManager();
 
-			List<Users> Users = (List<Users>) q.execute(email);
+			List<Double> weight = new ArrayList<Double>();
 
-			for (Users user : Users)
-				weight.add(user.getWeight());
+			try {
+				Query q = pm.newQuery(Users.class, "email == u");
+				q.declareParameters("com.bestfit.data.Users u");
 
-			wt = String.valueOf(weight.get(0));
-			
-		} finally {
-			pm.close();
+				List<Users> Users = (List<Users>) q.execute(user.getEmail());
+
+				if (Users != null) {
+					for (Users user2 : Users)
+						weight.add(user2.getWeight());
+
+					if (weight.size() > 0) {
+						wt = String.valueOf(weight.get(0));
+					} else {
+						wt = "Sorry, something went wrong!";
+					}
+
+				}
+
+			} finally {
+				pm.close();
+			}
 		}
-
 		return wt;
+	}
+
+	@Override
+	public boolean isNewUser() throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		boolean Found = false;
+
+		if (user != null) {
+
+			PersistenceManager pm = getPersistenceManager();
+
+			List<String> weight = new ArrayList<String>();
+
+			try {
+				Query q = pm.newQuery(Users.class, "email == u");
+				q.declareParameters("com.bestfit.data.Users u");
+
+				List<Users> Users = (List<Users>) q.execute(user.getEmail());
+
+				for (Users user2 : Users)
+					weight.add(user2.getEmail());
+
+				if (weight.size() > 0) {
+					Found = false;
+				} else {
+					Found = true;
+				}
+
+			} finally {
+				pm.close();
+			}
+		}
+		return Found;
+	}
+
+	@Override
+	public String getEmail() throws IllegalArgumentException {
+
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		String email = "";
+
+		if (user != null) {
+			email = user.getEmail();
+
+		}
+		return email;
 	}
 
 }
