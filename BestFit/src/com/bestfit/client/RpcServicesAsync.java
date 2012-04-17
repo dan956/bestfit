@@ -9,5 +9,7 @@ public interface RpcServicesAsync {
 	void saveUsers(String email, AsyncCallback<Bridge> callback);
 	void logIn(String url, AsyncCallback<Bridge> callback);
 	void registerUser(Bridge msg, AsyncCallback<String> callback);
-	void getCurrentWeight(String email, AsyncCallback<String> callback);
+	void getCurrentWeight(AsyncCallback<String> callback);
+	void isNewUser(AsyncCallback<Boolean> callback);
+	void getEmail(AsyncCallback<String> callback);
 }

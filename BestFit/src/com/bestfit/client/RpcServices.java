@@ -12,6 +12,8 @@ public interface RpcServices extends RemoteService {
 	Bridge saveUsers(String email) throws IllegalArgumentException;
 	Bridge logIn(String url) throws IllegalArgumentException;
 	String registerUser(Bridge msg) throws IllegalArgumentException;
-	String getCurrentWeight(String email)throws IllegalArgumentException;
+	String getCurrentWeight()throws IllegalArgumentException;
+	boolean isNewUser() throws IllegalArgumentException;
+	String getEmail()throws IllegalArgumentException;
 
 }
