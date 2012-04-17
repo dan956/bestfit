@@ -1,14 +1,15 @@
 package com.bestfit.client;
-
+import com.bestfit.shared.Bridge;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -23,75 +24,82 @@ public class Landing implements EntryPoint {
 	private DateBox BirthDayDateBox;
 	private ListBox comboBox;
 	private TextBox HeightTextBox;
+	private TextBox WTextBox;
+	
+	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	
 	@Override
 	public void onModuleLoad() {
 		
-		RootPanel rootPanel = RootPanel.get();
+		//CheckLogin();
 		
-		FlexTable flexTable = new FlexTable();
+		RootPanel rootPanel = RootPanel.get("WeightCon");
 		
-		
-		Label lblNewLabel = new Label("First Name");
-		flexTable.setWidget(0, 0, lblNewLabel);
-		
-		FirstNameTextBox = new TextBox();
-		flexTable.setWidget(0, 1, FirstNameTextBox);
-		
-		Label lblNewLabel_1 = new Label("Last Name");
-		flexTable.setWidget(1, 0, lblNewLabel_1);
-		
-		LastNameTextBox = new TextBox();
-		flexTable.setWidget(1, 1, LastNameTextBox);
-		
-		Label lblNewLabel_2 = new Label("Email Address");
-		flexTable.setWidget(2, 0, lblNewLabel_2);
-		
-		EmailAddressTextBox = new TextBox();
-		flexTable.setWidget(2, 1, EmailAddressTextBox);
-		
-		Label lblNewLabel_3 = new Label("Birthday");
-		flexTable.setWidget(3, 0, lblNewLabel_3);
-		
-		BirthDayDateBox = new DateBox();
-		flexTable.setWidget(3, 1, BirthDayDateBox);
-		
-		Label lblNewLabel_4 = new Label("Gender");
-		flexTable.setWidget(4, 0, lblNewLabel_4);
-		
-		comboBox = new ListBox();
-		comboBox.addItem("Male");
-		comboBox.addItem("Female");
-		flexTable.setWidget(4, 1, comboBox);
-		
-		Label lblNewLabel_5 = new Label("Height");
-		flexTable.setWidget(5, 0, lblNewLabel_5);
-		
-		HeightTextBox = new TextBox();
-		flexTable.setWidget(5, 1, HeightTextBox);
-		
-		Label lblNewLabel_6 = new Label("Weight");
-		flexTable.setWidget(6, 0, lblNewLabel_6);
-		
-		WeightTextBox = new TextBox();
-		flexTable.setWidget(6, 1, WeightTextBox);
-		
-		//rootPanel.add(flexTable);
-		
-		SaveButton = new Button("New button");
-		SaveButton.setText("Register");
-		flexTable.setWidget(7, 1, SaveButton);
-		flexTable.getCellFormatter().setHorizontalAlignment(7, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+		FlexTable flexTable_1 = new FlexTable();
+		flexTable_1.setStyleName("WeightWedg");
 		
 		
-		final DialogBox dialogBox = new DialogBox();
-		dialogBox.setText("Registration");
-		dialogBox.setAnimationEnabled(true);
-
+		Label lblYourCurrentWeight = new Label("Your current weight");
+		flexTable_1.setWidget(0, 0, lblYourCurrentWeight);
 		
-		dialogBox.setWidget(flexTable);
+		WTextBox = new TextBox();
+		flexTable_1.setWidget(1, 0, WTextBox);
+		WTextBox.setHeight("26px");
 		
-		dialogBox.center();
+		Button btnNewButton = new Button("New button");
+		btnNewButton.setText("Update");
+		flexTable_1.setWidget(2, 0, btnNewButton);
+		btnNewButton.setSize("124px", "25px");
+		
+		rootPanel.add(flexTable_1);
+		flexTable_1.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_1.getCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		getCurrentWeight();
 
 	}
+	
+	public void CheckLogin()
+	{
+		/*rpc.logIn(GWT.getHostPageBaseURL(), new AsyncCallback<Bridge>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+			//	WTextBox.setText(caught.getMessage());
+				
+			}
+
+			@Override
+			public void onSuccess(Bridge result) {
+				//Window.Location.assign(result.LogginURL);
+				//WTextBox.setText(result.LogginURL);
+				
+			}
+			
+			
+		});*/
+	}
+	
+	public void getCurrentWeight()
+	{
+		rpc.getCurrentWeight("alrowaithy@gmail.com",new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				WTextBox.setText(caught.getMessage());
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				
+				WTextBox.setText(result);
+				
+			}
+			
+			
+		});
+	}
+	
+	
 }

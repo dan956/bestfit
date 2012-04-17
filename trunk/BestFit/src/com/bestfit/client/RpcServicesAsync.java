@@ -1,10 +1,13 @@
 package com.bestfit.client;
 
-import com.bestfit.shared.BridgeUsers;
+import com.bestfit.shared.Bridge;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface RpcServicesAsync {
-	void getUsers(String email, AsyncCallback<BridgeUsers> callback) throws IllegalArgumentException;
-	void saveUsers(String email, AsyncCallback<BridgeUsers> callback);;
+	void getUsers(String email, AsyncCallback<Bridge> callback) throws IllegalArgumentException;
+	void saveUsers(String email, AsyncCallback<Bridge> callback);
+	void logIn(String url, AsyncCallback<Bridge> callback);
+	void registerUser(Bridge msg, AsyncCallback<String> callback);
+	void getCurrentWeight(String email, AsyncCallback<String> callback);
 }

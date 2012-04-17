@@ -20,15 +20,18 @@ public class Users {
 	@Persistent
 	private double height;
 	@Persistent
+	private double weight;	
+	@Persistent
 	private String gender;
 
-	public Users(String _email,String _firstName,String _lastName,int _age,double _height,String _gender){
+	public Users(String _email,String _firstName,String _lastName,int _age,double _height,double _weight, String _gender){
 		
 		email= _email;
 		firstName= _firstName;
 		lastName= _lastName;
 		age= _age;
 		height= _height;
+		weight=_weight;
 		gender= _gender;
 	}
 	
@@ -61,6 +64,14 @@ public class Users {
 
 	public void setHeight(double height) {
 		this.height = height;
+	}
+	
+	public double getWeight() {
+		return this.weight;
+	}
+
+	public void setWeight(double _weight) {
+		this.weight = _weight;
 	}
    
 	public String getGender() {
