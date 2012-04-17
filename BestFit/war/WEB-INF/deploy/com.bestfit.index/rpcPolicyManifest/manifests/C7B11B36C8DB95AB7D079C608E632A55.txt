@@ -1,0 +1,2 @@
+serviceClass: com.bestfit.client.RpcServices
+path: 5491CF9EB177CD44A6A1E0F7C7C6CE13.gwt.rpc

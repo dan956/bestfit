@@ -1,7 +1,7 @@
 package com.bestfit.client;
 
 
-import com.bestfit.shared.BridgeUsers;
+import com.bestfit.shared.Bridge;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
