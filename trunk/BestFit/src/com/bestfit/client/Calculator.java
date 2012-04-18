@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 
 public class Calculator implements EntryPoint {
@@ -36,6 +37,8 @@ public class Calculator implements EntryPoint {
 	private ArrayList <String> exercises = new ArrayList<String>();
 	private FlexTable FoodsFlexTable;
 	private FlexTable ExercisesFlexTable;
+	private VerticalPanel verticalPanel;
+	private VerticalPanel verticalPanel_1;
 	
 	
 	public void onModuleLoad() {
@@ -48,16 +51,19 @@ public class Calculator implements EntryPoint {
 		rootPanel.add(tabPanel, 26, 0);
 		tabPanel.setSize("382px", "214px");
 		
+		tabPanel.selectTab(0);
+		tabPanel.addStyleName("table-center");
+		
+		verticalPanel = new VerticalPanel();
+		tabPanel.add(verticalPanel, "New tab", false);
+		verticalPanel.setSize("5cm", "3cm");
+		
 		MealFlexTable = new FlexTable();
-		tabPanel.add(MealFlexTable, "|    Meal   |", false);
-		MealFlexTable.setSize("364px", "144px");
+		verticalPanel.add(MealFlexTable);
 		
 		Label lblFoodItem = new Label("Food Item:");
 		MealFlexTable.setWidget(0, 0, lblFoodItem);
 		lblFoodItem.setWidth("121px");
-		
-		tabPanel.selectTab(0);
-		tabPanel.addStyleName("table-center");
 		AddFoodPshbtnAdd = new Button("Add");
 		AddFoodPshbtnAdd.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -79,10 +85,6 @@ public class Calculator implements EntryPoint {
 		MealFlexTable.setWidget(0, 1, NewFoodItem);
 		MealFlexTable.setWidget(0, 2, AddFoodPshbtnAdd);
 		AddFoodPshbtnAdd.setWidth("50px");
-		
-		FoodsFlexTable = new FlexTable();
-		MealFlexTable.setWidget(1, 0, FoodsFlexTable);
-		FoodsFlexTable.setWidth("188px");
 		
 		Label lblTotalCalories = new Label("Total Calories:");
 		lblTotalCalories.setStylePrimaryName("gwt-TotalCa");
@@ -111,13 +113,17 @@ public class Calculator implements EntryPoint {
 		});
 		MealFlexTable.setWidget(4, 2, pshbtnSave);
 		pshbtnSave.setSize("60px", "25px");
-		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 5);
-		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 2);
-		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 5);
+		
+		FoodsFlexTable = new FlexTable();
+		verticalPanel.add(FoodsFlexTable);
+		FoodsFlexTable.setWidth("313px");
+		
+		verticalPanel_1 = new VerticalPanel();
+		tabPanel.add(verticalPanel_1, "New tab", false);
+		verticalPanel_1.setSize("5cm", "3cm");
 		
 		WorkoutFlexTable = new FlexTable();
-		tabPanel.add(WorkoutFlexTable, "  Workout  |", false);
-		WorkoutFlexTable.setSize("379px", "154px");
+		verticalPanel_1.add(WorkoutFlexTable);
 		
 		Label lblExercise = new Label("  Exercise:");
 		WorkoutFlexTable.setWidget(0, 0, lblExercise);
@@ -153,6 +159,9 @@ public class Calculator implements EntryPoint {
 		btnNewButton_1.setSize("47px", "24px");
 		WorkoutFlexTable.getFlexCellFormatter().setColSpan(1, 0, 2);
 		WorkoutFlexTable.getFlexCellFormatter().setColSpan(1, 0, 5);
+		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 5);
+		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 2);
+		MealFlexTable.getFlexCellFormatter().setColSpan(2, 0, 5);
 
 	}
 
