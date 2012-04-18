@@ -17,10 +17,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 public class Profile implements EntryPoint {
-	private TextBox WeightTextBox;
 
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
+	private TextBox FirstNameTextBox;
+	private TextBox LastNameTextBox;
+	private TextBox EmailAddressTextBox;
 	private TextBox BirthDayTextBox;
+	private TextBox GenderTextBox;
+	private TextBox HeightTextBox;
+	private TextBox WeightTextBox;
 	
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get("profilecont");
@@ -32,25 +37,25 @@ public class Profile implements EntryPoint {
 		Label lblNewLabel = new Label("First Name");
 		flexTable.setWidget(0, 0, lblNewLabel);
 		
-		TextBox FirstNameTextBox = new TextBox();
+		FirstNameTextBox = new TextBox();
 		flexTable.setWidget(0, 1, FirstNameTextBox);
 		FirstNameTextBox.setHeight("25px");
 		
 		Label lblNewLabel_1 = new Label("Last Name");
 		flexTable.setWidget(1, 0, lblNewLabel_1);
 		
-		TextBox LastNameTextBox = new TextBox();
+		LastNameTextBox = new TextBox();
 		flexTable.setWidget(1, 1, LastNameTextBox);
 		LastNameTextBox.setHeight("25px");
 		
 		Label lblNewLabel_2 = new Label("Email Address");
 		flexTable.setWidget(2, 0, lblNewLabel_2);
 		
-		TextBox EmailAddressTextBox = new TextBox();
+		EmailAddressTextBox = new TextBox();
 		flexTable.setWidget(2, 1, EmailAddressTextBox);
 		EmailAddressTextBox.setHeight("25px");
 		
-		Label lblNewLabel_3 = new Label("Birthday");
+		Label lblNewLabel_3 = new Label("Age");
 		flexTable.setWidget(3, 0, lblNewLabel_3);
 		
 		BirthDayTextBox = new TextBox();
@@ -60,14 +65,14 @@ public class Profile implements EntryPoint {
 		Label lblNewLabel_4 = new Label("Gender");
 		flexTable.setWidget(4, 0, lblNewLabel_4);
 		
-		TextBox GenderTextBox = new TextBox();
+		GenderTextBox = new TextBox();
 		flexTable.setWidget(4, 1, GenderTextBox);
 		GenderTextBox.setHeight("25px");
 		
 		Label lblNewLabel_5 = new Label("Height");
 		flexTable.setWidget(5, 0, lblNewLabel_5);
 		
-		TextBox HeightTextBox = new TextBox();
+		HeightTextBox = new TextBox();
 		flexTable.setWidget(5, 1, HeightTextBox);
 		HeightTextBox.setHeight("25px");
 		
@@ -77,6 +82,40 @@ public class Profile implements EntryPoint {
 		WeightTextBox = new TextBox();
 		flexTable.setWidget(6, 1, WeightTextBox);
 		WeightTextBox.setHeight("25px");
+		
+		getUserProfile();
 
+	}
+	
+	public void getUserProfile()
+	{
+		rpc.getUserProfile(new AsyncCallback<Bridge>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Bridge result) {
+				// TODO Auto-generated method stub
+				
+				FirstNameTextBox.setText(result.firstName);
+				LastNameTextBox.setText(result.lastName);
+				EmailAddressTextBox.setText(result.email);
+				GenderTextBox.setText(result.gender);
+				HeightTextBox.setText(String.valueOf(result.height));
+				WeightTextBox.setText(String.valueOf(result.weight));
+				BirthDayTextBox.setText(String.valueOf(result.age));
+
+				
+				
+			}
+			
+			
+			
+		});
+	
 	}
 }
