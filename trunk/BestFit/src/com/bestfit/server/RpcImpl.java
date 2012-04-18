@@ -202,4 +202,44 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		return email;
 	}
 
+	@Override
+	public Bridge getUserProfile() throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		Bridge _msg = new Bridge();
+
+		if (user != null) {
+
+			PersistenceManager pm = getPersistenceManager();
+
+			try {
+				Query q = pm.newQuery(Users.class, "email == u");
+				q.declareParameters("com.bestfit.data.Users u");
+
+				List<Users> Users = (List<Users>) q.execute(user.getEmail());
+
+				if (Users != null) {
+					for (Users user2 : Users)
+					{
+						_msg.firstName = user2.getFirstName();
+						_msg.lastName = user2.getLastName();
+						_msg.email = user2.getEmail();
+						_msg.gender = user2.getGender();
+						_msg.height = user2.getHeight();
+						_msg.weight = user2.getWeight();
+						_msg.age = user2.getAge();
+						
+					}
+
+				}
+
+			} finally {
+				pm.close();
+			}
+		}
+		return _msg;
+
+	}
+
 }

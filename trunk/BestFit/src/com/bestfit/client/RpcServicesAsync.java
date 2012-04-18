@@ -12,4 +12,5 @@ public interface RpcServicesAsync {
 	void getCurrentWeight(AsyncCallback<String> callback);
 	void isNewUser(AsyncCallback<Boolean> callback);
 	void getEmail(AsyncCallback<String> callback);
+	void getUserProfile(AsyncCallback<Bridge> callback);
 }
