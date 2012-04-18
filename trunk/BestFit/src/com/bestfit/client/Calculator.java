@@ -30,15 +30,13 @@ public class Calculator implements EntryPoint {
 	private ListBox NewExerciseItem;
 	private Button AddFoodPshbtnAdd;
 	private TextBox TotalCalsTextBox;
+	private TextBox TotalCalsBurnedTextBox;
 	private Button pshbtnSave;
 	private ArrayList <String> foods = new ArrayList<String>();
 	private ArrayList <String> exercises = new ArrayList<String>();
 	private FlexTable FoodsFlexTable;
 	private FlexTable ExercisesFlexTable;
 	
-	private int calCount = 0;
-	private int calsBurnedCount = 0;
-
 	
 	public void onModuleLoad() {
 		rootPanel = RootPanel.get("calculatorCont");
@@ -137,10 +135,10 @@ public class Calculator implements EntryPoint {
 		WorkoutFlexTable.setWidget(4, 0, lblTotalCalories_1);
 		lblTotalCalories_1.setWidth("85px");
 		
-		TextBox TotalCaloriesTextBox = new TextBox();
-		TotalCaloriesTextBox.setReadOnly(true);
-		TotalCaloriesTextBox.setValue(Integer.toString(calCount));
-		WorkoutFlexTable.setWidget(4, 1, TotalCaloriesTextBox);
+		TotalCalsBurnedTextBox = new TextBox();
+		TotalCalsBurnedTextBox.setReadOnly(true);
+		TotalCalsBurnedTextBox.setValue(Integer.toString(0));
+		WorkoutFlexTable.setWidget(4, 1, TotalCalsBurnedTextBox);
 		
 		Label lblWorkoutName = new Label("Workout Name:");
 		WorkoutFlexTable.setWidget(5, 0, lblWorkoutName);
@@ -164,6 +162,7 @@ public class Calculator implements EntryPoint {
 	     
 	    NewFoodItem.setTitle("");
 	    int cals = new Random().nextInt(200);
+	    int calCount = Integer.parseInt(TotalCalsTextBox.getText());
 	    String FoodCals = Integer.toString(cals);
 	    calCount += cals;
 	    TotalCalsTextBox.setText(Integer.toString(calCount));
@@ -179,8 +178,10 @@ public class Calculator implements EntryPoint {
 	    public void onClick(ClickEvent event) {                    
 	        int removedIndex = foods.lastIndexOf(FoodItem);
 	        foods.remove(removedIndex);
+	        int calCount = Integer.parseInt(TotalCalsTextBox.getText());
+	        int cals = Integer.parseInt(FoodsFlexTable.getText(removedIndex, 1));
 	        FoodsFlexTable.removeRow(removedIndex);
-		    TotalCalsTextBox.setText(Integer.toString(calCount));
+		    TotalCalsTextBox.setText(Integer.toString(calCount - cals));
 	    }
 	    });
 	    FoodsFlexTable.setWidget(row, 2, removeFood); 
@@ -193,14 +194,16 @@ public class Calculator implements EntryPoint {
 	    NewExerciseItem.setTitle("");
 	    int cals = new Random().nextInt(200);
 	    String ExerciseCals = Integer.toString(cals);
-	    calsBurnedCount += cals;
-	    TotalCalsTextBox.setText(Integer.toString(calsBurnedCount));
+	    int calsBurned = Integer.parseInt(TotalCalsBurnedTextBox.getText());
+	    calsBurned += cals;
+	    TotalCalsBurnedTextBox.setText(Integer.toString(calsBurned));
 	    
 	    // add the stock to the list
 	    int row = ExercisesFlexTable.getRowCount();
 	    exercises.add(ExerciseItem);
 	    ExercisesFlexTable.setText(row, 0, ExerciseItem);
 	    ExercisesFlexTable.setText(row, 1, ExerciseCals);
+	    
 
 	    // add button to remove this stock from the list
 	    Button removeExercise = new Button("x");
@@ -208,8 +211,10 @@ public class Calculator implements EntryPoint {
 	    public void onClick(ClickEvent event) {                    
 	        int removedIndex = exercises.lastIndexOf(ExerciseItem);
 	        exercises.remove(removedIndex);
+	        int calsBurned = Integer.parseInt(TotalCalsBurnedTextBox.getText());
+	        int cals = Integer.parseInt(ExercisesFlexTable.getText(removedIndex, 1));
 	        ExercisesFlexTable.removeRow(removedIndex);
-		    TotalCalsTextBox.setText(Integer.toString(calsBurnedCount));
+		    TotalCalsBurnedTextBox.setText(Integer.toString(calsBurned - cals));
 	    }
 	    });
 	    ExercisesFlexTable.setWidget(row, 2, removeExercise); 
