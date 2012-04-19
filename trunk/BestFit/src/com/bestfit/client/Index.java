@@ -120,7 +120,7 @@ public class Index implements EntryPoint {
 					@Override
 					public void onSuccess(String result) {
 
-						Window.Location.assign("landing.html");
+						Window.Location.assign("/landing.html");
 					}
 				});
 			}
@@ -180,7 +180,7 @@ public class Index implements EntryPoint {
 					});
 
 				} else {
-					Window.Location.assign("landing.html");
+					Window.Location.assign("/landing.html");
 				}
 
 			}
