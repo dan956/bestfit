@@ -25,7 +25,7 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
-public class Calculator implements EntryPoint {
+public class CalculatorOld implements EntryPoint {
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	private String email;
 	private TextBox WorkoutNameTextBox;

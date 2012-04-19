@@ -2,7 +2,6 @@ package com.bestfit.client;
 
 
 import com.bestfit.shared.Bridge;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -16,5 +15,8 @@ public interface RpcServices extends RemoteService {
 	boolean isNewUser() throws IllegalArgumentException;
 	String getEmail()throws IllegalArgumentException;
 	Bridge getUserProfile()throws IllegalArgumentException; 
-
+	Bridge getUserMeals() throws IllegalArgumentException;
+	boolean saveUserMeal(Bridge msg) throws IllegalArgumentException;
+	Bridge getFoodItems() throws IllegalArgumentException;
+	boolean saveFoodItem(Bridge msg) throws IllegalArgumentException;
 }
