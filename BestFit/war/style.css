@@ -192,7 +192,7 @@ a.more2 {
 
 #content .inner_copy {border:0;color:#f00;float:left;width:50%!important;margin:-202px 0 0 0;overflow:hidden;line-height:0;padding:0;font-size:12px}
 .gwt-Label {
-	font-size: larger;
+	font-size: medium;
 }
 .gwt-TabPanel {
 	border: .1px solid Black;
@@ -211,3 +211,10 @@ a.more2 {
 .auto-style1 {
 	font-size: medium;
 }
+.signup-lable{
+	font-size: x-large;
+}
+.signup-lable2{
+	font-size: medium;
+}
+
