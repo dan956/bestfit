@@ -5,4 +5,5 @@
 	<source path="client" />
 	<entry-point class="com.bestfit.client.Landing"></entry-point>
 	<source path='shared'/>
+	<source path="data"/>
 </module>

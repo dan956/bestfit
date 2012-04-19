@@ -51,25 +51,33 @@ public class Calculator implements EntryPoint {
 	private VerticalPanel WorkoutVerticalPanel;
 	
 	private boolean success;
+	private FlexTable MetricsFlexTable;
+	private Label lblNewLabel_1;
+	private Label lblNewLabel_2;
+	private Label lblNewLabel_3;
+	private Label lblNewLabel_4;
+	private Label lblNewLabel_5;
 	
 	public void onModuleLoad() {
 		rootPanel = RootPanel.get("calculatorCont");
+		rootPanel.setSize("600px", "450px");
 		
 		tabPanel = new TabPanel();
-		rootPanel.add(tabPanel, 26, 0);
-		tabPanel.setSize("382px", "214px");
+		rootPanel.add(tabPanel, 76, 10);
+		tabPanel.setSize("450px", "350px");
 		
 		tabPanel.addStyleName("table-center");
 		
 		MealVerticalPanel = new VerticalPanel();
 		tabPanel.add(MealVerticalPanel, "| Meal |", false);
 		tabPanel.selectTab(0);
-		MealVerticalPanel.setSize("5cm", "3cm");
+		MealVerticalPanel.setSize("6cm", "4cm");
 		
 		tabPanel.addStyleName("table-center");
 		
 		MealFlexTable = new FlexTable();
 		MealVerticalPanel.add(MealFlexTable);
+		MealFlexTable.setWidth("451px");
 		
 		Label lblFoodItem = new Label("Food Item:");
 		MealFlexTable.setWidget(0, 0, lblFoodItem);
@@ -93,9 +101,29 @@ public class Calculator implements EntryPoint {
 		MealFlexTable.setWidget(0, 2, AddFoodPshbtnAdd);
 		AddFoodPshbtnAdd.setWidth("50px");
 		
+		MetricsFlexTable = new FlexTable();
+		MealVerticalPanel.add(MetricsFlexTable);
+		MetricsFlexTable.setWidth("451px");
+		
+		lblNewLabel_1 = new Label("Food Item");
+		lblNewLabel_1.setWordWrap(false);
+		MetricsFlexTable.setWidget(0, 0, lblNewLabel_1);
+		
+		lblNewLabel_2 = new Label("calories");
+		MetricsFlexTable.setWidget(0, 1, lblNewLabel_2);
+		
+		lblNewLabel_3 = new Label("fat cals");
+		MetricsFlexTable.setWidget(0, 2, lblNewLabel_3);
+		
+		lblNewLabel_4 = new Label("carbs");
+		MetricsFlexTable.setWidget(0, 3, lblNewLabel_4);
+		
+		lblNewLabel_5 = new Label("protein");
+		MetricsFlexTable.setWidget(0, 4, lblNewLabel_5);
+		
 		FoodsFlexTable = new FlexTable();
 		MealVerticalPanel.add(FoodsFlexTable);
-		FoodsFlexTable.setWidth("382px");
+		FoodsFlexTable.setWidth("451px");
 		
 		Label lblTotalCalories = new Label("Total Calories:");
 		lblTotalCalories.setStylePrimaryName("gwt-TotalCa");
@@ -124,10 +152,6 @@ public class Calculator implements EntryPoint {
 		});
 		MealFlexTable.setWidget(4, 2, pshbtnSave);
 		pshbtnSave.setSize("60px", "25px");
-		
-		FoodsFlexTable = new FlexTable();
-		MealVerticalPanel.add(FoodsFlexTable);
-		FoodsFlexTable.setWidth("313px");
 		
 		WorkoutVerticalPanel = new VerticalPanel();
 		tabPanel.add(WorkoutVerticalPanel, "| Workout |", false);

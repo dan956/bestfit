@@ -242,4 +242,73 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	}
 
+	@Override
+	public Bridge getUserMeals() throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		Bridge _msg = new Bridge();
+		if (user != null) {
+			_msg.email = user.getEmail();
+			PersistenceManager pm = getPersistenceManager();
+			try {
+				Query q = pm.newQuery(Meal.class, "email == u");
+				q.declareParameters("com.bestfit.data.Users u");
+				List<Meal> meals = (List<Meal>) q.execute(user.getEmail());
+				if (meals == null)
+					_msg.meals = new ArrayList<Meal>();
+				else
+					_msg.meals = new ArrayList<Meal>(meals);
+			} finally {
+				pm.close();
+			}
+		}
+		return _msg;
+	}
+
+	@Override
+	public boolean saveUserMeal(Bridge msg) throws IllegalArgumentException {
+		Meal meal = msg.meal;
+		PersistenceManager pm = getPersistenceManager();
+		if (meal != null)
+			try {
+				pm.makePersistent(meal);
+				return true;
+			} finally {
+				pm.close();
+			}
+		return false;
+	}
+
+	@Override
+	public Bridge getFoodItems() throws IllegalArgumentException {
+		Bridge _msg = new Bridge();
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			Query q = pm.newQuery(FoodItem.class);
+			List<FoodItem> foods = (List<FoodItem>) q.execute();
+			if (foods == null)
+				_msg.foods = new ArrayList<FoodItem>();
+			else
+				_msg.foods = new ArrayList<FoodItem>(foods);
+			
+		} finally {
+			pm.close();
+		}
+		return _msg;
+	}
+
+	@Override
+	public boolean saveFoodItem(Bridge msg) throws IllegalArgumentException {
+		FoodItem foodItem = msg.foodItem;
+		PersistenceManager pm = getPersistenceManager();
+		if (foodItem != null)
+			try {
+				pm.makePersistent(foodItem);
+				return true;
+			} finally {
+				pm.close();
+			}
+		return false;
+	}
+
 }
