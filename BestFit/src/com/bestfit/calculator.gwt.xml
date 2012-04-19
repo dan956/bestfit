@@ -5,6 +5,6 @@
 	
 	<source path="client" />
 	<entry-point class="com.bestfit.client.Calculator"></entry-point>
-	 <source path='shared'/>
-  	 <source path='data'/>
+	 <source path="shared" />
+  	 <source path="data" />
 </module>

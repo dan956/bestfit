@@ -1,10 +1,5 @@
 /* CSS Document */
 
-* {
-	margin:0px; padding:0px;
-	font-family: Tahoma, sans-serif;
-	font-size: 11px;
-}
 body {
 	background-color:#AD0D0B;
 	padding:0; margin:0 auto;
@@ -201,7 +196,6 @@ a.more2 {
 }
 .gwt-TabPanel {
 	border: .1px solid Black;
-	background-color: white;
 }
 .gwt-TotalCa {
 	color: Red;
