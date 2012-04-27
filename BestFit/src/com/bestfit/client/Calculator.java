@@ -12,7 +12,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -248,8 +247,6 @@ public class Calculator implements EntryPoint {
 	    public void onClick(ClickEvent event) {
 	        int removedIndex = foods.indexOf(foodItem);
 	        newMeal.removeFoodItem(removedIndex);
-	        int calCount = Integer.parseInt(TotalCalsTextBox.getText());
-	        int cals = Integer.parseInt(FoodsFlexTable.getText(removedIndex, 1));
 	        FoodsFlexTable.removeRow(removedIndex);
 		    TotalCalsTextBox.setText(Integer.toString(newMeal.totalCalories()));
 	    }
@@ -342,13 +339,13 @@ public class Calculator implements EntryPoint {
 		});
 	}
 	
-	private void saveFoodItem(FoodItem item) {
-		Bridge msg = new Bridge();
-		msg.foodItem = item;
-		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
-			public void onFailure(Throwable caught) {}
-
-			public void onSuccess(Boolean result) {}
-		});
-	}
+//	private void saveFoodItem(FoodItem item) {
+//		Bridge msg = new Bridge();
+//		msg.foodItem = item;
+//		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
+//			public void onFailure(Throwable caught) {}
+//
+//			public void onSuccess(Boolean result) {}
+//		});
+//	}
 }
