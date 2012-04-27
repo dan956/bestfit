@@ -33,15 +33,15 @@ public class Calculator implements EntryPoint {
 	private FlexTable MealFlexTable;
 	private TabPanel tabPanel;
 	private RootPanel rootPanel;
-	private TextBox MealNameTextBox;
+	private TextBox MealLabelTextBox;
 	private ListBox NewFoodItem;
 	private ListBox NewExerciseItem;
 	private Button AddFoodPshbtnAdd;
 	private TextBox TotalCalsTextBox;
 	private TextBox TotalCalsBurnedTextBox;
 	private Button pshbtnSave;
-	private ArrayList<Meal> meals;
-	private ArrayList<FoodItem> foods;
+	private ArrayList<Meal> meals = new ArrayList<Meal>();
+	private ArrayList<FoodItem> foods = new ArrayList<FoodItem>();
 	private Meal newMeal;
 	private ArrayList <String> exercises = new ArrayList<String>();
 	private FlexTable FoodsFlexTable;
@@ -50,7 +50,6 @@ public class Calculator implements EntryPoint {
 	private VerticalPanel MealVerticalPanel;
 	private VerticalPanel WorkoutVerticalPanel;
 	
-	private boolean success;
 	private FlexTable MetricsFlexTable;
 	private Label lblNewLabel_1;
 	private Label lblNewLabel_2;
@@ -138,16 +137,19 @@ public class Calculator implements EntryPoint {
 		Label lblNewLabel = new Label("Meal Name:");
 		MealFlexTable.setWidget(4, 0, lblNewLabel);
 		
-		MealNameTextBox = new TextBox();
-		MealFlexTable.setWidget(4, 1, MealNameTextBox);
+		MealLabelTextBox = new TextBox();
+		MealFlexTable.setWidget(4, 1, MealLabelTextBox);
 		
 		pshbtnSave = new Button("Save");
 		pshbtnSave.setEnabled(true);
 		pshbtnSave.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				saveUserMeal(newMeal);
-				Window.alert("Your meal has been saved.");
-				Window.Location.reload();
+				if (MealLabelTextBox.getText().trim().equals(""))
+					Window.alert("Please name this meal.");
+				else {
+					newMeal.setLabel(MealLabelTextBox.getText());
+					saveUserMeal();
+				}
 			}
 		});
 		MealFlexTable.setWidget(4, 2, pshbtnSave);
@@ -198,31 +200,32 @@ public class Calculator implements EntryPoint {
 		// one time run to populate FoodItem persistence
 		{
 			// name, cals, fatcals, fatgrams, carbs, protein
-			FoodItem items[] = new FoodItem[10];
-			items[0] = new FoodItem("Egg, Whole, Cooked, Medium", 71, 40, 5.15, .48, 5.28);
-			items[1] = new FoodItem("Egg, Whole, Cooked, Large", 81, 45, 5.86, .55, 6);
-			items[2] = new FoodItem("Egg, Whole, Cooked, Extra Large", 94, 51, 6.79, .64, 6.96);
-			items[3] = new FoodItem("Bacon, Medium Slice", 43, 40, 3.34, .11, 2.96);
-			items[4] = new FoodItem("Pancake, Buttermilk, 5-1/2\" dia", 110, 28, 2.53, 19.25, 2.61);
-			items[5] = new FoodItem("Waffle, Round, 4\" dia", 121, 36, 3.72, 19.05, 2.85);
-			items[6] = new FoodItem("Bread, White, Toasted, 1 Slice", 73, 17, 1, 13.6, 2.25);
-			items[7] = new FoodItem("Bread, Wheat, Toasted, 1 Slice", 76, 16, 1.02, 12.79, 4.07);
-			items[8] = new FoodItem("Milk, 2%, 1 Cup", 122, 68, 4.83, 11.71, 8.05);
-			items[9] = new FoodItem("Orange Juice, 1 Cup", 122, 7, .3, 28.73, 1.69);
-			foods = new ArrayList<FoodItem>();
-			for (int i = 0; i < items.length; i++) {
-				saveFoodItem(items[i]);
-				NewFoodItem.addItem(items[i].getName());
-				foods.add(items[i]);
-			}
+//			FoodItem items[] = new FoodItem[10];
+//			items[0] = new FoodItem("Egg, Whole, Cooked, Medium", 71, 40, 5.15, .48, 5.28);
+//			items[1] = new FoodItem("Egg, Whole, Cooked, Large", 81, 45, 5.86, .55, 6);
+//			items[2] = new FoodItem("Egg, Whole, Cooked, Extra Large", 94, 51, 6.79, .64, 6.96);
+//			items[3] = new FoodItem("Bacon, Medium Slice", 43, 40, 3.34, .11, 2.96);
+//			items[4] = new FoodItem("Pancake, Buttermilk, 5-1/2\" dia", 110, 28, 2.53, 19.25, 2.61);
+//			items[5] = new FoodItem("Waffle, Round, 4\" dia", 121, 36, 3.72, 19.05, 2.85);
+//			items[6] = new FoodItem("Bread, White, Toasted, 1 Slice", 73, 17, 1, 13.6, 2.25);
+//			items[7] = new FoodItem("Bread, Wheat, Toasted, 1 Slice", 76, 16, 1.02, 12.79, 4.07);
+//			items[8] = new FoodItem("Milk, 2%, 1 Cup", 122, 68, 4.83, 11.71, 8.05);
+//			items[9] = new FoodItem("Orange Juice, 1 Cup", 122, 7, .3, 28.73, 1.69);
+//			for (int i = 0; i < items.length; i++) {
+//				if (saveFoodItem(items[i]))
+//					System.out.println("Saved item " + i + "(" + items[i].getName() + ") successfully.");
+//				else
+//					System.err.println("Could not save item " + i + "(" + items[i].getName() + ").");
+//				NewFoodItem.addItem(items[i].getName());
+//				foods.add(items[i]);
+//			}
 		}
-//		getFoodItems();
-//		foods = new ArrayList<FoodItem>();
-//		for (FoodItem item : foods)
-//			NewFoodItem.addItem(item.getName());
-		getUserMeals();
 		newMeal = new Meal(email);
-		newMeal.setEmail(email);
+		startAsynchronous();
+	}
+	
+	private void startAsynchronous() {
+		getFoodItems();
 	}
 
 	protected void addFood() {
@@ -291,70 +294,61 @@ public class Calculator implements EntryPoint {
 	
 	public void getUserMeals() {
 		rpc.getUserMeals(new AsyncCallback<Bridge>() {
-			public void onFailure(Throwable caught) {
-				meals = new ArrayList<Meal>();
-			}
+			public void onFailure(Throwable caught) {}
 
 			public void onSuccess(Bridge result) {
 				email = result.email;
 				if (result.meals != null)
-					meals = result.meals;
-				else
-					meals = new ArrayList<Meal>();
+					meals.addAll(result.meals);
+				System.out.println("Retreived " + meals.size() + " meals.");
 			}
 		});
 	}
 	
-	private synchronized boolean saveUserMeal(Meal meal) {
-		success = true;
+	private void saveUserMeal() {
 		Bridge msg = new Bridge();
-		msg.meal = meal;
+		msg.meal = newMeal;
 		rpc.saveUserMeal(msg, new AsyncCallback<Boolean>() {
-			public void onFailure(Throwable caught) {
-				success = false;
-			}
+			public void onFailure(Throwable caught) {}
 
-			@Override
 			public void onSuccess(Boolean result) {
-				success = result;
+				if (result) {
+					meals.add(newMeal);
+					System.out.println("Saved new meal to datastore.");
+					Window.alert("Your meal has been saved.");
+				}
+				else {
+					System.err.println("Unable to save new meal.");
+					Window.alert("Your meal was not saved.");
+				}
+				Window.Location.reload();
 			}
 		
 		});
-		if (success)
-			meals.add(meal);
-		return success;
 	}
 	
 	private void getFoodItems() {
 		rpc.getFoodItems(new AsyncCallback<Bridge>() {
-			public void onFailure(Throwable caught) {
-				foods = new ArrayList<FoodItem>();
-			}
+			public void onFailure(Throwable caught) {}
 
 			public void onSuccess(Bridge result) {
 				if (result.foods != null)
-					foods = result.foods;
-				else
-					foods = new ArrayList<FoodItem>();
+					foods.addAll(result.foods);
+				System.out.println("Retreived " + foods.size() + " items.");
+				for (FoodItem item : foods)
+					NewFoodItem.addItem(item.getName());
+				getUserMeals();
 			}
 		});
 	}
 	
-	private synchronized boolean saveFoodItem(FoodItem item) {
-		success = true;
+	private void saveFoodItem(FoodItem item) {
 		Bridge msg = new Bridge();
 		msg.foodItem = item;
 		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
-			public void onFailure(Throwable caught) {
-				success = false;
-			}
+			public void onFailure(Throwable caught) {}
 
-			@Override
-			public void onSuccess(Boolean result) {
-				success = result;
-			}
-		
+			public void onSuccess(Boolean result) {}
 		});
-		return success;
 	}
 }
