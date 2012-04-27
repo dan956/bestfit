@@ -1,15 +1,24 @@
 package com.bestfit.data;
 
+//import javax.jdo.annotations.Extension;
+import java.io.Serializable;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-//import org.apache.commons.lang.Validate;
-import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+//import com.google.appengine.api.datastore.Key;
+//import com.google.appengine.api.datastore.KeyFactory;
 
 @PersistenceCapable
-public class FoodItem implements Serializable {
-	private static final long serialVersionUID = 5113637155160202129L;
+public class FoodItem implements IsSerializable, Serializable {
 	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+//	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
 	String name;
 	@Persistent
 	int calories;
@@ -21,9 +30,11 @@ public class FoodItem implements Serializable {
 	double carbohydrates;
 	@Persistent
 	double protein;
+	@NotPersistent
+	private static final long serialVersionUID = 7072184204766644798L;
 	
 	public FoodItem() {
-	
+		this("DefaultFoodItemName", 0, 0, 0, 0, 0);
 	}
 	
 	public FoodItem(String _name, int _calories, int _fatCalories, double _fatGrams, double _carbohydrates, double _protein) {
@@ -47,6 +58,7 @@ public class FoodItem implements Serializable {
 	
 	public void setName(String _name) {
 //		Validate.notNull(_name, "FoodItem name cannot be null.");
+//		key = KeyFactory.createKey(keyKind, _name);
 		name = _name;
 	}
 	
@@ -101,4 +113,7 @@ public class FoodItem implements Serializable {
 		return name.equals(item.name) && calories == item.calories && fatCalories == item.fatCalories && fatGrams == item.fatGrams && carbohydrates == item.carbohydrates && protein == item.protein;
 	}
 
+	public String toString() {
+		return "[NAME:\"" + name + "\":(CALS:" + calories + ",FATCALS:" + fatCalories + ",FATGRAMS:" + fatGrams + ",CARBS:" + carbohydrates + ",PROTEIN:" + protein + ")]";
+	}
 }
