@@ -250,14 +250,33 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		if (user != null) {
 			_msg.email = user.getEmail();
 			PersistenceManager pm = getPersistenceManager();
+			System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
 			try {
-				Query q = pm.newQuery(Meal.class, "email == u");
-				q.declareParameters("com.bestfit.data.Users u");
+				Query q = pm.newQuery(Meal.class, "email == e");
+				q.setSerializeRead(true);
+				q.declareParameters("java.lang.String e");
+				System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
 				List<Meal> meals = (List<Meal>) q.execute(user.getEmail());
-				if (meals == null)
-					_msg.meals = new ArrayList<Meal>();
-				else
-					_msg.meals = new ArrayList<Meal>(meals);
+				
+				q = pm.newQuery(FoodItem.class);
+				List<FoodItem> foods = (List<FoodItem>) q.execute();
+				
+				System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
+				// this is necessary because what is returned is 'org.datanucleus.sco.backed.List' which is not serializable
+				ArrayList<Meal> newMeals = new ArrayList<Meal>();
+				for (Meal meal : meals) {
+					Meal newMeal = new Meal(meal.getEmail(), meal.getLabel());
+					ArrayList<String> names = new ArrayList<String>(meal.getFoodItemNamesList());
+					for (String name : names)
+						for (FoodItem item : foods)
+							if (item.getName().equals(name)) {
+								newMeal.addFoodItem(item);
+								break;
+							}
+					newMeals.add(newMeal);
+				}
+				System.out.println("Server(RpcImpl.getUserMeals): Query returned " + newMeals.size() + " results.");
+				_msg.meals = newMeals;
 			} finally {
 				pm.close();
 			}
@@ -267,15 +286,23 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	@Override
 	public boolean saveUserMeal(Bridge msg) throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
 		Meal meal = msg.meal;
+		System.out.println("Server(RpcImpl.saveUserMeal): Meal received is " + meal.toString());
+		meal.setEmail(user.getEmail());
+		
 		PersistenceManager pm = getPersistenceManager();
 		if (meal != null)
 			try {
 				pm.makePersistent(meal);
+//				pm.makeTransient(meal);
+				System.out.println("Server(RpcImpl.saveUserMeal): Meal made persistent.");
 				return true;
 			} finally {
 				pm.close();
 			}
+		System.err.println("Server(RpcImpl.saveUserMeal): Meal could not be made persistent.");
 		return false;
 	}
 
@@ -286,10 +313,14 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		try {
 			Query q = pm.newQuery(FoodItem.class);
 			List<FoodItem> foods = (List<FoodItem>) q.execute();
-			if (foods == null)
+			if (foods == null) {
 				_msg.foods = new ArrayList<FoodItem>();
-			else
+				System.err.println("Server(RpcImpl.getFoodItems): Query returned null.");
+			}
+			else {
+				System.out.println("Server(RpcImpl.getFoodItems): Query returned " + foods.size() + " results.");
 				_msg.foods = new ArrayList<FoodItem>(foods);
+			}
 			
 		} finally {
 			pm.close();
@@ -300,14 +331,17 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 	@Override
 	public boolean saveFoodItem(Bridge msg) throws IllegalArgumentException {
 		FoodItem foodItem = msg.foodItem;
+		System.out.println("Server(RpcImpl.saveFoodItem): Item received is " + foodItem.toString());
 		PersistenceManager pm = getPersistenceManager();
 		if (foodItem != null)
 			try {
 				pm.makePersistent(foodItem);
+				System.out.println("Server(RpcImpl.saveFoodItem): Item made persistent.");
 				return true;
 			} finally {
 				pm.close();
 			}
+		System.err.println("Server(RpcImpl.saveFoodItem): Item could not be made persistent.");
 		return false;
 	}
 
