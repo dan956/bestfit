@@ -33,6 +33,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		return PMF.getPersistenceManager();
 	}
 
+	// for test
 	public Bridge getUsers(String email) throws IllegalArgumentException {
 		Bridge tmpBUser = new Bridge();
 
@@ -60,6 +61,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	}
 
+	// for test
 	public Bridge saveUsers(String email) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		Bridge tmpBUser = new Bridge();
@@ -80,6 +82,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		return tmpBUser;
 	}
 
+	// for test
 	public Bridge logIn(String url) throws IllegalArgumentException {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
@@ -220,8 +223,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 				List<Users> Users = (List<Users>) q.execute(user.getEmail());
 
 				if (Users != null) {
-					for (Users user2 : Users)
-					{
+					for (Users user2 : Users) {
 						_msg.firstName = user2.getFirstName();
 						_msg.lastName = user2.getLastName();
 						_msg.email = user2.getEmail();
@@ -229,7 +231,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 						_msg.height = user2.getHeight();
 						_msg.weight = user2.getWeight();
 						_msg.age = user2.getAge();
-						
+
 					}
 
 				}
@@ -250,18 +252,19 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		if (user != null) {
 			_msg.email = user.getEmail();
 			PersistenceManager pm = getPersistenceManager();
-//			System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
+			// System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
 			try {
 				Query q = pm.newQuery(Meal.class, "email == e");
 				q.declareParameters("java.lang.String e");
-//				System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
+				// System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
 				List<Meal> meals = (List<Meal>) q.execute(user.getEmail());
-				
+
 				q = pm.newQuery(FoodItem.class);
 				List<FoodItem> foods = (List<FoodItem>) q.execute();
-				
-//				System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
-				// this is necessary because what is returned is 'org.datanucleus.sco.backed.List' which is not serializable
+
+				// System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
+				// this is necessary because what is returned is
+				// 'org.datanucleus.sco.backed.List' which is not serializable
 				ArrayList<Meal> newMeals = new ArrayList<Meal>();
 				for (Meal meal : meals) {
 					Meal newMeal = new Meal(meal.getEmail(), meal.getLabel());
@@ -273,7 +276,9 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 							}
 					newMeals.add(newMeal);
 				}
-				System.out.println("Server(RpcImpl.getUserMeals): Query returned " + newMeals.size() + " results.");
+				System.out
+						.println("Server(RpcImpl.getUserMeals): Query returned "
+								+ newMeals.size() + " results.");
 				_msg.meals = newMeals;
 			} finally {
 				pm.close();
@@ -288,21 +293,25 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		User user = userService.getCurrentUser();
 		Meal meal = msg.meal;
 		meal.setEmail(user.getEmail());
-		System.out.println("Server(RpcImpl.saveUserMeal): Newest meal received is " + meal.toString());
-//		meal.setLabel(meal.getLabel() + ":" + meal.getEmail());
-		
+		System.out
+				.println("Server(RpcImpl.saveUserMeal): Newest meal received is "
+						+ meal.toString());
+		// meal.setLabel(meal.getLabel() + ":" + meal.getEmail());
+
 		PersistenceManager pm = getPersistenceManager();
 		if (meal != null)
 			try {
-				
+
 				pm.makePersistent(meal);
-//				pm.makeTransient(meal);
-				System.out.println("Server(RpcImpl.saveUserMeal): Meal made persistent.");
+				// pm.makeTransient(meal);
+				System.out
+						.println("Server(RpcImpl.saveUserMeal): Meal made persistent.");
 				return true;
 			} finally {
 				pm.close();
 			}
-		System.err.println("Server(RpcImpl.saveUserMeal): Meal could not be made persistent.");
+		System.err
+				.println("Server(RpcImpl.saveUserMeal): Meal could not be made persistent.");
 		return false;
 	}
 
@@ -315,13 +324,15 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 			List<FoodItem> foods = (List<FoodItem>) q.execute();
 			if (foods == null) {
 				_msg.foods = new ArrayList<FoodItem>();
-				System.err.println("Server(RpcImpl.getFoodItems): Query returned null.");
-			}
-			else {
-				System.out.println("Server(RpcImpl.getFoodItems): Query returned " + foods.size() + " results.");
+				System.err
+						.println("Server(RpcImpl.getFoodItems): Query returned null.");
+			} else {
+				System.out
+						.println("Server(RpcImpl.getFoodItems): Query returned "
+								+ foods.size() + " results.");
 				_msg.foods = new ArrayList<FoodItem>(foods);
 			}
-			
+
 		} finally {
 			pm.close();
 		}
@@ -331,18 +342,73 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 	@Override
 	public boolean saveFoodItem(Bridge msg) throws IllegalArgumentException {
 		FoodItem foodItem = msg.foodItem;
-		System.out.println("Server(RpcImpl.saveFoodItem): Item received is " + foodItem.toString());
+		System.out.println("Server(RpcImpl.saveFoodItem): Item received is "
+				+ foodItem.toString());
 		PersistenceManager pm = getPersistenceManager();
 		if (foodItem != null)
 			try {
 				pm.makePersistent(foodItem);
-				System.out.println("Server(RpcImpl.saveFoodItem): Item made persistent.");
+				System.out
+						.println("Server(RpcImpl.saveFoodItem): Item made persistent.");
 				return true;
 			} finally {
 				pm.close();
 			}
-		System.err.println("Server(RpcImpl.saveFoodItem): Item could not be made persistent.");
+		System.err
+				.println("Server(RpcImpl.saveFoodItem): Item could not be made persistent.");
 		return false;
+	}
+
+	@Override
+	public double getBMR() throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		Bridge _msg = new Bridge();
+
+		double BMR = 0.0;
+
+		if (user != null) {
+
+			PersistenceManager pm = getPersistenceManager();
+
+			try {
+				Query q = pm.newQuery(Users.class, "email == u");
+				q.declareParameters("com.bestfit.data.Users u");
+
+				List<Users> Users = (List<Users>) q.execute(user.getEmail());
+
+				if (Users != null) {
+					for (Users user2 : Users) {
+
+						_msg.gender = user2.getGender();
+						_msg.height = user2.getHeight();
+						_msg.weight = user2.getWeight();
+						_msg.age = user2.getAge();
+
+						// Men: BMR = (Weight x 42) + (Height x 17.5) - (Age x
+						// 9.5) + 93
+						// Women: BMR = (Weight x 29.5) + (Height x 6.5) - (Age
+						// x 6.5) + 917
+
+						if (user2.getGender().equals("Male")) {
+							BMR = (user2.getWeight() * 8.7)
+									+ (user2.getHeight() * 17.5)
+									- (user2.getAge() * 9.5) + 93;
+						} else {
+							
+							BMR = (user2.getWeight() * 6)
+									+ (user2.getHeight() * 6.5)
+									- (user2.getAge() * 6.5) + 917;
+						}
+					}
+				}
+
+			} finally {
+				pm.close();
+			}
+		}
+		return BMR;
 	}
 
 }
