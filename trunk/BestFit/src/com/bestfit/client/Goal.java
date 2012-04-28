@@ -1,6 +1,14 @@
 package com.bestfit.client;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import org.apache.james.mime4j.field.datetime.DateTime;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -24,7 +32,9 @@ public class Goal implements EntryPoint {
 	private TextBox textBox_3;
 	private Button btnNewButton_1;
 	private DateBox dateBox;
+	private  double BMR= 0.0;
 
+	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get("goalCont");
@@ -68,10 +78,44 @@ public class Goal implements EntryPoint {
 		btnNewButton_1.setSize("76px", "25px");
 		btnNewButton_1.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				DialogBox dialog = new DialogBox();
-				dialog.setText("You are saving goal weight of " + textBox_1.getText() + " by " + dateBox.getValue());
-				dialog.setModal(false);
-				dialog.show();
+				
+				// First get BMR
+				
+				
+				rpc.getBMR(new AsyncCallback<Double>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Double result) {
+						
+						BMR =result;
+						
+					}
+				});
+				
+				
+				// calc time
+				Date today = new Date();
+
+				long diff =   dateBox.getValue().getTime() - today.getTime();
+				
+				diff /=  (1000 * 60 * 60 * 24);
+				
+				
+				// CalsPerDay = BMR + 3500 * (Target_Weight - Current_Weight) / Days_Remaining
+				double CalsPerDay = BMR + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
+				
+				
+				Window.alert(String.valueOf(CalsPerDay));
+				
+				//int CalsPerDay= 
+				
+
 			}
 		});
 		btnNewButton_1.setText("Save");
@@ -80,5 +124,32 @@ public class Goal implements EntryPoint {
 		flexTable.getCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 		flexTable.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 		flexTable.getCellFormatter().setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+		
+		getCurrentWeight();
 	}
+	
+	public void getCurrentWeight()
+	{
+		rpc.getCurrentWeight(new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				textBox.setText(caught.getMessage());
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				
+				textBox.setText(result);
+			
+				
+			}
+			
+			
+		});
+	}
+
+	
+
 }
