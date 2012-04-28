@@ -111,7 +111,7 @@ public class Goal implements EntryPoint {
 				double CalsPerDay = BMR + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
 				
 				
-				Window.alert(String.valueOf(CalsPerDay));
+				textBox_3.setText( String.valueOf(CalsPerDay));
 				
 				//int CalsPerDay= 
 				
