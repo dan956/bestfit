@@ -147,6 +147,7 @@ public class Calculator implements EntryPoint {
 					Window.alert("Please name this meal.");
 				else {
 					newMeal.setLabel(MealLabelTextBox.getText());
+					meals.add(newMeal);
 					saveUserMeal();
 				}
 			}
@@ -298,6 +299,10 @@ public class Calculator implements EntryPoint {
 				if (result.meals != null)
 					meals.addAll(result.meals);
 				System.out.println("Retreived " + meals.size() + " meals.");
+				String str = "Meals restored from datastore:\n";
+				for (Meal meal : meals)
+					str += meal.toString() + "\n";
+				Window.alert(str);
 			}
 		});
 	}
@@ -306,11 +311,12 @@ public class Calculator implements EntryPoint {
 		Bridge msg = new Bridge();
 		msg.meal = newMeal;
 		rpc.saveUserMeal(msg, new AsyncCallback<Boolean>() {
-			public void onFailure(Throwable caught) {}
+			public void onFailure(Throwable caught) {
+				Window.Location.reload();
+			}
 
 			public void onSuccess(Boolean result) {
 				if (result) {
-					meals.add(newMeal);
 					System.out.println("Saved new meal to datastore.");
 					Window.alert("Your meal has been saved.");
 				}
@@ -326,7 +332,9 @@ public class Calculator implements EntryPoint {
 	
 	private void getFoodItems() {
 		rpc.getFoodItems(new AsyncCallback<Bridge>() {
-			public void onFailure(Throwable caught) {}
+			public void onFailure(Throwable caught) {
+				getUserMeals();
+			}
 
 			public void onSuccess(Bridge result) {
 				if (result.foods != null)

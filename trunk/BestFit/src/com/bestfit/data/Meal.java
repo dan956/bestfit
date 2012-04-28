@@ -15,10 +15,11 @@ import java.util.ArrayList;
 
 @PersistenceCapable
 public class Meal implements IsSerializable, Serializable {
-	@PrimaryKey
-	private String email;
     @Persistent
+    @PrimaryKey
     private String label;
+	@Persistent
+	private String email;
     @Persistent
 //    private ArrayList<Key> foodItemKeys;
     private ArrayList<String> foodItemNames;

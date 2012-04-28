@@ -250,24 +250,22 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		if (user != null) {
 			_msg.email = user.getEmail();
 			PersistenceManager pm = getPersistenceManager();
-			System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
+//			System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
 			try {
 				Query q = pm.newQuery(Meal.class, "email == e");
-				q.setSerializeRead(true);
 				q.declareParameters("java.lang.String e");
-				System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
+//				System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
 				List<Meal> meals = (List<Meal>) q.execute(user.getEmail());
 				
 				q = pm.newQuery(FoodItem.class);
 				List<FoodItem> foods = (List<FoodItem>) q.execute();
 				
-				System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
+//				System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
 				// this is necessary because what is returned is 'org.datanucleus.sco.backed.List' which is not serializable
 				ArrayList<Meal> newMeals = new ArrayList<Meal>();
 				for (Meal meal : meals) {
 					Meal newMeal = new Meal(meal.getEmail(), meal.getLabel());
-					ArrayList<String> names = new ArrayList<String>(meal.getFoodItemNamesList());
-					for (String name : names)
+					for (String name : meal.getFoodItemNamesList())
 						for (FoodItem item : foods)
 							if (item.getName().equals(name)) {
 								newMeal.addFoodItem(item);
@@ -289,12 +287,14 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		Meal meal = msg.meal;
-		System.out.println("Server(RpcImpl.saveUserMeal): Meal received is " + meal.toString());
 		meal.setEmail(user.getEmail());
+		System.out.println("Server(RpcImpl.saveUserMeal): Newest meal received is " + meal.toString());
+//		meal.setLabel(meal.getLabel() + ":" + meal.getEmail());
 		
 		PersistenceManager pm = getPersistenceManager();
 		if (meal != null)
 			try {
+				
 				pm.makePersistent(meal);
 //				pm.makeTransient(meal);
 				System.out.println("Server(RpcImpl.saveUserMeal): Meal made persistent.");
