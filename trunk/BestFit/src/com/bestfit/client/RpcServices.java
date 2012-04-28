@@ -19,4 +19,5 @@ public interface RpcServices extends RemoteService {
 	boolean saveUserMeal(Bridge msg) throws IllegalArgumentException;
 	Bridge getFoodItems() throws IllegalArgumentException;
 	boolean saveFoodItem(Bridge msg) throws IllegalArgumentException;
+	double getBMR() throws IllegalArgumentException;
 }
