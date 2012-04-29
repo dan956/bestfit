@@ -226,9 +226,9 @@ public class Calculator implements EntryPoint {
 	    Button removeFood = new Button("x");
 	    removeFood.addClickHandler(new ClickHandler() {
 	    public void onClick(ClickEvent event) {
-	        int removedIndex = foods.indexOf(foodItem);
+	        int removedIndex = newMeal.indexOfFoodItem(foodItem);
 	        newMeal.removeFoodItem(removedIndex);
-	        FoodsFlexTable.removeRow(removedIndex);
+	        FoodsFlexTable.removeRow(removedIndex+1);
 		    TotalCalsTextBox.setText(Integer.toString(newMeal.totalCalories()));
 	    }
 	    });
