@@ -45,7 +45,7 @@ public class Calculator implements EntryPoint {
 	private ArrayList <String> exercises = new ArrayList<String>();
 	private FlexTable FoodsFlexTable;
 	private FlexTable ExercisesFlexTable;
-	
+	//private FlexTable ExercisesFlexTable;
 	private VerticalPanel MealVerticalPanel;
 	private VerticalPanel WorkoutVerticalPanel;
 	
