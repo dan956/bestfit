@@ -64,7 +64,8 @@ public class Goal implements EntryPoint {
 		
 		dateBox = new DateBox();
 		dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("MM-dd-yyyy")));
-		dateBox.getDatePicker().setStyleName("gwt-DateBox");
+		dateBox.getDatePicker().setStyleName("gwt-DatePicker");
+		
 		flexTable.setWidget(2, 1, dateBox);
 		dateBox.setHeight("25px");
 		
