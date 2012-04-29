@@ -78,6 +78,10 @@ public class Meal implements IsSerializable, Serializable {
 //		foodItemKeys.add(KeyFactory.createKey(FoodItem.keyKind, _foodItem.getName()));
 	}
 	
+	public int indexOfFoodItem(FoodItem _foodItem){
+		return foodItems.indexOf(_foodItem);
+	}
+	
 	public void addfoodItem(int index, FoodItem _foodItem) {
 		foodItems.add(index, _foodItem);
 		foodItemNames.add(index, _foodItem.getName());
