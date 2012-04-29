@@ -3,6 +3,10 @@ package com.bestfit.server;
 import javax.jdo.Query;
 import javax.jdo.PersistenceManager;
 
+
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+
 import com.bestfit.client.*;
 import com.bestfit.data.*;
 import com.bestfit.shared.Bridge;
@@ -409,6 +413,28 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 			}
 		}
 		return BMR;
+	}
+
+	@Override
+	public String storeGoal(Bridge msg) throws IllegalArgumentException {
+		
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		
+		Key key = KeyFactory.createKey(GoalHistory.class.getSimpleName(), user.getEmail());        
+        
+		GoalHistory a = new GoalHistory(user.getEmail(),msg.startDate,msg.targetDate,msg.targetWeight);
+		a.setKey(key);
+
+		PersistenceManager pm = getPersistenceManager();
+
+		try {
+			pm.makePersistent(a);
+		} finally {
+			pm.close();
+		}
+
+		return "success";
 	}
 
 }
