@@ -420,11 +420,9 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		
-		Key key = KeyFactory.createKey(GoalHistory.class.getSimpleName(), user.getEmail());        
-        
+		    
 		GoalHistory a = new GoalHistory(user.getEmail(),msg.startDate,msg.targetDate,msg.targetWeight);
-		a.setKey(key);
+
 
 		PersistenceManager pm = getPersistenceManager();
 
@@ -435,6 +433,36 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		}
 
 		return "success";
+	}
+
+	@Override
+	public Bridge getGoalHistory() throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		Bridge _msg = new Bridge();
+
+
+		if (user != null) {
+
+			PersistenceManager pm = getPersistenceManager();
+
+			try {
+				Query q = pm.newQuery(GoalHistory.class, "email == u");
+				q.declareParameters("com.bestfit.data.GoalHistory u");
+
+				List<GoalHistory> goals = (List<GoalHistory>) q.execute(user.getEmail());
+
+				if (goals != null) {
+					
+					System.out.print(goals.size());
+				}
+
+			} finally {
+				pm.close();
+			}
+		}
+		return _msg;
 	}
 
 }
