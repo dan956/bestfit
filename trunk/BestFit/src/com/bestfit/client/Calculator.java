@@ -61,13 +61,13 @@ public class Calculator implements EntryPoint {
 		rootPanel.setSize("600px", "450px");
 		
 		tabPanel = new TabPanel();
-		rootPanel.add(tabPanel, 76, 10);
+		rootPanel.add(tabPanel);
 		tabPanel.setSize("450px", "350px");
 		
 		tabPanel.addStyleName("table-center");
 		
 		MealVerticalPanel = new VerticalPanel();
-		tabPanel.add(MealVerticalPanel, "| Meal |", false);
+		tabPanel.add(MealVerticalPanel, " Meal ", false);
 		tabPanel.selectTab(0);
 		MealVerticalPanel.setSize("6cm", "4cm");
 		
@@ -156,7 +156,7 @@ public class Calculator implements EntryPoint {
 		pshbtnSave.setSize("60px", "25px");
 		
 		WorkoutVerticalPanel = new VerticalPanel();
-		tabPanel.add(WorkoutVerticalPanel, "| Workout |", false);
+		tabPanel.add(WorkoutVerticalPanel, " Workout ", false);
 		WorkoutVerticalPanel.setSize("5cm", "3cm");
 		
 		WorkoutFlexTable = new FlexTable();
