@@ -19,4 +19,5 @@ public interface RpcServicesAsync {
 	void saveFoodItem(Bridge msg, AsyncCallback<Boolean> callback);
 	void getBMR(AsyncCallback<Double> callback);
 	void storeGoal(Bridge msg, AsyncCallback<String> callback);
+	void getGoalHistory(AsyncCallback<Bridge> callback);
 }

@@ -1,22 +1,21 @@
 package com.bestfit.data;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import com.google.appengine.api.datastore.Key;
 
 import java.lang.String;
-import javax.persistence.*;
 import java.util.Date;
 
-@PersistenceCapable
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class GoalHistory {
 
 	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key key;
+	private Long id;
 	@Persistent
 	private String email;
 	@Persistent
@@ -34,13 +33,7 @@ public class GoalHistory {
 		targetWeight=_targetWeight;
 		
 	}   
-	public Key getKey() {
-		return this.key;
-	}
 
-	public void setKey(Key id) {
-		this.key = id;
-	}
 	public String getEmail() {
 		return this.email;
 	}
