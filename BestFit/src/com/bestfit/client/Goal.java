@@ -50,14 +50,14 @@ public class Goal implements EntryPoint {
 		textBox = new TextBox();
 		textBox.setReadOnly(true);
 		flexTable.setWidget(0, 1, textBox);
-		textBox.setHeight("25px");
+		textBox.setSize("155px", "25px");
 		
 		lblNewLabel_1 = new Label("Target Weight:");
 		flexTable.setWidget(1, 0, lblNewLabel_1);
 		
 		textBox_1 = new TextBox();
 		flexTable.setWidget(1, 1, textBox_1);
-		textBox_1.setHeight("25px");
+		textBox_1.setSize("155px", "25px");
 		
 		lblNewLabel_2 = new Label("Target Date: (MM-DD-YYYY)");
 		flexTable.setWidget(2, 0, lblNewLabel_2);
@@ -67,7 +67,7 @@ public class Goal implements EntryPoint {
 		dateBox.getDatePicker().setStyleName("gwt-DatePicker");
 		
 		flexTable.setWidget(2, 1, dateBox);
-		dateBox.setHeight("25px");
+		dateBox.setSize("155px", "25px");
 		
 		lblNewLabel_3 = new Label("Daily net calories to achieve goal:");
 		flexTable.setWidget(3, 0, lblNewLabel_3);
@@ -75,7 +75,7 @@ public class Goal implements EntryPoint {
 		textBox_3 = new TextBox();
 		textBox_3.setReadOnly(true);
 		flexTable.setWidget(3, 1, textBox_3);
-		textBox_3.setHeight("25px");
+		textBox_3.setSize("155px", "25px");
 		
 		btnNewButton_1 = new Button("New button");
 		flexTable.setWidget(4, 1, btnNewButton_1);
