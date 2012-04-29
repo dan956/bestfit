@@ -250,6 +250,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	@Override
 	public Bridge getUserMeals() throws IllegalArgumentException {
+		System.out.print("Iam here");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		Bridge _msg = new Bridge();

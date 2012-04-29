@@ -13,62 +13,25 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class Landing implements EntryPoint {
 
-	private TextBox WTextBox;
+
 	
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
+	private TextBox textBox;
 	
 	@Override
 	public void onModuleLoad() {
 		
-		RootPanel rootPanel = RootPanel.get("WeightCon");
-		
-		FlexTable flexTable_1 = new FlexTable();
-		flexTable_1.setStyleName("WeightWedg");
-		
-		
-		Label lblYourCurrentWeight = new Label("Your current weight");
-		flexTable_1.setWidget(0, 0, lblYourCurrentWeight);
-		
-		WTextBox = new TextBox();
-		flexTable_1.setWidget(1, 0, WTextBox);
-		WTextBox.setHeight("26px");
-		
-		Button btnNewButton = new Button("New button");
-		btnNewButton.setText("Update");
-		flexTable_1.setWidget(2, 0, btnNewButton);
-		btnNewButton.setSize("124px", "25px");
-		
-		rootPanel.add(flexTable_1);
-		flexTable_1.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_1.getCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		getCurrentWeight();
 
 	}
 	
-	public void CheckLogin()
-	{
-		/*rpc.logIn(GWT.getHostPageBaseURL(), new AsyncCallback<Bridge>(){
-
-			@Override
-			public void onFailure(Throwable caught) {
-			//	WTextBox.setText(caught.getMessage());
-				
-			}
-
-			@Override
-			public void onSuccess(Bridge result) {
-				//Window.Location.assign(result.LogginURL);
-				//WTextBox.setText(result.LogginURL);
-				
-			}
-			
-			
-		});*/
-	}
 	
 	public void getCurrentWeight()
 	{
@@ -76,20 +39,41 @@ public class Landing implements EntryPoint {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				WTextBox.setText(caught.getMessage());
+				//WTextBox.setText(caught.getMessage());
 				
 			}
 
 			@Override
 			public void onSuccess(String result) {
 				
-				WTextBox.setText(result);
+				RootPanel rootPanel = RootPanel.get("WeightCon");
+				
+				DecoratorPanel decoratorPanel = new DecoratorPanel();
+				rootPanel.add(decoratorPanel);
+				
+				FlexTable flexTable = new FlexTable();
+				decoratorPanel.setWidget(flexTable);
+				
+				Label lblNewLabel = new Label("Your current weight");
+				flexTable.setWidget(0, 0, lblNewLabel);
+				
+				textBox = new TextBox();
+				textBox.setText(result);
+				flexTable.setWidget(1, 0, textBox);
+				
+				Button btnNewButton = new Button("New button");
+				btnNewButton.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						
+					}
+				});
+				btnNewButton.setText("Update");
+				flexTable.setWidget(2, 0, btnNewButton);
+				flexTable.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 				
 			}
 			
 			
 		});
 	}
-	
-	
 }
