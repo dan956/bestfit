@@ -49,13 +49,6 @@ public class Calculator implements EntryPoint {
 	private VerticalPanel MealVerticalPanel;
 	private VerticalPanel WorkoutVerticalPanel;
 	
-	private FlexTable MetricsFlexTable;
-	private Label lblNewLabel_1;
-	private Label lblNewLabel_2;
-	private Label lblNewLabel_3;
-	private Label lblNewLabel_4;
-	private Label lblNewLabel_5;
-	
 	public void onModuleLoad() {
 		rootPanel = RootPanel.get("calculatorCont");
 		rootPanel.setSize("600px", "450px");
@@ -99,29 +92,16 @@ public class Calculator implements EntryPoint {
 		MealFlexTable.setWidget(0, 2, AddFoodPshbtnAdd);
 		AddFoodPshbtnAdd.setWidth("50px");
 		
-		MetricsFlexTable = new FlexTable();
-		MealVerticalPanel.add(MetricsFlexTable);
-		MetricsFlexTable.setWidth("451px");
-		
-		lblNewLabel_1 = new Label("Food Item");
-		lblNewLabel_1.setWordWrap(false);
-		MetricsFlexTable.setWidget(0, 0, lblNewLabel_1);
-		
-		lblNewLabel_2 = new Label("calories");
-		MetricsFlexTable.setWidget(0, 1, lblNewLabel_2);
-		
-		lblNewLabel_3 = new Label("fat cals");
-		MetricsFlexTable.setWidget(0, 2, lblNewLabel_3);
-		
-		lblNewLabel_4 = new Label("carbs");
-		MetricsFlexTable.setWidget(0, 3, lblNewLabel_4);
-		
-		lblNewLabel_5 = new Label("protein");
-		MetricsFlexTable.setWidget(0, 4, lblNewLabel_5);
-		
 		FoodsFlexTable = new FlexTable();
 		MealVerticalPanel.add(FoodsFlexTable);
 		FoodsFlexTable.setWidth("451px");
+	    FoodsFlexTable.setText(0, 0, "Food Items");
+	    FoodsFlexTable.setText(0, 1, "Calories");
+	    FoodsFlexTable.setText(0, 2, "Fat");
+	    FoodsFlexTable.setText(0,	3, "Carbs");
+	    FoodsFlexTable.setText(0, 4, "Protein");
+		FoodsFlexTable.setStyleName("cw-FlexTable");
+		
 		
 		Label lblTotalCalories = new Label("Total Calories:");
 		lblTotalCalories.setStylePrimaryName("gwt-TotalCa");
