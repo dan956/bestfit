@@ -3,6 +3,7 @@
 <module>
 	<inherits name="com.google.gwt.user.User" />
 	<source path="client" />
+	<inherits name='com.google.gwt.visualization.Visualization'/>
 	<entry-point class="com.bestfit.client.Report"></entry-point>
 	 <source path='shared'/>
 	 <source path="data" />

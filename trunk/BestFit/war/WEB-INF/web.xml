@@ -19,6 +19,19 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
 
+
+	<servlet>
+		<servlet-name>Report</servlet-name>
+		<servlet-class>com.bestfit.server.Report</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Report</servlet-name>
+		<url-pattern>/report</url-pattern>
+	</servlet-mapping>
+
+
+
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>all</web-resource-name>

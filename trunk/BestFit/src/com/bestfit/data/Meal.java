@@ -134,6 +134,7 @@ public class Meal implements IsSerializable, Serializable {
 		double total = 0;
 		for (FoodItem item : getFoodItems())
 			total += item.getFatGrams();
+	
 		return total;
 	}
 	
