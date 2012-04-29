@@ -1,6 +1,10 @@
 package com.bestfit.shared;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.jdo.annotations.Persistent;
+
 import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -24,4 +28,10 @@ public class Bridge implements IsSerializable {
 	
 	public ArrayList<FoodItem> foods;
 	public FoodItem foodItem;
+	
+	
+	public Date startDate;
+	public Date targetDate;
+	public double targetWeight;   
+
 }
