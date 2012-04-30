@@ -18,6 +18,7 @@ import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.appengine.api.users.User;
@@ -127,28 +128,24 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 
-		String wt = "";
+		String currentWeight = "";
 
 		if (user != null) {
 
 			PersistenceManager pm = getPersistenceManager();
 
-			List<Double> weight = new ArrayList<Double>();
-
 			try {
-				Query q = pm.newQuery(Users.class, "email == u");
-				q.declareParameters("com.bestfit.data.Users u");
+				Query q = pm.newQuery(Weight.class, "email == u");
+				q.declareParameters("com.bestfit.data.Weight u");
 
-				List<Users> Users = (List<Users>) q.execute(user.getEmail());
+				List<Weight> weights = (List<Weight>) q.execute(user.getEmail());
 
-				if (Users != null) {
-					for (Users user2 : Users)
-						weight.add(user2.getWeight());
+				if (weights != null) {
 
-					if (weight.size() > 0) {
-						wt = String.valueOf(weight.get(0));
+					if (weights.size() > 0) {
+						currentWeight = String.valueOf(weights.get(weights.size()-1).getWeight());
 					} else {
-						wt = "Sorry, something went wrong!";
+						currentWeight = "Sorry, something went wrong!";
 					}
 
 				}
@@ -157,7 +154,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 				pm.close();
 			}
 		}
-		return wt;
+		return currentWeight;
 	}
 
 	@Override
@@ -466,4 +463,61 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		return _msg;
 	}
 
+	@Override
+	public String storeNewWeight(Double weight, Date currentDate)
+			throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		    
+		Weight a = new Weight(user.getEmail(),weight,currentDate);
+
+
+		PersistenceManager pm = getPersistenceManager();
+
+		try {
+			pm.makePersistent(a);
+		} finally {
+			pm.close();
+		}
+
+		return "success";
+	}
+
+	@Override
+	public Bridge getWeightHistory() throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		System.out.print("medo");
+		Bridge _msg = new Bridge();
+		
+
+		if (user != null) {
+
+			PersistenceManager pm = getPersistenceManager();
+
+			try {
+				Query q = pm.newQuery(Weight.class, "email == u");
+				q.declareParameters("java.lang.String u");
+
+				List<Weight> weights = (List<Weight>) q.execute(user.getEmail());
+				ArrayList<Weight> newWeights = new ArrayList<Weight>();
+
+				if (weights != null) {					
+					
+					for(Weight wt: weights){						
+						Weight newWt = new Weight(wt.getEmail(), wt.getWeight(), wt.getDate());
+						newWeights.add(newWt);						
+					}
+					
+					_msg.weightHistory = newWeights;
+					System.out.print(_msg.weightHistory.size());
+
+				}
+
+			} finally {
+				pm.close();
+			}
+		}
+		return _msg;
+	}
 }
