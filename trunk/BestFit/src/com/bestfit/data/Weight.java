@@ -2,6 +2,7 @@ package com.bestfit.data;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -11,10 +12,12 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import java.io.Serializable;
 import java.util.Date;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@PersistenceCapable
 public class Weight implements IsSerializable, Serializable{
 
+	@NotPersistent
 	private static final long serialVersionUID = 6195847148928854147L;
+	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
@@ -23,7 +26,12 @@ public class Weight implements IsSerializable, Serializable{
 	@Persistent
 	private Date date;
 	@Persistent
-	private String email; 
+	private String email;
+	
+	public Weight()
+	{
+		this("", 10, new Date());
+	}
 
 	public Weight(String _email, double _weight, Date _currentDate) {
 		weight = _weight;

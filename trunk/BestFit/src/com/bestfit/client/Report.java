@@ -69,14 +69,11 @@ public class Report implements EntryPoint {
 
 			@Override
 			public void onSuccess(Bridge result) {
-				
+								
 				Panel linePanel = RootPanel.get("WeightHistory");
 				
-				
-
-				//weights.addAll(result.weightHistory);
-				LineChart linechart = new LineChart(createTableWeightHistory(), createLineOptions());				
-
+				weights.addAll(result.weightHistory);
+				LineChart linechart = new LineChart(createTableWeightHistory(), createLineOptions());
 				
 				linePanel.add(linechart);
 			}
@@ -98,15 +95,14 @@ public class Report implements EntryPoint {
 		// has been loaded.
 		Runnable onLoadCallback = new Runnable() {
 			public void run() {
-				//DrawCaloriesChart();
+				DrawCaloriesChart();
 				DrawWeightHistory();
 			}
 		};
 
 		// Load the visualization api, passing the onLoadCallback to be called
 		// when loading is done.
-		VisualizationUtils.loadVisualizationApi(onLoadCallback, PieChart.PACKAGE);
-		VisualizationUtils.loadVisualizationApi(onLoadCallback, LineChart.PACKAGE);
+		VisualizationUtils.loadVisualizationApi(onLoadCallback, new String[]{PieChart.PACKAGE, LineChart.PACKAGE});
 	}
 
 	private Options createPieOptions() {
@@ -182,7 +178,7 @@ public class Report implements EntryPoint {
 		options.setSmoothLine(true);
 		options.setLineSize(2);
 		
-		options.setTitle("calorie consumption");
+		options.setTitle("Weight History");
 		return options;
 	}
 
@@ -191,16 +187,15 @@ public class Report implements EntryPoint {
 		data.addColumn(ColumnType.DATE, "Date");
 		data.addColumn(ColumnType.NUMBER, "Weight");
 		
-		//data.addRows(result.weightHistory.size());
+		data.addRows(weights.size());
 		
 		int row=0;
-		//weights.addAll(result.weightHistory);
 		
-//		for(Weight wt:weights){
-//			data.setValue(row, 0, wt.getDate());
-//			data.setValue(row, 1, wt.getWeight());
-//			row++;			
-//		}
+		for(Weight wt:weights){
+			data.setValue(row, 0, wt.getDate());
+			data.setValue(row, 1, wt.getWeight());
+			row++;			
+		}
 		
 		return data;
 	}

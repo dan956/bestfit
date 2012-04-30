@@ -500,17 +500,22 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 				q.declareParameters("java.lang.String u");
 
 				List<Weight> weights = (List<Weight>) q.execute(user.getEmail());
-				ArrayList<Weight> newWeights = new ArrayList<Weight>();
+				
+				//ArrayList<Weight> newWeights = new ArrayList<Weight>();
 
 				if (weights != null) {					
 					
-					for(Weight wt: weights){						
-						Weight newWt = new Weight(wt.getEmail(), wt.getWeight(), wt.getDate());
-						newWeights.add(newWt);						
-					}
+					_msg.weightHistory = new ArrayList<Weight>(weights);
 					
-					_msg.weightHistory = newWeights;
-					System.out.print(_msg.weightHistory.size());
+					
+					
+//					for(Weight wt: weights){						
+//						Weight newWt = new Weight(wt.getEmail(), wt.getWeight(), wt.getDate());
+//						newWeights.add(newWt);						
+//					}
+					
+					//_msg.weightHistory = newWeights;
+					//System.out.print(_msg.weightHistory.size());
 
 				}
 
