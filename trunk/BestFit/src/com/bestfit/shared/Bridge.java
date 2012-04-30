@@ -7,6 +7,7 @@ import javax.jdo.annotations.Persistent;
 
 import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
+import com.bestfit.data.Weight;
 import com.bestfit.data.GoalHistory;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -36,5 +37,7 @@ public class Bridge implements IsSerializable {
 	public double targetWeight;   
 	
 	public ArrayList<GoalHistory> goals;
+	
+	public ArrayList<Weight> weightHistory;
 
 }
