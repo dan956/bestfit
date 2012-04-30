@@ -1,6 +1,8 @@
 package com.bestfit.client;
 
 
+import java.util.Date;
+
 import com.bestfit.shared.Bridge;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -22,4 +24,6 @@ public interface RpcServices extends RemoteService {
 	double getBMR() throws IllegalArgumentException;
 	String storeGoal(Bridge msg)throws IllegalArgumentException;
 	Bridge getGoalHistory()throws IllegalArgumentException;
+	String storeNewWeight(Double weight,Date currentDate) throws IllegalArgumentException;
+	Bridge getWeightHistory()throws IllegalArgumentException;
 }

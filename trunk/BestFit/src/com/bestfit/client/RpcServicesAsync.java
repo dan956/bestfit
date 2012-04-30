@@ -1,5 +1,7 @@
 package com.bestfit.client;
 
+import java.util.Date;
+
 import com.bestfit.shared.Bridge;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,4 +22,7 @@ public interface RpcServicesAsync {
 	void getBMR(AsyncCallback<Double> callback);
 	void storeGoal(Bridge msg, AsyncCallback<String> callback);
 	void getGoalHistory(AsyncCallback<Bridge> callback);
+	void storeNewWeight(Double weight, Date currentDate,
+			AsyncCallback<String> callback);
+	void getWeightHistory(AsyncCallback<Bridge> callback);
 }

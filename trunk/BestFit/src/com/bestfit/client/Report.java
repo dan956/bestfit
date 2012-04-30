@@ -1,6 +1,7 @@
 package com.bestfit.client;
 
 import java.io.Console;
+import java.util.ArrayList;
 
 import com.bestfit.data.*;
 import com.bestfit.shared.Bridge;
@@ -17,6 +18,7 @@ import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.Selection;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.events.SelectHandler;
+import com.google.gwt.visualization.client.visualizations.LineChart;
 import com.google.gwt.visualization.client.visualizations.PieChart;
 import com.google.gwt.visualization.client.visualizations.PieChart.Options;
 
@@ -28,8 +30,67 @@ public class Report implements EntryPoint {
 	double Protein=2.9;
 	double Carbs=1.0;
 	int Fat=0;
+	private ArrayList<Weight> weights = new ArrayList<Weight>();
+    
+	public void DrawCaloriesChart()
+	{
+		rpc.getUserMeals(new AsyncCallback<Bridge>() {
+
+			@Override
+			public void onSuccess(Bridge result) {
 
 
+				for(Meal meal:result.meals){
+					Protein+=meal.totalCarbohydrates();
+					Carbs+=meal.totalFatGrams();
+					Fat+=meal.totalFatGrams();	  					  
+
+				}	//WeightHistory
+				Panel piePanel = RootPanel.get("calorieConsumption");
+				
+
+				// Create a pie chart visualization.
+				PieChart pie = new PieChart(createTableCalorieConsumption(), createPieOptions());
+
+				pie.addSelectHandler(createSelectHandler(pie));
+				piePanel.add(pie);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+	
+	public void DrawWeightHistory()	{
+		rpc.getWeightHistory(new AsyncCallback<Bridge>() {
+
+			@Override
+			public void onSuccess(Bridge result) {
+				
+				Panel linePanel = RootPanel.get("WeightHistory");
+				
+				
+
+				//weights.addAll(result.weightHistory);
+				LineChart linechart = new LineChart(createTableWeightHistory(), createLineOptions());				
+
+				
+				linePanel.add(linechart);
+			}
+
+			
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+	
 	public void onModuleLoad() {
 
 
@@ -37,42 +98,18 @@ public class Report implements EntryPoint {
 		// has been loaded.
 		Runnable onLoadCallback = new Runnable() {
 			public void run() {
-				rpc.getUserMeals(new AsyncCallback<Bridge>() {
-
-					@Override
-					public void onSuccess(Bridge result) {
-
-
-						for(Meal meal:result.meals){
-							Protein+=meal.totalCarbohydrates();
-							Carbs+=meal.totalFatGrams();
-							Fat+=meal.totalFatGrams();	  					  
-
-						}	
-						Panel panel = RootPanel.get("calorieConsumption");
-
-						// Create a pie chart visualization.
-						PieChart pie = new PieChart(createTable(), createOptions());
-
-						pie.addSelectHandler(createSelectHandler(pie));
-						panel.add(pie);
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-					}
-				});
+				//DrawCaloriesChart();
+				DrawWeightHistory();
 			}
 		};
 
 		// Load the visualization api, passing the onLoadCallback to be called
 		// when loading is done.
 		VisualizationUtils.loadVisualizationApi(onLoadCallback, PieChart.PACKAGE);
+		VisualizationUtils.loadVisualizationApi(onLoadCallback, LineChart.PACKAGE);
 	}
 
-	private Options createOptions() {
+	private Options createPieOptions() {
 		Options options = Options.create();
 		options.setWidth(300);
 		options.setHeight(240);
@@ -122,7 +159,7 @@ public class Report implements EntryPoint {
 		};
 	}
 
-	private AbstractDataTable createTable() {
+	private AbstractDataTable createTableCalorieConsumption() {
 
 		DataTable data = DataTable.create();
 		data.addColumn(ColumnType.STRING, "FoodItems");
@@ -134,6 +171,37 @@ public class Report implements EntryPoint {
 		data.setValue(1, 1, Carbs);
 		data.setValue(2, 0, "Protein");
 		data.setValue(2, 1, Protein);
+		return data;
+	}
+	
+	private LineChart.Options createLineOptions() {
+		LineChart.Options options = LineChart.Options.create();
+		options.setWidth(300);
+		options.setHeight(240);
+		
+		options.setSmoothLine(true);
+		options.setLineSize(2);
+		
+		options.setTitle("calorie consumption");
+		return options;
+	}
+
+	private AbstractDataTable createTableWeightHistory() {
+		DataTable data = DataTable.create();
+		data.addColumn(ColumnType.DATE, "Date");
+		data.addColumn(ColumnType.NUMBER, "Weight");
+		
+		//data.addRows(result.weightHistory.size());
+		
+		int row=0;
+		//weights.addAll(result.weightHistory);
+		
+//		for(Weight wt:weights){
+//			data.setValue(row, 0, wt.getDate());
+//			data.setValue(row, 1, wt.getWeight());
+//			row++;			
+//		}
+		
 		return data;
 	}
 
