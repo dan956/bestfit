@@ -1,4 +1,6 @@
 package com.bestfit.client;
+import java.util.Date;
+
 import com.bestfit.shared.Bridge;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -64,6 +66,21 @@ public class Landing implements EntryPoint {
 				Button btnNewButton = new Button("New button");
 				btnNewButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
+						
+						rpc.storeNewWeight(Double.valueOf(textBox.getValue()), new Date(), new AsyncCallback<String>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(String result) {
+								Window.alert("Your weight has been successfully submittted!");
+								
+							}
+						} );
 						
 					}
 				});
