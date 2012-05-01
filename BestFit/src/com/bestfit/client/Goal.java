@@ -39,8 +39,7 @@ public class Goal implements EntryPoint {
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	
 	public void onModuleLoad() {
-		
-		
+
 		getCurrentWeight();
 	}
 	
