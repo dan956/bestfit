@@ -38,74 +38,6 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		return PMF.getPersistenceManager();
 	}
 
-	// for test
-	public Bridge getUsers(String email) throws IllegalArgumentException {
-		Bridge tmpBUser = new Bridge();
-
-		tmpBUser.lastName = "aaa";
-
-		PersistenceManager pm = getPersistenceManager();
-
-		List<String> us = new ArrayList<String>();
-
-		try {
-			Query q = pm.newQuery(Users.class, "email == u");
-			q.declareParameters("com.bestfit.data.Users u");
-
-			List<Users> a = (List<Users>) q.execute("alrowaithy@gmail.com");
-
-			for (Users uu : a)
-				us.add(uu.getFirstName());
-
-			tmpBUser.firstName = us.get(0);
-		} finally {
-			pm.close();
-		}
-
-		return tmpBUser;
-
-	}
-
-	// for test
-	public Bridge saveUsers(String email) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		Bridge tmpBUser = new Bridge();
-
-		tmpBUser.firstName = "aaa";
-
-		Users a = new Users("alrowaithy@gmail.com", "Mohammad", "Alrowaithy",
-				27, 345, 123, "Male");
-
-		PersistenceManager pm = getPersistenceManager();
-
-		try {
-			pm.makePersistent(a);
-		} finally {
-			pm.close();
-		}
-
-		return tmpBUser;
-	}
-
-	// for test
-	public Bridge logIn(String url) throws IllegalArgumentException {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-		Bridge msg = new Bridge();
-
-		if (user != null) {
-			msg.IsloggedIN = true;
-			msg.email = user.getEmail();
-			msg.LogoutURL = userService.createLogoutURL(url);
-
-		} else {
-			msg.IsloggedIN = false;
-			msg.LogginURL = userService.createLoginURL(url);
-		}
-
-		return msg;
-	}
-
 	public String registerUser(Bridge msg) throws IllegalArgumentException {
 
 		Users a = new Users(msg.email, msg.firstName, msg.lastName, msg.age,
@@ -125,70 +57,57 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 	@Override
 	public String getCurrentWeight() throws IllegalArgumentException {
 
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-
 		String currentWeight = "";
 
-		if (user != null) {
+		PersistenceManager pm = getPersistenceManager();
 
-			PersistenceManager pm = getPersistenceManager();
+		try {
+			Query q = pm.newQuery(Weight.class, "email == u");
+			q.declareParameters("com.bestfit.data.Weight u");
 
-			try {
-				Query q = pm.newQuery(Weight.class, "email == u");
-				q.declareParameters("com.bestfit.data.Weight u");
+			List<Weight> weights = (List<Weight>) q.execute(getLoggedinUserEmail());
 
-				List<Weight> weights = (List<Weight>) q.execute(user.getEmail());
+			if (weights != null) {
 
-				if (weights != null) {
-
-					if (weights.size() > 0) {
-						currentWeight = String.valueOf(weights.get(weights.size()-1).getWeight());
-					} else {
-						currentWeight = "Sorry, something went wrong!";
-					}
-
+				if (weights.size() > 0) {
+					currentWeight = String.valueOf(weights.get(
+							weights.size() - 1).getWeight());
+				} else {
+					currentWeight = "New User";
 				}
 
-			} finally {
-				pm.close();
 			}
+
+		} finally {
+			pm.close();
 		}
+
 		return currentWeight;
 	}
 
 	@Override
 	public boolean isNewUser() throws IllegalArgumentException {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
 
 		boolean Found = false;
 
-		if (user != null) {
+		PersistenceManager pm = getPersistenceManager();
 
-			PersistenceManager pm = getPersistenceManager();
+		try {
+			Query q = pm.newQuery(Users.class, "email == u");
+			q.declareParameters("com.bestfit.data.Users u");
 
-			List<String> weight = new ArrayList<String>();
+			List<Users> Users = (List<Users>) q.execute(getLoggedinUserEmail());
 
-			try {
-				Query q = pm.newQuery(Users.class, "email == u");
-				q.declareParameters("com.bestfit.data.Users u");
-
-				List<Users> Users = (List<Users>) q.execute(user.getEmail());
-
-				for (Users user2 : Users)
-					weight.add(user2.getEmail());
-
-				if (weight.size() > 0) {
-					Found = false;
-				} else {
-					Found = true;
-				}
-
-			} finally {
-				pm.close();
+			if (Users.size() > 0) {
+				Found = false;
+			} else {
+				Found = true;
 			}
+
+		} finally {
+			pm.close();
 		}
+
 		return Found;
 	}
 
@@ -208,93 +127,87 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	@Override
 	public Bridge getUserProfile() throws IllegalArgumentException {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
 
 		Bridge _msg = new Bridge();
 
-		if (user != null) {
+		PersistenceManager pm = getPersistenceManager();
 
-			PersistenceManager pm = getPersistenceManager();
+		try {
+			Query q = pm.newQuery(Users.class, "email == u");
+			q.declareParameters("com.bestfit.data.Users u");
 
-			try {
-				Query q = pm.newQuery(Users.class, "email == u");
-				q.declareParameters("com.bestfit.data.Users u");
+			List<Users> Users = (List<Users>) q.execute(getLoggedinUserEmail());
 
-				List<Users> Users = (List<Users>) q.execute(user.getEmail());
+			if (Users != null) {
+				for (Users user2 : Users) {
+					_msg.firstName = user2.getFirstName();
+					_msg.lastName = user2.getLastName();
+					_msg.email = user2.getEmail();
+					_msg.gender = user2.getGender();
+					_msg.height = user2.getHeight();
 
-				if (Users != null) {
-					for (Users user2 : Users) {
-						_msg.firstName = user2.getFirstName();
-						_msg.lastName = user2.getLastName();
-						_msg.email = user2.getEmail();
-						_msg.gender = user2.getGender();
-						_msg.height = user2.getHeight();
+					if (getCurrentWeight().equals("New User"))
 						_msg.weight = user2.getWeight();
-						_msg.age = user2.getAge();
+					else
+						_msg.weight = Double.valueOf(getCurrentWeight());
 
-					}
-
+					_msg.age = user2.getAge();
 				}
-
-			} finally {
-				pm.close();
 			}
+
+		} finally {
+			pm.close();
 		}
+
 		return _msg;
 
 	}
 
 	@Override
 	public Bridge getUserMeals() throws IllegalArgumentException {
-		System.out.print("Iam here");
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
 		Bridge _msg = new Bridge();
-		if (user != null) {
-			_msg.email = user.getEmail();
-			PersistenceManager pm = getPersistenceManager();
-			// System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
-			try {
-				Query q = pm.newQuery(Meal.class, "email == e");
-				q.declareParameters("java.lang.String e");
-				// System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
-				List<Meal> meals = (List<Meal>) q.execute(user.getEmail());
 
-				q = pm.newQuery(FoodItem.class);
-				List<FoodItem> foods = (List<FoodItem>) q.execute();
+		_msg.email = getLoggedinUserEmail();
+		PersistenceManager pm = getPersistenceManager();
+		// System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
+		try {
+			Query q = pm.newQuery(Meal.class, "email == e");
+			q.declareParameters("java.lang.String e");
+			// System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
+			List<Meal> meals = (List<Meal>) q.execute(getLoggedinUserEmail());
 
-				// System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
-				// this is necessary because what is returned is
-				// 'org.datanucleus.sco.backed.List' which is not serializable
-				ArrayList<Meal> newMeals = new ArrayList<Meal>();
-				for (Meal meal : meals) {
-					Meal newMeal = new Meal(meal.getEmail(), meal.getLabel());
-					for (String name : meal.getFoodItemNamesList())
-						for (FoodItem item : foods)
-							if (item.getName().equals(name)) {
-								newMeal.addFoodItem(item);
-								break;
-							}
-					newMeals.add(newMeal);
-				}
-				System.out
-						.println("Server(RpcImpl.getUserMeals): Query returned "
-								+ newMeals.size() + " results.");
-				_msg.meals = newMeals;
-			} finally {
-				pm.close();
+			q = pm.newQuery(FoodItem.class);
+			List<FoodItem> foods = (List<FoodItem>) q.execute();
+
+			// System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
+			// this is necessary because what is returned is
+			// 'org.datanucleus.sco.backed.List' which is not serializable
+			ArrayList<Meal> newMeals = new ArrayList<Meal>();
+			for (Meal meal : meals) {
+				Meal newMeal = new Meal(meal.getEmail(), meal.getLabel());
+				for (String name : meal.getFoodItemNamesList())
+					for (FoodItem item : foods)
+						if (item.getName().equals(name)) {
+							newMeal.addFoodItem(item);
+							break;
+						}
+				newMeals.add(newMeal);
 			}
+			System.out.println("Server(RpcImpl.getUserMeals): Query returned "
+					+ newMeals.size() + " results.");
+			_msg.meals = newMeals;
+		} finally {
+			pm.close();
 		}
+
 		return _msg;
 	}
 
 	@Override
 	public boolean saveUserMeal(Bridge msg) throws IllegalArgumentException {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
+
 		Meal meal = msg.meal;
-		meal.setEmail(user.getEmail());
+		meal.setEmail(getLoggedinUserEmail());
 		System.out
 				.println("Server(RpcImpl.saveUserMeal): Newest meal received is "
 						+ meal.toString());
@@ -363,64 +276,56 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	@Override
 	public double getBMR() throws IllegalArgumentException {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
 
 		Bridge _msg = new Bridge();
 
 		double BMR = 0.0;
 
-		if (user != null) {
+		PersistenceManager pm = getPersistenceManager();
 
-			PersistenceManager pm = getPersistenceManager();
+		try {
+			Query q = pm.newQuery(Users.class, "email == u");
+			q.declareParameters("com.bestfit.data.Users u");
 
-			try {
-				Query q = pm.newQuery(Users.class, "email == u");
-				q.declareParameters("com.bestfit.data.Users u");
+			List<Users> Users = (List<Users>) q.execute(getLoggedinUserEmail());
 
-				List<Users> Users = (List<Users>) q.execute(user.getEmail());
+			if (Users != null) {
+				for (Users user2 : Users) {
 
-				if (Users != null) {
-					for (Users user2 : Users) {
+					_msg.gender = user2.getGender();
+					_msg.height = user2.getHeight();
+					_msg.weight = user2.getWeight();
+					_msg.age = user2.getAge();
 
-						_msg.gender = user2.getGender();
-						_msg.height = user2.getHeight();
-						_msg.weight = user2.getWeight();
-						_msg.age = user2.getAge();
+					// Men: BMR = (Weight x 42) + (Height x 17.5) - (Age x
+					// 9.5) + 93
+					// Women: BMR = (Weight x 29.5) + (Height x 6.5) - (Age
+					// x 6.5) + 917
 
-						// Men: BMR = (Weight x 42) + (Height x 17.5) - (Age x
-						// 9.5) + 93
-						// Women: BMR = (Weight x 29.5) + (Height x 6.5) - (Age
-						// x 6.5) + 917
+					if (user2.getGender().equals("Male")) {
+						BMR = (user2.getWeight() * 8.7)
+								+ (user2.getHeight() * 17.5)
+								- (user2.getAge() * 9.5) + 93;
+					} else {
 
-						if (user2.getGender().equals("Male")) {
-							BMR = (user2.getWeight() * 8.7)
-									+ (user2.getHeight() * 17.5)
-									- (user2.getAge() * 9.5) + 93;
-						} else {
-							
-							BMR = (user2.getWeight() * 6)
-									+ (user2.getHeight() * 6.5)
-									- (user2.getAge() * 6.5) + 917;
-						}
+						BMR = (user2.getWeight() * 6)
+								+ (user2.getHeight() * 6.5)
+								- (user2.getAge() * 6.5) + 917;
 					}
 				}
-
-			} finally {
-				pm.close();
 			}
+
+		} finally {
+			pm.close();
 		}
+
 		return BMR;
 	}
 
 	@Override
 	public String storeGoal(Bridge msg) throws IllegalArgumentException {
-		
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-		    
-		GoalHistory a = new GoalHistory(user.getEmail(),msg.startDate,msg.targetDate,msg.targetWeight);
-
+			    
+		GoalHistory a = new GoalHistory(getLoggedinUserEmail(),msg.startDate,msg.targetDate,msg.targetWeight);
 
 		PersistenceManager pm = getPersistenceManager();
 
@@ -435,42 +340,34 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	@Override
 	public Bridge getGoalHistory() throws IllegalArgumentException {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
 
 		Bridge _msg = new Bridge();
 
+		PersistenceManager pm = getPersistenceManager();
 
-		if (user != null) {
+		try {
+			Query q = pm.newQuery(GoalHistory.class, "email == u");
+			q.declareParameters("com.bestfit.data.GoalHistory u");
 
-			PersistenceManager pm = getPersistenceManager();
+			List<GoalHistory> goals = (List<GoalHistory>) q.execute(getLoggedinUserEmail());
 
-			try {
-				Query q = pm.newQuery(GoalHistory.class, "email == u");
-				q.declareParameters("com.bestfit.data.GoalHistory u");
+			if (goals != null) {
 
-				List<GoalHistory> goals = (List<GoalHistory>) q.execute(user.getEmail());
-
-				if (goals != null) {
-					
-					System.out.print(goals.size());
-				}
-
-			} finally {
-				pm.close();
+				System.out.print(goals.size());
 			}
+
+		} finally {
+			pm.close();
 		}
+
 		return _msg;
 	}
 
 	@Override
 	public String storeNewWeight(Double weight, Date currentDate)
 			throws IllegalArgumentException {
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-		    
-		Weight a = new Weight(user.getEmail(),weight,currentDate);
-
+		
+		Weight a = new Weight(getLoggedinUserEmail(),weight,currentDate);
 
 		PersistenceManager pm = getPersistenceManager();
 
@@ -485,44 +382,31 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 	@Override
 	public Bridge getWeightHistory() throws IllegalArgumentException {
+
+		Bridge _msg = new Bridge();
+
+		PersistenceManager pm = getPersistenceManager();
+
+		try {
+			Query q = pm.newQuery(Weight.class, "email == u");
+			q.declareParameters("java.lang.String u");
+
+			List<Weight> weights = (List<Weight>) q.execute(getLoggedinUserEmail());
+
+			if (weights != null) {
+				_msg.weightHistory = new ArrayList<Weight>(weights);
+			}
+
+		} finally {
+			pm.close();
+		}
+
+		return _msg;
+	}
+	
+	public String getLoggedinUserEmail(){
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		System.out.print("medo");
-		Bridge _msg = new Bridge();
-		
-
-		if (user != null) {
-
-			PersistenceManager pm = getPersistenceManager();
-
-			try {
-				Query q = pm.newQuery(Weight.class, "email == u");
-				q.declareParameters("java.lang.String u");
-
-				List<Weight> weights = (List<Weight>) q.execute(user.getEmail());
-				
-				//ArrayList<Weight> newWeights = new ArrayList<Weight>();
-
-				if (weights != null) {					
-					
-					_msg.weightHistory = new ArrayList<Weight>(weights);
-					
-					
-					
-//					for(Weight wt: weights){						
-//						Weight newWt = new Weight(wt.getEmail(), wt.getWeight(), wt.getDate());
-//						newWeights.add(newWt);						
-//					}
-					
-					//_msg.weightHistory = newWeights;
-					//System.out.print(_msg.weightHistory.size());
-
-				}
-
-			} finally {
-				pm.close();
-			}
-		}
-		return _msg;
+		return user.getEmail();
 	}
 }
