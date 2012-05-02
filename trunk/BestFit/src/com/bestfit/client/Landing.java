@@ -157,7 +157,7 @@ public class Landing implements EntryPoint {
 				//rootPanel.add(goalDecoratorPanel);
 				
 				FlexTable mealsFlexTable = new FlexTable();
-				mealsFlexTable.setStyleName("cw-FlexTable");
+				//mealsFlexTable.setStyleName("cw-FlexTable");
 				mealsFlexTable.setSize("270px", "300px");
 				
 				mealsFlexTable.setText(0, 0, "Name");
@@ -170,7 +170,7 @@ public class Landing implements EntryPoint {
 
 				//mealsListRow
 				
-				
+				double cal =0.0;
 				int row=0;
 				for(Meal meal: result.meals){
 					row++;
@@ -187,7 +187,13 @@ public class Landing implements EntryPoint {
 					mealsFlexTable.setText(row, 2, String.valueOf(meal.totalCalories()));
 					mealsFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
 					
+					cal +=  meal.totalCalories();
+					
 				}
+				//mealsTotalCalories
+				mealsFlexTable.setText(row+1, 1, "Total Calories =");
+				mealsFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
+				mealsFlexTable.setText(row+1, 2, String.valueOf(cal));
 				//goalDecoratorPanel.setWidget(mealsFlexTable);
 				rootPanel.add(mealsFlexTable);
 			}
