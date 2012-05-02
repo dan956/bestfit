@@ -377,7 +377,7 @@ td.datePickerMonth {
   border-bottom: 2px solid #87ffff;
   margin-right: 2px;
 }
-/*flextable*/
+/*flextable for calculator*/
 .cw-FlexTable td {
   border: 1px solid #BBBBBB;
   padding: 3px;
@@ -456,4 +456,15 @@ html>body .gwt-DecoratorPanel {
   height: 5px;
   overflow: hidden;
 }
+
+.mealsListHeader {
+  background-color: #E80000;
+  color: white;
+  font-style: italic;
+  font-size: small;
+}
+.mealsListRow {
+  font-size: small;
+}
+
 
