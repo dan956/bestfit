@@ -354,6 +354,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 			if (goals != null) {
 
 				System.out.print(goals.size());
+				_msg.goals = new ArrayList<GoalHistory>(goals);
 			}
 
 		} finally {

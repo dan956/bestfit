@@ -22,6 +22,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.IntegerBox;
 
 
 public class Calculator implements EntryPoint {
@@ -48,6 +49,8 @@ public class Calculator implements EntryPoint {
 	
 	private VerticalPanel MealVerticalPanel;
 	private VerticalPanel WorkoutVerticalPanel;
+	private Label lblNewLabel_1;
+	private Label lblNewLabel_2;
 	
 	public void onModuleLoad() {
 		rootPanel = RootPanel.get("calculatorCont");
@@ -141,8 +144,9 @@ public class Calculator implements EntryPoint {
 		
 		WorkoutFlexTable = new FlexTable();
 		WorkoutVerticalPanel.add(WorkoutFlexTable);
+		WorkoutFlexTable.setWidth("416px");
 		
-		Label lblExercise = new Label("  Exercise:");
+		Label lblExercise = new Label("Exercise:");
 		WorkoutFlexTable.setWidget(0, 0, lblExercise);
 		lblExercise.setWidth("69px");
 		
@@ -154,9 +158,21 @@ public class Calculator implements EntryPoint {
 		WorkoutFlexTable.setWidget(0, 2, btnNewButton);
 		btnNewButton.setSize("43px", "23px");
 		
-		Label lblTotalCalories_1 = new Label("  Total Calories:");
+		lblNewLabel_1 = new Label("Time");
+		lblNewLabel_1.setWordWrap(false);
+		WorkoutFlexTable.setWidget(1, 0, lblNewLabel_1);
+		lblNewLabel_1.setWidth("30px");
+		
+		IntegerBox timeIntegerBox = new IntegerBox();
+		WorkoutFlexTable.setWidget(1, 1, timeIntegerBox);
+		
+		lblNewLabel_2 = new Label("Minute");
+		WorkoutFlexTable.setWidget(1, 2, lblNewLabel_2);
+		
+		Label lblTotalCalories_1 = new Label("Total Calories:");
+		lblTotalCalories_1.setWordWrap(false);
 		WorkoutFlexTable.setWidget(4, 0, lblTotalCalories_1);
-		lblTotalCalories_1.setWidth("85px");
+		lblTotalCalories_1.setWidth("100px");
 		
 		TotalCalsBurnedTextBox = new TextBox();
 		TotalCalsBurnedTextBox.setReadOnly(true);
@@ -164,6 +180,7 @@ public class Calculator implements EntryPoint {
 		WorkoutFlexTable.setWidget(4, 1, TotalCalsBurnedTextBox);
 		
 		Label lblWorkoutName = new Label("Workout Name:");
+		lblWorkoutName.setWordWrap(false);
 		WorkoutFlexTable.setWidget(5, 0, lblWorkoutName);
 		lblWorkoutName.setWidth("94px");
 		

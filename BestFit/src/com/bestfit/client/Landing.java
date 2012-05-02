@@ -1,4 +1,6 @@
 package com.bestfit.client;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.bestfit.shared.Bridge;
@@ -31,6 +33,7 @@ public class Landing implements EntryPoint {
 		
 		
 		getCurrentWeight();
+		getCurrentGoal();
 
 	}
 	
@@ -50,18 +53,18 @@ public class Landing implements EntryPoint {
 				
 				RootPanel rootPanel = RootPanel.get("WeightCon");
 				
-				DecoratorPanel decoratorPanel = new DecoratorPanel();
-				rootPanel.add(decoratorPanel);
+				DecoratorPanel weightDecoratorPanel = new DecoratorPanel();
+				rootPanel.add(weightDecoratorPanel);
 				
-				FlexTable flexTable = new FlexTable();
-				decoratorPanel.setWidget(flexTable);
+				FlexTable weightFlexTable = new FlexTable();
+				weightDecoratorPanel.setWidget(weightFlexTable);
 				
 				Label lblNewLabel = new Label("Your current weight");
-				flexTable.setWidget(0, 0, lblNewLabel);
+				weightFlexTable.setWidget(0, 0, lblNewLabel);
 				
 				textBox = new TextBox();
 				textBox.setText(result);
-				flexTable.setWidget(1, 0, textBox);
+				weightFlexTable.setWidget(1, 0, textBox);
 				
 				Button btnNewButton = new Button("New button");
 				btnNewButton.addClickHandler(new ClickHandler() {
@@ -85,12 +88,55 @@ public class Landing implements EntryPoint {
 					}
 				});
 				btnNewButton.setText("Update");
-				flexTable.setWidget(2, 0, btnNewButton);
-				flexTable.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+				weightFlexTable.setWidget(2, 0, btnNewButton);
+				weightFlexTable.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 				
 			}
 			
 			
 		});
 	}
+	
+	public void getCurrentGoal()
+	{
+		rpc.getGoalHistory(new AsyncCallback<Bridge>() {
+			
+			@Override
+			public void onSuccess(Bridge result) {
+				
+				RootPanel rootPanel = RootPanel.get("goalHistory");
+				
+				DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
+				rootPanel.add(goalDecoratorPanel);
+				
+				FlexTable weightFlexTable = new FlexTable();
+				goalDecoratorPanel.setWidget(weightFlexTable);
+				
+				String displayGoal ="";
+				
+				Date today = new Date();
+
+				long diff =  result.goals.get(result.goals.size()-1).getTargetDate().getTime() - today.getTime();
+				
+				diff /=  (1000 * 60 * 60 * 24);
+				
+				
+				displayGoal+="Your current goal is to lose "+result.goals.get(result.goals.size()-1).getTargetWeight()
+						+" pounds in "+ String.valueOf(diff) +" days";
+				
+				Label lblNewLabel = new Label(displayGoal);
+				weightFlexTable.setWidget(0, 0, lblNewLabel);
+				
+				
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
 }

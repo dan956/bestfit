@@ -1,5 +1,7 @@
 package com.bestfit.client;
 
+import java.util.Date;
+
 import com.bestfit.shared.Bridge;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,14 +33,17 @@ public class Index implements EntryPoint {
 
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	public void onModuleLoad() {
-
 		CheckUser();
-
-
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public void CheckUser() {
 		rpc.isNewUser(new AsyncCallback<Boolean>() {
 
@@ -124,19 +129,19 @@ public class Index implements EntryPoint {
 
 									SaveButton.setEnabled(false);
 
-									Bridge registreNewysers = new Bridge();
-									registreNewysers.firstName = FirstNameTextBox.getText();
-									registreNewysers.lastName = LastNameTextBox.getText();
-									registreNewysers.email = EmailAddressTextBox.getText();
-									registreNewysers.gender = comboBox.getItemText(comboBox
+									Bridge registreNewUsers = new Bridge();
+									registreNewUsers.firstName = FirstNameTextBox.getText();
+									registreNewUsers.lastName = LastNameTextBox.getText();
+									registreNewUsers.email = EmailAddressTextBox.getText();
+									registreNewUsers.gender = comboBox.getItemText(comboBox
 											.getSelectedIndex());
-									registreNewysers.height = Double.valueOf(HeightTextBox
+									registreNewUsers.height = Double.valueOf(HeightTextBox
 											.getText());
-									registreNewysers.weight = Double.valueOf(WeightTextBox
+									registreNewUsers.weight = Double.valueOf(WeightTextBox
 											.getText());
-									registreNewysers.age = integerBox.getValue();
+									registreNewUsers.age = integerBox.getValue();
 
-									rpc.registerUser(registreNewysers, new AsyncCallback<String>() {
+									rpc.registerUser(registreNewUsers, new AsyncCallback<String>() {
 
 										@Override
 										public void onFailure(Throwable caught) {
@@ -147,7 +152,23 @@ public class Index implements EntryPoint {
 										@Override
 										public void onSuccess(String result) {
 
-											Window.Location.assign("/landing.html");
+											rpc.storeNewWeight(Double.valueOf(WeightTextBox.getText()), new Date(), new AsyncCallback<String>() {
+
+												@Override
+												public void onFailure(Throwable caught) {
+													// TODO Auto-generated method stub
+													
+												}
+
+												@Override
+												public void onSuccess(String result) {
+													
+													Window.Location.assign("/landing.html");
+												}
+											} );
+											
+											
+											
 										}
 									});
 								}
@@ -174,7 +195,7 @@ public class Index implements EntryPoint {
 							flexTable.getCellFormatter().setHorizontalAlignment(6, 1,
 									HasHorizontalAlignment.ALIGN_RIGHT);
 
-							RootPanel.get("regCont").add(flexTable, 0, 0);
+							RootPanel.get("regCont").add(flexTable);
 							
 
 						}
