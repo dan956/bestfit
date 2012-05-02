@@ -30,8 +30,7 @@ public class Landing implements EntryPoint {
 	
 	@Override
 	public void onModuleLoad() {
-		
-		
+				
 		getCurrentWeight();
 		getCurrentGoal();
 
@@ -110,6 +109,7 @@ public class Landing implements EntryPoint {
 				rootPanel.add(goalDecoratorPanel);
 				
 				FlexTable weightFlexTable = new FlexTable();
+				weightFlexTable.setSize("380px", "80px");
 				goalDecoratorPanel.setWidget(weightFlexTable);
 				
 				String displayGoal ="";
@@ -121,7 +121,7 @@ public class Landing implements EntryPoint {
 				diff /=  (1000 * 60 * 60 * 24);
 				
 				
-				displayGoal+="Your current goal is to lose "+result.goals.get(result.goals.size()-1).getTargetWeight()
+				displayGoal+="Your current goal is to maintain "+result.goals.get(result.goals.size()-1).getTargetWeight()
 						+" pounds in "+ String.valueOf(diff) +" days";
 				
 				Label lblNewLabel = new Label(displayGoal);
@@ -139,4 +139,21 @@ public class Landing implements EntryPoint {
 		});
 	}
 
+	public void getUserMeals()
+	{
+		rpc.getUserMeals(new AsyncCallback<Bridge>() {
+			
+			@Override
+			public void onSuccess(Bridge result) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
 }
