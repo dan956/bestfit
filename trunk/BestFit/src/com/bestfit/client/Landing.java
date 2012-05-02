@@ -3,6 +3,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.bestfit.data.FoodItem;
+import com.bestfit.data.Meal;
 import com.bestfit.shared.Bridge;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -33,7 +35,8 @@ public class Landing implements EntryPoint {
 				
 		getCurrentWeight();
 		getCurrentGoal();
-
+		 getUserMeals();
+		 getUserWorkout();
 	}
 	
 	
@@ -146,7 +149,47 @@ public class Landing implements EntryPoint {
 			@Override
 			public void onSuccess(Bridge result) {
 				// TODO Auto-generated method stub
+			
 				
+				RootPanel rootPanel = RootPanel.get("UserMeals");
+				
+			//	DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
+				//rootPanel.add(goalDecoratorPanel);
+				
+				FlexTable mealsFlexTable = new FlexTable();
+				mealsFlexTable.setStyleName("cw-FlexTable");
+				mealsFlexTable.setSize("270px", "300px");
+				
+				mealsFlexTable.setText(0, 0, "Name");
+				mealsFlexTable.setText(0, 1, "Meal Items");
+				mealsFlexTable.setText(0, 2, "Calories");
+
+				mealsFlexTable.getCellFormatter().addStyleName(0, 0, "mealsListHeader");
+				mealsFlexTable.getCellFormatter().addStyleName(0, 1, "mealsListHeader");
+				mealsFlexTable.getCellFormatter().addStyleName(0, 2, "mealsListHeader");
+
+				//mealsListRow
+				
+				
+				int row=0;
+				for(Meal meal: result.meals){
+					row++;
+					mealsFlexTable.setText(row, 0, meal.getLabel());
+					mealsFlexTable.getCellFormatter().addStyleName(row, 0, "mealsListRow");
+					String itemTitle="";
+					for(FoodItem item: meal.getFoodItems()){
+						itemTitle+=item.getName() +"\n";
+					}
+					
+					
+					mealsFlexTable.setText(row, 1, itemTitle);
+					mealsFlexTable.getCellFormatter().addStyleName(row, 1, "mealsListRow");
+					mealsFlexTable.setText(row, 2, String.valueOf(meal.totalCalories()));
+					mealsFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
+					
+				}
+				//goalDecoratorPanel.setWidget(mealsFlexTable);
+				rootPanel.add(mealsFlexTable);
 			}
 			
 			@Override
@@ -155,5 +198,21 @@ public class Landing implements EntryPoint {
 				
 			}
 		});
+		
+	}
+	public void getUserWorkout(){
+		RootPanel rootPanel = RootPanel.get("UserWorkout");
+		
+		DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
+		rootPanel.add(goalDecoratorPanel);
+		
+		FlexTable workoutFlexTable = new FlexTable();
+		workoutFlexTable.setSize("270px", "300px");
+		
+		workoutFlexTable.setText(0, 0, "Workeout Title");
+		workoutFlexTable.setText(0, 1, "Workeout");
+		workoutFlexTable.setText(0, 2, "Burn Calories");
+		goalDecoratorPanel.setWidget(workoutFlexTable);
+		
 	}
 }
