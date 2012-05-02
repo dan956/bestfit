@@ -179,8 +179,6 @@ public class Goal implements EntryPoint {
 				btnNewButton.setSize("80px", "31px");
 				flexTable.getCellFormatter().setHorizontalAlignment(4, 2, HasHorizontalAlignment.ALIGN_LEFT);
 				
-			
-				
 			}
 			
 			
