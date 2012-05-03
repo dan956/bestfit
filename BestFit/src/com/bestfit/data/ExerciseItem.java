@@ -18,8 +18,6 @@ public class ExerciseItem implements IsSerializable, Serializable {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private String name;
 	private double burnRate;
-	private double timeOrReps;
-	private String units;
 
 	@NotPersistent
 	private static final long serialVersionUID = 3881785407988537441L;
@@ -28,6 +26,10 @@ public class ExerciseItem implements IsSerializable, Serializable {
 		super();
 	}   
 
+	public ExerciseItem(String _name, double _burnRate) {
+		name = _name;
+		burnRate = _burnRate;
+	}
  
 	public double getBurnRate() {
 		return burnRate;
@@ -44,15 +46,4 @@ public class ExerciseItem implements IsSerializable, Serializable {
 		name = _name;
 	}
 	
-	public double getTimeOrReps() {
-		return timeOrReps;
-	}
-   
-	public void setTime(double _timeOrReps) {
-		timeOrReps = _timeOrReps;
-	}
-	
-	public double getCaloriesBurned() {
-		return timeOrReps * burnRate;
-	}
 }
