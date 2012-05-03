@@ -22,8 +22,6 @@ public class Workout implements IsSerializable, Serializable {
 	private String email;
     @Persistent
     private ArrayList<String> exerciseItemNames;
-    @Persistent
-    private ArrayList<Integer> exerciseTimes;
     @NotPersistent
     private ArrayList<ExerciseItem> exerciseItems;
     @NotPersistent
@@ -41,7 +39,6 @@ public class Workout implements IsSerializable, Serializable {
 		label = _label;
 		exerciseItemNames = new ArrayList<String>();
 		exerciseItems = new ArrayList<ExerciseItem>();
-		exerciseTimes = new ArrayList<Integer>();
 	}
 	
 	public String getEmail() {
@@ -108,7 +105,7 @@ public class Workout implements IsSerializable, Serializable {
 	public double totalCalories() {
 		double total = 0;
 		for (ExerciseItem item : getExerciseItems())
-			total += item.getBurnRate() * exerciseTimes.get(getExerciseItems().indexOf(item));
+			total += item.getBurnRate();
 		return total;
 	}
 	
@@ -132,11 +129,4 @@ public class Workout implements IsSerializable, Serializable {
 		return str;
 	}
 	
-	public ArrayList<Integer> getExerciseTimes() {
-		return exerciseTimes;
-	}
-	
-	public void setExerciseTimes(ArrayList<Integer> exercisetimes) {
-		this.exerciseTimes = exercisetimes;
-	}
 }
