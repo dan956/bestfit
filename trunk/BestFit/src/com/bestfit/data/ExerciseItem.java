@@ -16,10 +16,10 @@ public class ExerciseItem implements IsSerializable, Serializable {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
 	private String name;
 	private double burnRate;
-	private double time;
+	private double timeOrReps;
+	private String units;
 
 	@NotPersistent
 	private static final long serialVersionUID = 3881785407988537441L;
@@ -44,15 +44,15 @@ public class ExerciseItem implements IsSerializable, Serializable {
 		name = _name;
 	}
 	
-	public double getTime() {
-		return time;
+	public double getTimeOrReps() {
+		return timeOrReps;
 	}
    
-	public void setTime(double _time) {
-		time = _time;
+	public void setTime(double _timeOrReps) {
+		timeOrReps = _timeOrReps;
 	}
 	
 	public double getCaloriesBurned() {
-		return time * burnRate;
+		return timeOrReps * burnRate;
 	}
 }
