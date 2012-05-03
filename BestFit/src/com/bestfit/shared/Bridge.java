@@ -36,8 +36,8 @@ public class Bridge implements IsSerializable {
 	public ArrayList<Workout> workouts;
 	public Workout workout;
 	
-	public ArrayList<ExerciseItem> exerciseItems;
-	public ExerciseItem exerciseItem;
+	public ArrayList<ExerciseItem> exercises;
+	public ExerciseItem exercise;
 	
 	
 	public Date startDate;
