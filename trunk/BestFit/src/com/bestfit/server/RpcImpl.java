@@ -184,7 +184,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 			// 'org.datanucleus.sco.backed.List' which is not serializable
 			ArrayList<Meal> newMeals = new ArrayList<Meal>();
 			for (Meal meal : meals) {
-				Meal newMeal = new Meal(meal.getEmail(), meal.getLabel());
+				Meal newMeal = new Meal(meal.getEmail(), meal.getLabel(), meal.getDate());
 				for (String name : meal.getFoodItemNamesList())
 					for (FoodItem item : foods)
 						if (item.getName().equals(name)) {
