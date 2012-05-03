@@ -410,4 +410,109 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		User user = userService.getCurrentUser();
 		return user.getEmail();
 	}
+	
+	@Override
+	public Bridge getUserWorkouts() throws IllegalArgumentException {
+		Bridge _msg = new Bridge();
+
+		_msg.email = getLoggedinUserEmail();
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			Query q = pm.newQuery(Workout.class, "email == e");
+			q.declareParameters("java.lang.String e");
+			List<Workout> workouts = (List<Workout>) q.execute(getLoggedinUserEmail());
+
+			q = pm.newQuery(ExerciseItem.class);
+			List<ExerciseItem> exercises = (List<ExerciseItem>) q.execute();
+
+			ArrayList<Workout> newWorkouts = new ArrayList<Workout>();
+			for (Workout workout : workouts) {
+				Workout newWorkout = new Workout(workout.getEmail(), workout.getLabel());
+				for (String name : workout.getExerciseItemNamesList())
+					for (ExerciseItem item : exercises)
+						if (item.getName().equals(name)) {
+							newWorkout.addExerciseItem(item);
+							break;
+						}
+				newWorkouts.add(newWorkout);
+			}
+			System.out.println("Server(RpcImpl.getUserWorkouts): Query returned "
+					+ newWorkouts.size() + " results.");
+			_msg.workouts = newWorkouts;
+		} finally {
+			pm.close();
+		}
+
+		return _msg;
+	}
+
+	@Override
+	public boolean saveUserWorkout(Bridge msg) throws IllegalArgumentException {
+
+		Workout workout = msg.workout;
+		workout.setEmail(getLoggedinUserEmail());
+		System.out
+				.println("Server(RpcImpl.saveUserWorkout): Newest workout received is "
+						+ workout.toString());
+
+		PersistenceManager pm = getPersistenceManager();
+		if (workout != null)
+			try {
+				pm.makePersistent(workout);
+				System.out
+						.println("Server(RpcImpl.saveUserWorkout): Workout made persistent.");
+				return true;
+			} finally {
+				pm.close();
+			}
+		System.err
+				.println("Server(RpcImpl.saveUserWorkout): Workout could not be made persistent.");
+		return false;
+	}
+
+	@Override
+	public Bridge getExerciseItems() throws IllegalArgumentException {
+		Bridge _msg = new Bridge();
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			Query q = pm.newQuery(ExerciseItem.class);
+			List<ExerciseItem> exercises = (List<ExerciseItem>) q.execute();
+			if (exercises == null) {
+				_msg.exercises = new ArrayList<ExerciseItem>();
+				System.err
+						.println("Server(RpcImpl.getExerciseItems): Query returned null.");
+			} else {
+				System.out
+						.println("Server(RpcImpl.getExerciseItems): Query returned "
+								+ exercises.size() + " results.");
+				_msg.exercises = new ArrayList<ExerciseItem>(exercises);
+			}
+
+		} finally {
+			pm.close();
+		}
+		return _msg;
+	}
+
+	@Override
+	public boolean saveExerciseItem(Bridge msg) throws IllegalArgumentException {
+		ExerciseItem exerciseItem = msg.exercise;
+		System.out.println("Server(RpcImpl.saveExerciseItem): Item received is "
+				+ exerciseItem.toString());
+		PersistenceManager pm = getPersistenceManager();
+		if (exerciseItem != null)
+			try {
+				pm.makePersistent(exerciseItem);
+				System.out
+						.println("Server(RpcImpl.saveExerciseItem): Item made persistent.");
+				return true;
+			} finally {
+				pm.close();
+			}
+		System.err
+				.println("Server(RpcImpl.saveExerciseItem): Item could not be made persistent.");
+		return false;
+	}
+
+
 }
