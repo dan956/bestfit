@@ -2,6 +2,8 @@ package com.bestfit.client;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import com.bestfit.data.ExerciseItem;
 import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
 import com.bestfit.shared.Bridge;
@@ -195,8 +197,8 @@ public class Calculator implements EntryPoint {
 		WorkoutFlexTable.getFlexCellFormatter().setColSpan(1, 0, 5);
 		
 		// one time run to populate FoodItem persistence
-		{
-			// name, cals, fatcals, fatgrams, carbs, protein
+//		{
+//			// name, cals, fatcals, fatgrams, carbs, protein
 //			FoodItem items[] = new FoodItem[10];
 //			items[0] = new FoodItem("Egg, Whole, Cooked, Medium", 71, 40, 5.15, .48, 5.28);
 //			items[1] = new FoodItem("Egg, Whole, Cooked, Large", 81, 45, 5.86, .55, 6);
@@ -209,6 +211,7 @@ public class Calculator implements EntryPoint {
 //			items[8] = new FoodItem("Milk, 2%, 1 Cup", 122, 68, 4.83, 11.71, 8.05);
 //			items[9] = new FoodItem("Orange Juice, 1 Cup", 122, 7, .3, 28.73, 1.69);
 //			for (int i = 0; i < items.length; i++) {
+//				saveFoodItem(items[i]);
 //				if (saveFoodItem(items[i]))
 //					System.out.println("Saved item " + i + "(" + items[i].getName() + ") successfully.");
 //				else
@@ -216,7 +219,7 @@ public class Calculator implements EntryPoint {
 //				NewFoodItem.addItem(items[i].getName());
 //				foods.add(items[i]);
 //			}
-		}
+//		}
 		newMeal = new Meal(email);
 		startAsynchronous();
 	}
@@ -344,10 +347,53 @@ public class Calculator implements EntryPoint {
 		});
 	}
 	
+	
+	
+	// one time run to populate ExerciseItem persistence
+//	{
+//		// name, burnrate
+//		ExerciseItem items[] = new ExerciseItem[13];
+//		items[0] = new ExerciseItem("Basketball (leisurely), 10 mins", 130);
+//		items[1] = new ExerciseItem("Bicycling (10 mph), 10 mins", 125);
+//		items[2] = new ExerciseItem("Bicycling (13 mph), 10 mins", 200);
+//		items[3] = new ExerciseItem("Ping pong, 10 mins", 90);
+//		items[4] = new ExerciseItem("Running (8 mph), 10 mins", 305);
+//		items[5] = new ExerciseItem("Running (9 mph), 10 mins", 330);
+//		items[6] = new ExerciseItem("Running (10 mph), 10 mins", 350);
+//		items[7] = new ExerciseItem("Soccer, 10 mins", 195);
+//		items[8] = new ExerciseItem("Swimming, 10 mins", 120);
+//		items[9] = new ExerciseItem("Tennis, 10 mins", 160);
+//		items[10] = new ExerciseItem("Walking (3 mph), 10 mins", 80);
+//		items[11] = new ExerciseItem("Walking (4 mph), 10 mins", 100);
+//		items[12] = new ExerciseItem("Weight training, 10 mins", 190);
+//		for (int i = 0; i < items.length; i++) {
+//			saveExerciseItem(items[i]);
+//			saveExerciseItem(items[i]);
+//			NewExerciseItem.addItem(items[i].getName());
+//			exercises.add(items[i]);
+//		}
+//	}
+	
+	
+	
+	
+	
 //	private void saveFoodItem(FoodItem item) {
 //		Bridge msg = new Bridge();
 //		msg.foodItem = item;
 //		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
+//			public void onFailure(Throwable caught) {}
+//
+//			public void onSuccess(Boolean result) {}
+//		});
+//	}	
+	
+	
+	
+//	private void saveExerciseItem(ExerciseItem item) {
+//		Bridge msg = new Bridge();
+//		msg.exerciseItem = item;
+//		rpc.saveExerciseItem(msg, new AsyncCallback<Boolean>() {
 //			public void onFailure(Throwable caught) {}
 //
 //			public void onSuccess(Boolean result) {}
