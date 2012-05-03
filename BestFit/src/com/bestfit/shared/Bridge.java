@@ -5,10 +5,12 @@ import java.util.Date;
 
 import javax.jdo.annotations.Persistent;
 
+import com.bestfit.data.ExerciseItem;
 import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
 import com.bestfit.data.Weight;
 import com.bestfit.data.GoalHistory;
+import com.bestfit.data.Workout;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
@@ -30,6 +32,12 @@ public class Bridge implements IsSerializable {
 	
 	public ArrayList<FoodItem> foods;
 	public FoodItem foodItem;
+	
+	public ArrayList<Workout> workouts;
+	public Workout workout;
+	
+	public ArrayList<ExerciseItem> exerciseItems;
+	public ExerciseItem exerciseItem;
 	
 	
 	public Date startDate;
