@@ -160,6 +160,13 @@ public class Meal implements IsSerializable, Serializable {
 			total += item.getCarbohydrates();
 		return total;
 	}
+	
+	public double totalProtein() {
+		double total = 0;
+		for (FoodItem item : getFoodItems())
+			total += item.getProtein();
+		return total;
+	}
 
 	public boolean equals(Object o) {
 		if (o == null)
