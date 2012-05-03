@@ -19,6 +19,7 @@ public class ExerciseItem implements IsSerializable, Serializable {
 	private Long id;
 	private String name;
 	private double burnRate;
+	private double time;
 
 	@NotPersistent
 	private static final long serialVersionUID = 3881785407988537441L;
@@ -29,18 +30,29 @@ public class ExerciseItem implements IsSerializable, Serializable {
 
  
 	public double getBurnRate() {
-		return this.burnRate;
+		return burnRate;
 	}
 
-	public void setBurnRate(double burnRate) {
-		this.burnRate = burnRate;
+	public void setBurnRate(double _burnRate) {
+		burnRate = _burnRate;
 	}   
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String _name) {
+		name = _name;
+	}
+	
+	public double getTime() {
+		return time;
 	}
    
+	public void setTime(double _time) {
+		time = _time;
+	}
+	
+	public double getCaloriesBurned() {
+		return time * burnRate;
+	}
 }
