@@ -22,4 +22,8 @@ public interface RpcServicesAsync {
 	void storeNewWeight(Double weight, Date currentDate,
 			AsyncCallback<String> callback);
 	void getWeightHistory(AsyncCallback<Bridge> callback);
+	void getUserWorkouts(AsyncCallback<Bridge> callback);
+	void saveUserWorkout(Bridge msg, AsyncCallback<Boolean> callback);
+	void getExerciseItems(AsyncCallback<Bridge> callback);
+	void saveExerciseItem(Bridge msg, AsyncCallback<Boolean> callback);
 }
