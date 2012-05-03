@@ -41,11 +41,12 @@ public class Report implements EntryPoint {
 
 
 				for(Meal meal:result.meals){
-					Protein+=meal.totalCarbohydrates();
-					Carbs+=meal.totalFatGrams();
-					Fat+=meal.totalFatGrams();	  					  
+					Protein+=meal.totalProtein();
+					Carbs+=meal.totalCarbohydrates();
+					Fat+=meal.totalFatGrams();
 
-				}	//WeightHistory
+
+				}	
 				Panel piePanel = RootPanel.get("calorieConsumption");
 				
 
@@ -63,8 +64,13 @@ public class Report implements EntryPoint {
 			}
 		});
 	}
-	
-	public void DrawWeightHistory()	{
+
+	public void DrawMealCalories(){
+		
+		
+		
+	}
+		public void DrawWeightHistory()	{
 		rpc.getWeightHistory(new AsyncCallback<Bridge>() {
 
 			@Override
