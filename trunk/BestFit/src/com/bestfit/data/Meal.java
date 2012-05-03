@@ -151,7 +151,7 @@ public class Meal implements IsSerializable, Serializable {
 		return email.equals(meal.email) && label.equals(meal.label) && getFoodItems().equals(meal.getFoodItems());
 	}
 	
-	private ArrayList<FoodItem> getFoodItems() {
+	public ArrayList<FoodItem> getFoodItems() {
 		return foodItems;
 	}
 	
