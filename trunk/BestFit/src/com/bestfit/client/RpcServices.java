@@ -27,4 +27,5 @@ public interface RpcServices extends RemoteService {
 	boolean saveUserWorkout(Bridge msg) throws IllegalArgumentException;
 	Bridge getExerciseItems() throws IllegalArgumentException;
 	boolean saveExerciseItem(Bridge msg) throws IllegalArgumentException;
+	String getUserName() throws IllegalArgumentException;
 }
