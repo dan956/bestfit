@@ -2,8 +2,6 @@ package com.bestfit.client;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
-
 import com.bestfit.data.ExerciseItem;
 import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
@@ -168,14 +166,14 @@ public class Calculator implements EntryPoint {
 		
 		lblNewLabel_1 = new Label("Time");
 		lblNewLabel_1.setWordWrap(false);
-		WorkoutFlexTable.setWidget(1, 0, lblNewLabel_1);
+		WorkoutFlexTable.setWidget(2, 0, lblNewLabel_1);
 		lblNewLabel_1.setWidth("30px");
 		
 		IntegerBox timeIntegerBox = new IntegerBox();
-		WorkoutFlexTable.setWidget(1, 1, timeIntegerBox);
+		WorkoutFlexTable.setWidget(2, 1, timeIntegerBox);
 		
 		lblNewLabel_2 = new Label("Minute");
-		WorkoutFlexTable.setWidget(1, 2, lblNewLabel_2);
+		WorkoutFlexTable.setWidget(2, 2, lblNewLabel_2);
 		
 		Label lblTotalCalories_1 = new Label("Total Calories:");
 		lblTotalCalories_1.setWordWrap(false);
@@ -392,25 +390,23 @@ public class Calculator implements EntryPoint {
 	
 	
 	
-	private void saveFoodItem(FoodItem item) {
-		Bridge msg = new Bridge();
-		msg.foodItem = item;
-		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
-			public void onFailure(Throwable caught) {}
-
-			public void onSuccess(Boolean result) {}
-		});
-	}	
-	
-	
-	
-	private void saveExerciseItem(ExerciseItem item) {
-		Bridge msg = new Bridge();
-		msg.exercise = item;
-		rpc.saveExerciseItem(msg, new AsyncCallback<Boolean>() {
-			public void onFailure(Throwable caught) {}
-
-			public void onSuccess(Boolean result) {}
-		});
-	}
+//	private void saveFoodItem(FoodItem item) {
+//		Bridge msg = new Bridge();
+//		msg.foodItem = item;
+//		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
+//			public void onFailure(Throwable caught) {}
+//
+//			public void onSuccess(Boolean result) {}
+//		});
+//	}	
+//		
+//	private void saveExerciseItem(ExerciseItem item) {
+//		Bridge msg = new Bridge();
+//		msg.exercise = item;
+//		rpc.saveExerciseItem(msg, new AsyncCallback<Boolean>() {
+//			public void onFailure(Throwable caught) {}
+//
+//			public void onSuccess(Boolean result) {}
+//		});
+//	}
 }
