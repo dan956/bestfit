@@ -240,26 +240,26 @@ public class Calculator implements EntryPoint {
 		// one time run to populate ExerciseItem persistence
 		{
 			// name, burnrate
-			ExerciseItem items[] = new ExerciseItem[13];
-			items[0] = new ExerciseItem("Basketball (leisurely)", 130);
-			items[1] = new ExerciseItem("Bicycling (10 mph)", 125);
-			items[2] = new ExerciseItem("Bicycling (13 mph)", 200);
-			items[3] = new ExerciseItem("Ping pong", 90);
-			items[4] = new ExerciseItem("Running (8 mph)", 305);
-			items[5] = new ExerciseItem("Running (9 mph)", 330);
-			items[6] = new ExerciseItem("Running (10 mph)", 350);
-			items[7] = new ExerciseItem("Soccer", 195);
-			items[8] = new ExerciseItem("Swimming", 120);
-			items[9] = new ExerciseItem("Tennis", 160);
-			items[10] = new ExerciseItem("Walking (3 mph)", 80);
-			items[11] = new ExerciseItem("Walking (4 mph)", 100);
-			items[12] = new ExerciseItem("Weight training", 190);
-			for (int i = 0; i < items.length; i++) {
-				saveExerciseItem(items[i]);
-				saveExerciseItem(items[i]);
-				NewExerciseItem.addItem(items[i].getName());
-				exercises.add(items[i]);
-			}
+//			ExerciseItem items[] = new ExerciseItem[13];
+//			items[0] = new ExerciseItem("Basketball (leisurely)", 130);
+//			items[1] = new ExerciseItem("Bicycling (10 mph)", 125);
+//			items[2] = new ExerciseItem("Bicycling (13 mph)", 200);
+//			items[3] = new ExerciseItem("Ping pong", 90);
+//			items[4] = new ExerciseItem("Running (8 mph)", 305);
+//			items[5] = new ExerciseItem("Running (9 mph)", 330);
+//			items[6] = new ExerciseItem("Running (10 mph)", 350);
+//			items[7] = new ExerciseItem("Soccer", 195);
+//			items[8] = new ExerciseItem("Swimming", 120);
+//			items[9] = new ExerciseItem("Tennis", 160);
+//			items[10] = new ExerciseItem("Walking (3 mph)", 80);
+//			items[11] = new ExerciseItem("Walking (4 mph)", 100);
+//			items[12] = new ExerciseItem("Weight training", 190);
+//			for (int i = 0; i < items.length; i++) {
+//				saveExerciseItem(items[i]);
+//				saveExerciseItem(items[i]);
+//				NewExerciseItem.addItem(items[i].getName());
+//				exercises.add(items[i]);
+//			}
 		}
 		
 		
