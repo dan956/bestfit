@@ -206,7 +206,7 @@ public class CalculatorOld implements EntryPoint {
 	    final FoodItem foodItem = foods.get(NewFoodItem.getSelectedIndex());
 	    NewFoodItem.setFocus(true);
 	    newMeal.addFoodItem(foodItem);
-	    TotalCalsTextBox.setText(Integer.toString(newMeal.totalCalories()));
+	    TotalCalsTextBox.setText(Double.toString(newMeal.totalCalories()));
 	    // add the stock to the list
 	    int row = FoodsFlexTable.getRowCount();
 	    FoodsFlexTable.setText(row, 0, foodItem.getName());
@@ -224,7 +224,7 @@ public class CalculatorOld implements EntryPoint {
 	        int calCount = Integer.parseInt(TotalCalsTextBox.getText());
 	        int cals = Integer.parseInt(FoodsFlexTable.getText(removedIndex, 1));
 	        FoodsFlexTable.removeRow(removedIndex);
-		    TotalCalsTextBox.setText(Integer.toString(newMeal.totalCalories()));
+		    TotalCalsTextBox.setText(Double.toString(newMeal.totalCalories()));
 	    }
 	    });
 	    FoodsFlexTable.setWidget(row, 5, removeFood);
