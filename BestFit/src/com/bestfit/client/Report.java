@@ -282,8 +282,6 @@ public class Report implements EntryPoint {
 	
 	
 	
-	
-	
 	private LineChart.Options createLineOptions() {
 		LineChart.Options options = LineChart.Options.create();
 		options.setWidth(300);
