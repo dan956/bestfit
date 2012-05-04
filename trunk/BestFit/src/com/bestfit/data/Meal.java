@@ -2,8 +2,10 @@ package com.bestfit.data;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.NotPersistent;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 //import com.google.appengine.api.datastore.Key;
@@ -16,17 +18,18 @@ import java.util.Date;
 
 @PersistenceCapable
 public class Meal implements IsSerializable, Serializable {
+	@Id
+	@GeneratedValue
+	long id;
 	@Persistent
-	@PrimaryKey
 	private String label;
 	@Persistent
 	private String email;
 	@Persistent
-	// private ArrayList<Key> foodItemKeys;
 	private ArrayList<String> foodItemNames;
-	// private ArrayList<FoodItem> foodItems;
 	@NotPersistent
 	private ArrayList<FoodItem> foodItems;
+	
 	@NotPersistent
 	private static final long serialVersionUID = -7885309053181899174L;
 
@@ -34,7 +37,7 @@ public class Meal implements IsSerializable, Serializable {
 	Date dateOfMeal;
 
 	public Meal() {
-		this("DefaultEmailAddress", "DefaultMealLabel", null);
+		super();
 	}
 
 	public Meal(String _email) {
@@ -61,12 +64,12 @@ public class Meal implements IsSerializable, Serializable {
 		email = _email;
 	}
 
-	public Date getDate() {
-		return this.dateOfMeal;
+	public Date getDateOfMeal() {
+		return dateOfMeal;
 	}
 
-	public void setDate(Date _date) {
-		this.dateOfMeal = _date;
+	public void setDateOfMeal(Date _dateOfMeal) {
+		dateOfMeal = _dateOfMeal;
 	}
 
 	public String getLabel() {
@@ -132,15 +135,15 @@ public class Meal implements IsSerializable, Serializable {
 		// return foodItemNames.size();
 	}
 
-	public int totalCalories() {
-		int total = 0;
+	public double totalCalories() {
+		double total = 0;
 		for (FoodItem item : getFoodItems())
 			total += item.getCalories();
 		return total;
 	}
 
-	public int totalFatCalories() {
-		int total = 0;
+	public double totalFatCalories() {
+		double total = 0;
 		for (FoodItem item : getFoodItems())
 			total += item.getFatCalories();
 		return total;
@@ -183,7 +186,7 @@ public class Meal implements IsSerializable, Serializable {
 	public String toString() {
 		String str = "[LABEL:\"" + label + "\":(";
 		for (FoodItem item : getFoodItems())
-			str += "ITEM:" + item.toString() + ",";
+			str += "FOOD:" + item.toString() + ",";
 		if (str.length() <= 11 + label.length())
 			str = str.substring(0, str.length() - 1);
 		str += ")]";

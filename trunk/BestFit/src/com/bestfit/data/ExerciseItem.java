@@ -1,23 +1,26 @@
 
 package com.bestfit.data;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.io.Serializable;
-import java.util.Date;
 
 @PersistenceCapable
 public class ExerciseItem implements IsSerializable, Serializable {
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
+	@GeneratedValue
+	long id;
+	@Persistent
 	private String name;
+	@Persistent
 	private double burnRate;
+	
 
 	@NotPersistent
 	private static final long serialVersionUID = 3881785407988537441L;
@@ -46,4 +49,13 @@ public class ExerciseItem implements IsSerializable, Serializable {
 		name = _name;
 	}
 	
+	public boolean equals(Object o) {
+		if (o == null) return false;
+		ExerciseItem item = (ExerciseItem)o;
+		return name.equals(item.name) && burnRate == item.burnRate;
+	}
+
+	public String toString() {
+		return "[NAME:\"" + name + "\":(BURNRATE:" + burnRate + ")]";
+	}
 }
