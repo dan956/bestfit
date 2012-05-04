@@ -3,8 +3,10 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.bestfit.data.ExerciseItem;
 import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
+import com.bestfit.data.Workout;
 import com.bestfit.shared.Bridge;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -24,8 +26,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 public class Landing implements EntryPoint {
-
-
 	
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	private TextBox textBox;
@@ -35,8 +35,9 @@ public class Landing implements EntryPoint {
 				
 		getCurrentWeight();
 		getCurrentGoal();
-		 getUserMeals();
-		 getUserWorkout();
+		getUserMeals();
+		getUserWorkout();
+		getUserName();
 	}
 	
 	
@@ -158,18 +159,15 @@ public class Landing implements EntryPoint {
 				
 				FlexTable mealsFlexTable = new FlexTable();
 				//mealsFlexTable.setStyleName("cw-FlexTable");
-				mealsFlexTable.setSize("270px", "300px");
+				//mealsFlexTable.setSize("270px", "300px");
 				
 				mealsFlexTable.setText(0, 0, "Name");
 				mealsFlexTable.setText(0, 1, "Meal Items");
 				mealsFlexTable.setText(0, 2, "Calories");
-				//mealsFlexTable.setText(0, 3, "Date");
 
 				mealsFlexTable.getCellFormatter().addStyleName(0, 0, "mealsListHeader");
 				mealsFlexTable.getCellFormatter().addStyleName(0, 1, "mealsListHeader");
 				mealsFlexTable.getCellFormatter().addStyleName(0, 2, "mealsListHeader");
-
-				//mealsListRow
 				
 				double cal =0.0;
 				int row=0;
@@ -189,9 +187,6 @@ public class Landing implements EntryPoint {
 					mealsFlexTable.getCellFormatter().addStyleName(row, 1, "mealsListRow");
 					mealsFlexTable.setText(row, 2, String.valueOf(meal.totalCalories()));
 					mealsFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
-					//tmpDate = 
-					//System.out.println(meal.getDate().);
-					//mealsFlexTable.setText(row, 3, meal.getDate().toString());
 					
 					cal +=  meal.totalCalories();
 					
@@ -212,19 +207,98 @@ public class Landing implements EntryPoint {
 		});
 		
 	}
+	
 	public void getUserWorkout(){
-		RootPanel rootPanel = RootPanel.get("UserWorkout");
 		
-		DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
-		rootPanel.add(goalDecoratorPanel);
 		
-		FlexTable workoutFlexTable = new FlexTable();
-		workoutFlexTable.setSize("270px", "300px");
+		rpc.getUserWorkouts(new AsyncCallback<Bridge>() {
+			
+			@Override
+			public void onSuccess(Bridge result) {
+				RootPanel rootPanel = RootPanel.get("UserWorkout");
+				
+				//DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
+				//rootPanel.add(goalDecoratorPanel);
+				
+				FlexTable workoutFlexTable = new FlexTable();
+				//workoutFlexTable.setSize("270px", "300px");
+				
+				workoutFlexTable.setText(0, 0, "Name");
+				workoutFlexTable.setText(0, 1, "Workeout");
+				workoutFlexTable.setText(0, 2, "Calories");
+				
+				
+				workoutFlexTable.getCellFormatter().addStyleName(0, 0, "mealsListHeader");
+				workoutFlexTable.getCellFormatter().addStyleName(0, 1, "mealsListHeader");
+				workoutFlexTable.getCellFormatter().addStyleName(0, 2, "mealsListHeader");
+				
+				
+				double cal =0.0;
+				int row=0;
+				String tmpDate = null;
+				
+				for(Workout work : result.workouts)
+				{
+					row++;
+					workoutFlexTable.setText(row, 0, work.getLabel());
+					workoutFlexTable.getCellFormatter().addStyleName(row, 0, "mealsListRow");
+					String itemTitle="";
+					for(ExerciseItem item: work.getExerciseItems()){
+						itemTitle+=item.getName() +"\n";
+					}
+					
+					workoutFlexTable.setText(row, 1, itemTitle);
+					workoutFlexTable.getCellFormatter().addStyleName(row, 1, "mealsListRow");
+					workoutFlexTable.setText(row, 2, String.valueOf(work.totalCalories()));
+					workoutFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
+					
+					cal +=  work.totalCalories();
+					
+					
+				}
+				
+				workoutFlexTable.setText(row+1, 1, "Total Calories =");
+				workoutFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
+				workoutFlexTable.setText(row+1, 2, String.valueOf(cal));
+				
+				rootPanel.add(workoutFlexTable);
+				
+				//goalDecoratorPanel.setWidget(workoutFlexTable);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
-		workoutFlexTable.setText(0, 0, "Workeout Title");
-		workoutFlexTable.setText(0, 1, "Workeout");
-		workoutFlexTable.setText(0, 2, "Burn Calories");
-		goalDecoratorPanel.setWidget(workoutFlexTable);
 		
 	}
+	
+	public void getUserName()
+	{
+		rpc.getUserName(new AsyncCallback<String>() {
+			
+			@Override
+			public void onSuccess(String result) {
+				RootPanel rootPanel = RootPanel.get("userName");
+				
+				FlexTable userNameFlexTable = new FlexTable();
+				userNameFlexTable.setSize("200px", "60px");
+				userNameFlexTable.setText(0, 0, "Welcome "+ result+"!");
+				userNameFlexTable.setText(1, 0, "Below is your data for Today");
+				
+				rootPanel.add(userNameFlexTable);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
 }

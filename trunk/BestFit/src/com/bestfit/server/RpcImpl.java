@@ -415,9 +415,16 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		_msg.email = getLoggedinUserEmail();
 		PersistenceManager pm = getPersistenceManager();
 		try {
-			Query q = pm.newQuery(Workout.class, "email == e");
-			q.declareParameters("java.lang.String e");
-			List<Workout> workouts = (List<Workout>) q.execute(getLoggedinUserEmail());
+			
+			Calendar calender = Calendar.getInstance();
+			calender.set(Calendar.HOUR_OF_DAY, 0);
+			calender.set(Calendar.MINUTE, 0);
+			calender.set(Calendar.SECOND, 0);
+			calender.set(Calendar.MILLISECOND, 0);
+			
+			Query q = pm.newQuery(Workout.class, "email == e && dateOfWorkout >= today");
+			q.declareParameters("java.lang.String e, java.util.Date today");
+			List<Workout> workouts = (List<Workout>) q.execute(getLoggedinUserEmail(),calender.getTime());
 
 			q = pm.newQuery(ExerciseItem.class);
 			List<ExerciseItem> exercises = (List<ExerciseItem>) q.execute();
@@ -530,7 +537,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 				} else {
 					Name = "New User";
 				}
-
+System.out.println(Name);
 			}
 
 		} finally {
