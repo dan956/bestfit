@@ -26,4 +26,5 @@ public interface RpcServicesAsync {
 	void saveUserWorkout(Bridge msg, AsyncCallback<Boolean> callback);
 	void getExerciseItems(AsyncCallback<Bridge> callback);
 	void saveExerciseItem(Bridge msg, AsyncCallback<Boolean> callback);
+	void getUserName(AsyncCallback<String> callback);
 }
