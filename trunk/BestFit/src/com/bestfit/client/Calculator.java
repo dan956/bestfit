@@ -1,6 +1,7 @@
 package com.bestfit.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import com.bestfit.data.ExerciseItem;
@@ -135,6 +136,7 @@ public class Calculator implements EntryPoint {
 					Window.alert("Please name this meal.");
 				else {
 					newMeal.setLabel(MealLabelTextBox.getText());
+					newMeal.setDate(new Date());
 					meals.add(newMeal);
 					saveUserMeal();
 				}
