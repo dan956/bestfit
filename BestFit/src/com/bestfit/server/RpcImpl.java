@@ -511,5 +511,34 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		return false;
 	}
 
+	@Override
+	public String getUserName() throws IllegalArgumentException {
+		String Name = "";
+
+		PersistenceManager pm = getPersistenceManager();
+
+		try {
+			Query q = pm.newQuery(Users.class, "email == u");
+			q.declareParameters("com.bestfit.data.Users u");
+
+			List<Users> users = (List<Users>) q.execute(getLoggedinUserEmail());
+
+			if (users != null) {
+
+				if (users.size() > 0) {
+					Name = users.get(users.size() - 1).getFirstName();
+				} else {
+					Name = "New User";
+				}
+
+			}
+
+		} finally {
+			pm.close();
+		}
+
+		return Name;
+	}
+
 
 }
