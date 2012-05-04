@@ -1,4 +1,4 @@
-<!-- Indices written at Thu, 3 May 2012 23:00:10 UTC -->
+<!-- Indices written at Fri, 4 May 2012 05:57:44 UTC -->
 
 <datastore-indexes>
 
@@ -6,6 +6,12 @@
     <datastore-index kind="Meal" ancestor="false" source="auto">
         <property name="email" direction="asc"/>
         <property name="dateOfMeal" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Workout" ancestor="false" source="auto">
+        <property name="email" direction="asc"/>
+        <property name="dateOfWorkout" direction="asc"/>
     </datastore-index>
 
 </datastore-indexes>

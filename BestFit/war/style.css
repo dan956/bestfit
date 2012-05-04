@@ -462,12 +462,13 @@ html>body .gwt-DecoratorPanel {
   color: white;
   font-style: italic;
   font-size: small;
+  text-align:center;
 }
 .mealsListRow {
   font-size: small;
 }
 
 .mealsTotalCalories {
-  text-align:right
+  text-align:right;
 }
 
