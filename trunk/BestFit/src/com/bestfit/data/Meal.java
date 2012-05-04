@@ -18,7 +18,7 @@ import java.util.Date;
 @PersistenceCapable
 public class Meal implements IsSerializable, Serializable {
 	@PrimaryKey
-    @Persistent(valueStrategy=IdGeneratorStrategy.INCREMENT)
+    @Persistent(valueStrategy=IdGeneratorStrategy.IDENTITY)
     Long id;
 	@Persistent
 	private String label;
