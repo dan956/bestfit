@@ -19,7 +19,7 @@ import java.util.Date;
 public class Workout implements IsSerializable, Serializable {
 	@PrimaryKey
     @Persistent(valueStrategy=IdGeneratorStrategy.INCREMENT)
-    long id;
+    Long id;
     @Persistent
     private String label;
 	@Persistent
