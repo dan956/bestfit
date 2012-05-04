@@ -267,7 +267,7 @@ public class Calculator implements EntryPoint {
 		    final ExerciseItem exerciseItem = exercises.get(NewExerciseItemList.getSelectedIndex());
 		    NewExerciseItemList.setFocus(true);
 		    newWorkout.addExerciseItem(exerciseItem);
-		    TotalCalsTextBox.setText(Double.toString(newWorkout.totalCalories()));
+		    TotalCalsBurnedTextBox.setText(Double.toString(newWorkout.totalCalories()));
 		    // add the stock to the list
 		    int row = ExercisesFlexTable.getRowCount();
 		    ExercisesFlexTable.setText(row, 0, exerciseItem.getName());
@@ -281,10 +281,10 @@ public class Calculator implements EntryPoint {
 		        int removedIndex = newWorkout.indexOfExerciseItem(exerciseItem);
 		        newWorkout.removeExerciseItem(removedIndex);
 		        ExercisesFlexTable.removeRow(removedIndex+1);
-			    TotalCalsTextBox.setText(Double.toString(newWorkout.totalCalories()));
+			    TotalCalsBurnedTextBox.setText(Double.toString(newWorkout.totalCalories()));
 		    }
 		    });
-		    ExercisesFlexTable.setWidget(row, 5, removeExercise);
+		    ExercisesFlexTable.setWidget(row, 3, removeExercise);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
