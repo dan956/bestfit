@@ -1,18 +1,11 @@
 package com.bestfit.server;
-
+import java.util.Calendar;
 import javax.jdo.Query;
 import javax.jdo.PersistenceManager;
-
-
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 
 import com.bestfit.client.*;
 import com.bestfit.data.*;
 import com.bestfit.shared.Bridge;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
@@ -166,22 +159,26 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 	@Override
 	public Bridge getUserMeals() throws IllegalArgumentException {
 		Bridge _msg = new Bridge();
-
 		_msg.email = getLoggedinUserEmail();
 		PersistenceManager pm = getPersistenceManager();
-		// System.out.println("Server(RpcImpl.getUserMeals): Just got PersistenceManager.");
+
 		try {
-			Query q = pm.newQuery(Meal.class, "email == e");
-			q.declareParameters("java.lang.String e");
-			// System.out.println("Server(RpcImpl.getUserMeals): Initialized and about to execute query.");
-			List<Meal> meals = (List<Meal>) q.execute(getLoggedinUserEmail());
+			
+			Calendar calender = Calendar.getInstance();
+			calender.set(Calendar.HOUR_OF_DAY, 0);
+			calender.set(Calendar.MINUTE, 0);
+			calender.set(Calendar.SECOND, 0);
+			calender.set(Calendar.MILLISECOND, 0);
+			
+			
+			Query q = pm.newQuery(Meal.class, "email == e && dateOfMeal >= today");
+			q.declareParameters("java.lang.String e, java.util.Date today");
+
+			List<Meal> meals = (List<Meal>) q.execute(getLoggedinUserEmail(),calender.getTime());
 
 			q = pm.newQuery(FoodItem.class);
 			List<FoodItem> foods = (List<FoodItem>) q.execute();
 
-			// System.out.println("Server(RpcImpl.getUserMeals): Query complete.");
-			// this is necessary because what is returned is
-			// 'org.datanucleus.sco.backed.List' which is not serializable
 			ArrayList<Meal> newMeals = new ArrayList<Meal>();
 			for (Meal meal : meals) {
 				Meal newMeal = new Meal(meal.getEmail(), meal.getLabel(), meal.getDate());
