@@ -6,6 +6,7 @@ import java.util.Random;
 import com.bestfit.data.ExerciseItem;
 import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
+import com.bestfit.data.Workout;
 import com.bestfit.shared.Bridge;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -45,7 +46,9 @@ public class Calculator implements EntryPoint {
 	private ArrayList<Meal> meals = new ArrayList<Meal>();
 	private ArrayList<FoodItem> foods = new ArrayList<FoodItem>();
 	private Meal newMeal;
-	private ArrayList <String> exercises = new ArrayList<String>();
+	private ArrayList <Workout> workouts = new ArrayList<Workout>();
+	private ArrayList <ExerciseItem> exercises = new ArrayList<ExerciseItem>();
+	private Workout newWorkout;
 	private FlexTable FoodsFlexTable;
 	private FlexTable ExercisesFlexTable;
 	
@@ -146,7 +149,8 @@ public class Calculator implements EntryPoint {
 		
 		WorkoutFlexTable = new FlexTable();
 		WorkoutVerticalPanel.add(WorkoutFlexTable);
-		WorkoutFlexTable.setWidth("416px");
+		WorkoutFlexTable.setWidth("451px");
+
 		
 		Label lblExercise = new Label("Exercise:");
 		WorkoutFlexTable.setWidget(0, 0, lblExercise);
@@ -193,6 +197,14 @@ public class Calculator implements EntryPoint {
 		btnNewButton_1.setText("Save");
 		WorkoutFlexTable.setWidget(5, 2, btnNewButton_1);
 		btnNewButton_1.setSize("47px", "24px");
+		
+		ExercisesFlexTable = new FlexTable();
+		WorkoutVerticalPanel.add(ExercisesFlexTable);
+		ExercisesFlexTable.setWidth("451px");
+		ExercisesFlexTable.setText(0, 0, "Exercise Items");
+		ExercisesFlexTable.setText(0, 1, "Time Interval (mins)");
+		ExercisesFlexTable.setText(0, 2, "Calorie Burned / Interval");
+		ExercisesFlexTable.setStyleName("cw-FlexTable");
 		WorkoutFlexTable.getFlexCellFormatter().setColSpan(1, 0, 2);
 		WorkoutFlexTable.getFlexCellFormatter().setColSpan(1, 0, 5);
 		
@@ -220,7 +232,37 @@ public class Calculator implements EntryPoint {
 //				foods.add(items[i]);
 //			}
 //		}
+		
+		
+		
+		// one time run to populate ExerciseItem persistence
+		{
+			// name, burnrate
+			ExerciseItem items[] = new ExerciseItem[13];
+			items[0] = new ExerciseItem("Basketball (leisurely)", 130);
+			items[1] = new ExerciseItem("Bicycling (10 mph)", 125);
+			items[2] = new ExerciseItem("Bicycling (13 mph)", 200);
+			items[3] = new ExerciseItem("Ping pong", 90);
+			items[4] = new ExerciseItem("Running (8 mph)", 305);
+			items[5] = new ExerciseItem("Running (9 mph)", 330);
+			items[6] = new ExerciseItem("Running (10 mph)", 350);
+			items[7] = new ExerciseItem("Soccer", 195);
+			items[8] = new ExerciseItem("Swimming", 120);
+			items[9] = new ExerciseItem("Tennis", 160);
+			items[10] = new ExerciseItem("Walking (3 mph)", 80);
+			items[11] = new ExerciseItem("Walking (4 mph)", 100);
+			items[12] = new ExerciseItem("Weight training", 190);
+			for (int i = 0; i < items.length; i++) {
+				saveExerciseItem(items[i]);
+				saveExerciseItem(items[i]);
+				NewExerciseItem.addItem(items[i].getName());
+				exercises.add(items[i]);
+			}
+		}
+		
+		
 		newMeal = new Meal(email);
+		newWorkout = new Workout(email);
 		startAsynchronous();
 	}
 	
@@ -259,35 +301,31 @@ public class Calculator implements EntryPoint {
 	}	
 
 	protected void addWorkout() {
-	    final String ExerciseItem = NewExerciseItem.getItemText(NewExerciseItem.getSelectedIndex());
-	    NewExerciseItem.setFocus(true);
-	     
-	    NewExerciseItem.setTitle("");
-	    int totalCals = Integer.parseInt(TotalCalsBurnedTextBox.getText());
-	    int cals = new Random().nextInt(200);
-	    String ExerciseCals = Integer.toString(cals);
-	    TotalCalsBurnedTextBox.setText(Integer.toString(totalCals + cals));
-	    
-	    // add the stock to the list
-	    int row = ExercisesFlexTable.getRowCount();
-	    exercises.add(ExerciseItem);
-	    ExercisesFlexTable.setText(row, 0, ExerciseItem);
-	    ExercisesFlexTable.setText(row, 1, ExerciseCals);
-	    
+		try {
+		    final ExerciseItem exerciseItem = exercises.get(NewExerciseItem.getSelectedIndex());
+		    NewExerciseItem.setFocus(true);
+		    newWorkout.addExerciseItem(exerciseItem);
+		    TotalCalsTextBox.setText(Double.toString(newWorkout.totalCalories()));
+		    // add the stock to the list
+		    int row = ExercisesFlexTable.getRowCount();
+		    ExercisesFlexTable.setText(row, 0, exerciseItem.getName());
+		    ExercisesFlexTable.setText(row, 1, Integer.toString(10));
+		    ExercisesFlexTable.setText(row, 2, Double.toString(exerciseItem.getBurnRate()));
 
-	    // add button to remove this stock from the list
-	    Button removeExercise = new Button("x");
-	    removeExercise.addClickHandler(new ClickHandler() {
-	    public void onClick(ClickEvent event) {                    
-	        int removedIndex = exercises.lastIndexOf(ExerciseItem);
-	        exercises.remove(removedIndex);
-		    int totalCals = Integer.parseInt(TotalCalsTextBox.getText());
-		    int cals = Integer.parseInt(ExercisesFlexTable.getText(removedIndex, 1));
-	        ExercisesFlexTable.removeRow(removedIndex);
-		    TotalCalsBurnedTextBox.setText(Integer.toString(totalCals - cals));
-	    }
-	    });
-	    ExercisesFlexTable.setWidget(row, 2, removeExercise); 
+		    // add button to remove this stock from the list
+		    Button removeExercise = new Button("x");
+		    removeExercise.addClickHandler(new ClickHandler() {
+		    public void onClick(ClickEvent event) {
+		        int removedIndex = newWorkout.indexOfExerciseItem(exerciseItem);
+		        newWorkout.removeExerciseItem(removedIndex);
+		        ExercisesFlexTable.removeRow(removedIndex+1);
+			    TotalCalsTextBox.setText(Double.toString(newWorkout.totalCalories()));
+		    }
+		    });
+		    ExercisesFlexTable.setWidget(row, 5, removeExercise);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 	}	
 	
 	public void getUserMeals() {
@@ -349,54 +387,28 @@ public class Calculator implements EntryPoint {
 	
 	
 	
-	// one time run to populate ExerciseItem persistence
-//	{
-//		// name, burnrate
-//		ExerciseItem items[] = new ExerciseItem[13];
-//		items[0] = new ExerciseItem("Basketball (leisurely), 10 mins", 130);
-//		items[1] = new ExerciseItem("Bicycling (10 mph), 10 mins", 125);
-//		items[2] = new ExerciseItem("Bicycling (13 mph), 10 mins", 200);
-//		items[3] = new ExerciseItem("Ping pong, 10 mins", 90);
-//		items[4] = new ExerciseItem("Running (8 mph), 10 mins", 305);
-//		items[5] = new ExerciseItem("Running (9 mph), 10 mins", 330);
-//		items[6] = new ExerciseItem("Running (10 mph), 10 mins", 350);
-//		items[7] = new ExerciseItem("Soccer, 10 mins", 195);
-//		items[8] = new ExerciseItem("Swimming, 10 mins", 120);
-//		items[9] = new ExerciseItem("Tennis, 10 mins", 160);
-//		items[10] = new ExerciseItem("Walking (3 mph), 10 mins", 80);
-//		items[11] = new ExerciseItem("Walking (4 mph), 10 mins", 100);
-//		items[12] = new ExerciseItem("Weight training, 10 mins", 190);
-//		for (int i = 0; i < items.length; i++) {
-//			saveExerciseItem(items[i]);
-//			saveExerciseItem(items[i]);
-//			NewExerciseItem.addItem(items[i].getName());
-//			exercises.add(items[i]);
-//		}
-//	}
 	
 	
 	
-	
-	
-//	private void saveFoodItem(FoodItem item) {
-//		Bridge msg = new Bridge();
-//		msg.foodItem = item;
-//		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
-//			public void onFailure(Throwable caught) {}
-//
-//			public void onSuccess(Boolean result) {}
-//		});
-//	}	
+	private void saveFoodItem(FoodItem item) {
+		Bridge msg = new Bridge();
+		msg.foodItem = item;
+		rpc.saveFoodItem(msg, new AsyncCallback<Boolean>() {
+			public void onFailure(Throwable caught) {}
+
+			public void onSuccess(Boolean result) {}
+		});
+	}	
 	
 	
 	
-//	private void saveExerciseItem(ExerciseItem item) {
-//		Bridge msg = new Bridge();
-//		msg.exerciseItem = item;
-//		rpc.saveExerciseItem(msg, new AsyncCallback<Boolean>() {
-//			public void onFailure(Throwable caught) {}
-//
-//			public void onSuccess(Boolean result) {}
-//		});
-//	}
+	private void saveExerciseItem(ExerciseItem item) {
+		Bridge msg = new Bridge();
+		msg.exercise = item;
+		rpc.saveExerciseItem(msg, new AsyncCallback<Boolean>() {
+			public void onFailure(Throwable caught) {}
+
+			public void onSuccess(Boolean result) {}
+		});
+	}
 }
