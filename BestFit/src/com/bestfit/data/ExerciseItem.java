@@ -4,24 +4,18 @@ package com.bestfit.data;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
+import javax.jdo.annotations.PrimaryKey;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.io.Serializable;
 
 @PersistenceCapable
 public class ExerciseItem implements IsSerializable, Serializable {
 
-	@Id
-	@GeneratedValue
-	long id;
 	@Persistent
+	@PrimaryKey
 	private String name;
 	@Persistent
 	private double burnRate;
-	
-
 	@NotPersistent
 	private static final long serialVersionUID = 3881785407988537441L;
 

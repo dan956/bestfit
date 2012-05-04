@@ -1,11 +1,10 @@
 package com.bestfit.data;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.NotPersistent;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
+import javax.jdo.annotations.PrimaryKey;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 //import com.google.appengine.api.datastore.Key;
@@ -18,9 +17,9 @@ import java.util.Date;
 
 @PersistenceCapable
 public class Meal implements IsSerializable, Serializable {
-	@Id
-	@GeneratedValue
-	long id;
+	@PrimaryKey
+    @Persistent(valueStrategy=IdGeneratorStrategy.INCREMENT)
+    long id;
 	@Persistent
 	private String label;
 	@Persistent

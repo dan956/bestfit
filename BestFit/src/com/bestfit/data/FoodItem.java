@@ -6,9 +6,7 @@ import java.io.Serializable;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
+import javax.jdo.annotations.PrimaryKey;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 //import com.google.appengine.api.datastore.Key;
@@ -16,15 +14,13 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable
 public class FoodItem implements IsSerializable, Serializable {
-	@Id
-	@GeneratedValue
-	long id;
 	@Persistent
+	@PrimaryKey
 	String name;
 	@Persistent
-	int calories;
+	double calories;
 	@Persistent
-	int fatCalories;
+	double fatCalories;
 	@Persistent
 	double fatGrams;
 	@Persistent
@@ -63,7 +59,7 @@ public class FoodItem implements IsSerializable, Serializable {
 		name = _name;
 	}
 	
-	public int getCalories() {
+	public double getCalories() {
 		return calories;
 	}
 	
@@ -72,7 +68,7 @@ public class FoodItem implements IsSerializable, Serializable {
 		calories = _calories;
 	}
 	
-	public int getFatCalories() {
+	public double getFatCalories() {
 		return fatCalories;
 	}
 	

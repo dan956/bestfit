@@ -210,8 +210,8 @@ public class CalculatorOld implements EntryPoint {
 	    // add the stock to the list
 	    int row = FoodsFlexTable.getRowCount();
 	    FoodsFlexTable.setText(row, 0, foodItem.getName());
-	    FoodsFlexTable.setText(row, 1, Integer.toString(foodItem.getCalories()));
-	    FoodsFlexTable.setText(row, 2, Integer.toString(foodItem.getFatCalories()));
+	    FoodsFlexTable.setText(row, 1, Double.toString(foodItem.getCalories()));
+	    FoodsFlexTable.setText(row, 2, Double.toString(foodItem.getFatCalories()));
 	    FoodsFlexTable.setText(row,	3, Double.toString(foodItem.getFatGrams()));
 	    FoodsFlexTable.setText(row, 4, Double.toString(foodItem.getCarbohydrates()));
 
