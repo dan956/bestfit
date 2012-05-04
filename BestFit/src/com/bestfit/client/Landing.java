@@ -163,6 +163,7 @@ public class Landing implements EntryPoint {
 				mealsFlexTable.setText(0, 0, "Name");
 				mealsFlexTable.setText(0, 1, "Meal Items");
 				mealsFlexTable.setText(0, 2, "Calories");
+				//mealsFlexTable.setText(0, 3, "Date");
 
 				mealsFlexTable.getCellFormatter().addStyleName(0, 0, "mealsListHeader");
 				mealsFlexTable.getCellFormatter().addStyleName(0, 1, "mealsListHeader");
@@ -172,6 +173,8 @@ public class Landing implements EntryPoint {
 				
 				double cal =0.0;
 				int row=0;
+				String tmpDate = null;
+				
 				for(Meal meal: result.meals){
 					row++;
 					mealsFlexTable.setText(row, 0, meal.getLabel());
@@ -186,6 +189,9 @@ public class Landing implements EntryPoint {
 					mealsFlexTable.getCellFormatter().addStyleName(row, 1, "mealsListRow");
 					mealsFlexTable.setText(row, 2, String.valueOf(meal.totalCalories()));
 					mealsFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
+					//tmpDate = 
+					//System.out.println(meal.getDate().);
+					//mealsFlexTable.setText(row, 3, meal.getDate().toString());
 					
 					cal +=  meal.totalCalories();
 					
