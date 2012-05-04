@@ -33,6 +33,7 @@ public class Goal implements EntryPoint {
 	private TextBox textBox_1;
 	private TextBox textBox_3;
 	private Button btnNewButton_1;
+	private Button btnNewButton;
 	private DateBox dateBox;
 	private  double BMR= 0.0;
 
@@ -146,9 +147,11 @@ public class Goal implements EntryPoint {
 				flexTable.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 				flexTable.getCellFormatter().setHorizontalAlignment(3, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 				
-				Button btnNewButton = new Button("New button");
+				btnNewButton = new Button("New button");
 				btnNewButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
+						
+						btnNewButton.setEnabled(false);
 						
 						Date currentTime = new Date(); 
 						
@@ -161,7 +164,7 @@ public class Goal implements EntryPoint {
 							
 							@Override
 							public void onSuccess(String result) {
-								System.out.print(result);
+								Window.Location.assign("/landing.html");
 								
 							}
 							
