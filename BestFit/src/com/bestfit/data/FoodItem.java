@@ -3,11 +3,11 @@ package com.bestfit.data;
 //import javax.jdo.annotations.Extension;
 import java.io.Serializable;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -16,9 +16,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable
 public class FoodItem implements IsSerializable, Serializable {
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-//	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	@Id
+	@GeneratedValue
+	long id;
+	@Persistent
 	String name;
 	@Persistent
 	int calories;

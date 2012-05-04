@@ -2,8 +2,10 @@ package com.bestfit.data;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.NotPersistent;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 //import com.google.appengine.api.datastore.Key;
@@ -12,14 +14,19 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 //import org.apache.commons.lang.Validate;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 @PersistenceCapable
 public class Workout implements IsSerializable, Serializable {
+	@Id
+	@GeneratedValue
+	long id;
     @Persistent
-    @PrimaryKey
     private String label;
 	@Persistent
 	private String email;
+	@Persistent
+	private Date dateOfWorkout;
     @Persistent
     private ArrayList<String> exerciseItemNames;
     @NotPersistent
@@ -30,13 +37,15 @@ public class Workout implements IsSerializable, Serializable {
     public Workout() {
     	super();
     }
+    
     public Workout(String _email) {
-    	this(_email, "DefaultWorkoutLabel");
+    	this(_email, "DefaultWorkoutLabel", new Date());
     }
     
-	public Workout(String _email, String _label){
+	public Workout(String _email, String _label, Date _dateOfWorkout) {
 		email = _email;
 		label = _label;
+		dateOfWorkout = _dateOfWorkout;
 		exerciseItemNames = new ArrayList<String>();
 		exerciseItems = new ArrayList<ExerciseItem>();
 	}
@@ -55,6 +64,14 @@ public class Workout implements IsSerializable, Serializable {
 	
 	public void setLabel(String _label) {
 		label = _label;
+	}
+	
+	public Date getDateOfWorkout() {
+		return dateOfWorkout;
+	}
+	
+	public void setDateOfWorkout(Date _dateOfWorkout) {
+		dateOfWorkout = _dateOfWorkout;
 	}
 	
 	public ArrayList<String> getExerciseItemNamesList() {

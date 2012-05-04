@@ -181,7 +181,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 			ArrayList<Meal> newMeals = new ArrayList<Meal>();
 			for (Meal meal : meals) {
-				Meal newMeal = new Meal(meal.getEmail(), meal.getLabel(), meal.getDate());
+				Meal newMeal = new Meal(meal.getEmail(), meal.getLabel(), meal.getDateOfMeal());
 				for (String name : meal.getFoodItemNamesList())
 					for (FoodItem item : foods)
 						if (item.getName().equals(name)) {
@@ -424,7 +424,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 
 			ArrayList<Workout> newWorkouts = new ArrayList<Workout>();
 			for (Workout workout : workouts) {
-				Workout newWorkout = new Workout(workout.getEmail(), workout.getLabel());
+				Workout newWorkout = new Workout(workout.getEmail(), workout.getLabel(), workout.getDateOfWorkout());
 				for (String name : workout.getExerciseItemNamesList())
 					for (ExerciseItem item : exercises)
 						if (item.getName().equals(name)) {
