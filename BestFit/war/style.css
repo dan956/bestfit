@@ -469,6 +469,8 @@ html>body .gwt-DecoratorPanel {
 }
 
 .mealsTotalCalories {
-  text-align:right;
+  text-align:left;
+  font-size:small;
+  font-weight:Bold;
 }
 
