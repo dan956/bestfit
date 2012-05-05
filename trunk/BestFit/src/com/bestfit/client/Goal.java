@@ -35,7 +35,7 @@ public class Goal implements EntryPoint {
 	private Button btnNewButton_1;
 	private Button btnNewButton;
 	private DateBox dateBox;
-	private  double BMR= 0.0;
+	static double BMR= 0.0;
 
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	
@@ -115,25 +115,27 @@ public class Goal implements EntryPoint {
 							@Override
 							public void onSuccess(Double result) {
 								
-								BMR =result;
+								Goal.BMR =result;
+								
+								// calc time
+								Date today = new Date();
+
+								long diff =   dateBox.getValue().getTime() - today.getTime();
+								
+								diff /=  (1000 * 60 * 60 * 24);
+								
+								
+								// CalsPerDay = BMR + 3500 * (Target_Weight - Current_Weight) / Days_Remaining
+								double CalsPerDay = Goal.BMR + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
+								
+								
+								textBox_3.setText( String.valueOf(CalsPerDay));
+								
 								
 							}
 						});
 						
 						
-						// calc time
-						Date today = new Date();
-
-						long diff =   dateBox.getValue().getTime() - today.getTime();
-						
-						diff /=  (1000 * 60 * 60 * 24);
-						
-						
-						// CalsPerDay = BMR + 3500 * (Target_Weight - Current_Weight) / Days_Remaining
-						double CalsPerDay = BMR + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
-						
-						
-						textBox_3.setText( String.valueOf(CalsPerDay));
 						
 						
 						
