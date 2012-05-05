@@ -12,7 +12,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
@@ -26,6 +25,8 @@ public class Landing implements EntryPoint {
 
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	private TextBox textBox;
+	static double mealCal;
+	static double workoutCal;
 
 	@Override
 	public void onModuleLoad() {
@@ -71,14 +72,35 @@ public class Landing implements EntryPoint {
 						RootPanel root = RootPanel.get("CalPerDay");
 						
 						DecoratorPanel perDayDecoratorPanel = new DecoratorPanel();
+						perDayDecoratorPanel.setWidth("180px");
 						root.add(perDayDecoratorPanel);
 						
 						FlexTable cPerDayFlexTable = new FlexTable();
 
+						
+						String message="";
+						double gainedToday = Landing.mealCal - Landing.workoutCal;
+						
+						if(CalsPerDay>0){
+							message = "<b>You should gain: </b></br><pre>        "+CalsPerDay +" cal/day</pre>";
+						}else{
+							message = "<b>You should burn: </b></br><pre>        "+CalsPerDay +" cal/day</pre>";
+						}
+						
+						message += "<b>Regular activitiy burns: </b></br><pre>        "+2000 +" cal/day</pre>";
+						
+						if(gainedToday>0){
+							message += "<b>Today you gained: </b></br><pre>        "+gainedToday +" cal</pre>";							
+						}else{
+							message += "<b>Today you burned: </b></br><pre>        "+gainedToday +" cal</pre>";
+						}
+						
+						HTML html = new HTML(message);
+						
+						
+						cPerDayFlexTable.setWidget(0, 0, html);					
 
-
-						Label lblNewLabel = new Label(CalsPerDay+"");
-						cPerDayFlexTable.setWidget(0, 0, lblNewLabel);
+						cPerDayFlexTable.getCellFormatter().addStyleName(0, 0, "calorieSummary");
 						
 						perDayDecoratorPanel.add(cPerDayFlexTable);
 
@@ -118,6 +140,7 @@ public class Landing implements EntryPoint {
 				RootPanel rootPanel = RootPanel.get("WeightCon");
 
 				DecoratorPanel weightDecoratorPanel = new DecoratorPanel();
+				weightDecoratorPanel.setWidth("180px");
 				rootPanel.add(weightDecoratorPanel);
 
 				FlexTable weightFlexTable = new FlexTable();
@@ -184,9 +207,7 @@ public class Landing implements EntryPoint {
 					long diff =  result.goals.get(result.goals.size()-1).getTargetDate().getTime() - today.getTime();
 
 					diff /=  (1000 * 60 * 60 * 24);
-
-
-					double TargetWeight = result.goals.get(result.goals.size()-1).getTargetWeight();
+					
 					displayGoal+="Your current goal is to maintain "+result.goals.get(result.goals.size()-1).getTargetWeight()
 							+" pounds in "+ String.valueOf(diff) +" days";
 
@@ -230,9 +251,8 @@ public class Landing implements EntryPoint {
 					mealsFlexTable.getCellFormatter().addStyleName(0, 1, "mealsListHeader");
 					mealsFlexTable.getCellFormatter().addStyleName(0, 2, "mealsListHeader");
 
-					double cal =0.0;
+					double mealCalToday =0.0;
 					int row=0;
-					String tmpDate = null;
 
 					for(Meal meal: result.meals){
 						row++;
@@ -250,11 +270,14 @@ public class Landing implements EntryPoint {
 						mealsFlexTable.setText(row, 2, String.valueOf(meal.totalCalories()));
 						mealsFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
 
-						cal +=  meal.totalCalories();
+						mealCalToday +=  meal.totalCalories();
 
 					}
-					//mealsTotalCalories
-					mealsFlexTable.setText(row+1, 1, "Total Calories ="+cal);
+					
+					Landing.mealCal = mealCalToday;
+					
+					HTML html = new HTML("</br>Total Calories ="+mealCalToday);
+					mealsFlexTable.setWidget(row+1, 1, html);
 					mealsFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
 
 					rootPanel.add(mealsFlexTable);
@@ -287,7 +310,7 @@ public class Landing implements EntryPoint {
 					workoutFlexTable.setWidth("390px");
 
 					workoutFlexTable.setText(0, 0, "Name");
-					workoutFlexTable.setText(0, 1, "Workeout");
+					workoutFlexTable.setText(0, 1, "Workout");
 					workoutFlexTable.setText(0, 2, "Calories");
 
 
@@ -296,10 +319,9 @@ public class Landing implements EntryPoint {
 					workoutFlexTable.getCellFormatter().addStyleName(0, 2, "mealsListHeader");
 
 
-					double cal =0.0;
+					double workOutCalToday =0.0;
 					int row=0;
-					String tmpDate = null;
-
+					
 					for(Workout work : result.workouts)
 					{
 						row++;
@@ -317,17 +339,18 @@ public class Landing implements EntryPoint {
 						workoutFlexTable.setText(row, 2, String.valueOf(work.totalCaloriesBurned()));
 						workoutFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
 
-						cal +=  work.totalCaloriesBurned();
+						workOutCalToday +=  work.totalCaloriesBurned();
 
 
 					}
 
-					workoutFlexTable.setText(row+1, 1, "Total Calories ="+cal);
+					Landing.workoutCal = workOutCalToday;
+					HTML html = new HTML("</br>Total Calories ="+workOutCalToday);
+					workoutFlexTable.setWidget(row+1, 1, html);
+					
 					workoutFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
 					
 					rootPanel.add(workoutFlexTable);
-
-					//goalDecoratorPanel.setWidget(workoutFlexTable);
 				}
 
 			}
