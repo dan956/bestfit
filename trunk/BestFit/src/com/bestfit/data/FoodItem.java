@@ -107,7 +107,7 @@ public class FoodItem implements IsSerializable, Serializable {
 	public boolean equals(Object o) {
 		if (o == null) return false;
 		FoodItem item = (FoodItem)o;
-		return name.equals(item.name) && calories == item.calories && fatCalories == item.fatCalories && fatGrams == item.fatGrams && carbohydrates == item.carbohydrates && protein == item.protein;
+		return name.equals(item.name);
 	}
 
 	public String toString() {

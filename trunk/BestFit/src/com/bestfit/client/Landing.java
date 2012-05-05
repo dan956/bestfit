@@ -249,10 +249,10 @@ public class Landing implements EntryPoint {
 					
 					workoutFlexTable.setText(row, 1, itemTitle);
 					workoutFlexTable.getCellFormatter().addStyleName(row, 1, "mealsListRow");
-					workoutFlexTable.setText(row, 2, String.valueOf(work.totalCalories()));
+					workoutFlexTable.setText(row, 2, String.valueOf(work.totalCaloriesBurned()));
 					workoutFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
 					
-					cal +=  work.totalCalories();
+					cal +=  work.totalCaloriesBurned();
 					
 					
 				}
