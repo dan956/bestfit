@@ -28,6 +28,9 @@ public class Workout implements IsSerializable, Serializable {
 	private Date dateOfWorkout;
     @Persistent
     private ArrayList<String> exerciseItemNames;
+    @Persistent
+    private ArrayList<Integer> exerciseItemTimes;
+    
     @NotPersistent
     private ArrayList<ExerciseItem> exerciseItems;
     @NotPersistent
@@ -47,6 +50,7 @@ public class Workout implements IsSerializable, Serializable {
 		dateOfWorkout = _dateOfWorkout;
 		exerciseItemNames = new ArrayList<String>();
 		exerciseItems = new ArrayList<ExerciseItem>();
+		exerciseItemTimes = new ArrayList<Integer>();
 	}
 	
 	public String getEmail() {
@@ -81,54 +85,85 @@ public class Workout implements IsSerializable, Serializable {
 		exerciseItemNames = _exerciseItemNames;
 	}
 	
-	public void addExerciseItem(ExerciseItem _exerciseItem) {
-		exerciseItems.add(_exerciseItem);
-		exerciseItemNames.add(_exerciseItem.getName());
+	/**
+	 * @return true if exerciseItem was added as a new item, returns false if exerciseItem
+	 * was already in list and only quantity was incremented
+	 */
+	public boolean addExerciseItem(ExerciseItem _exerciseItem) {
+		int index = exerciseItems.indexOf(_exerciseItem);
+		if (index < 0) {
+			exerciseItems.add(_exerciseItem);
+			exerciseItemNames.add(_exerciseItem.getName());
+			exerciseItemTimes.add(5);
+			return true;
+		}
+		else {
+			exerciseItemTimes.add(index, exerciseItemTimes.remove(index) + 5);
+			return false;
+		}
 	}
-	
+
 	public int indexOfExerciseItem(ExerciseItem _exerciseItem){
 		return exerciseItems.indexOf(_exerciseItem);
 	}
 	
-	public void addexerciseItem(int index, ExerciseItem _exerciseItem) {
-		exerciseItems.add(index, _exerciseItem);
-		exerciseItemNames.add(index, _exerciseItem.getName());
+	public int indexOfExerciseItemByName(String _exerciseItemName) {
+		return exerciseItemNames.indexOf(_exerciseItemName);
 	}
 	
-	public ExerciseItem removeExerciseItem(int index) {
-		exerciseItemNames.remove(index);
-		return exerciseItems.remove(index);
+	public ExerciseItem removeExerciseItem(int _index) {
+		exerciseItemTimes.remove(_index);
+		exerciseItemNames.remove(_index);
+		return exerciseItems.remove(_index);
 	}
 	
 	public boolean removeExerciseItem(ExerciseItem _exerciseItem) {
+		try {
+			exerciseItemTimes.remove(exerciseItems.indexOf(_exerciseItem));
+		} catch (Exception e) { return false; }
 		exerciseItemNames.remove(_exerciseItem.getName());
 		return exerciseItems.remove(_exerciseItem);
 	}
 	
 	public ExerciseItem getExerciseItemByName(String _exerciseItemName) {
-		ArrayList<ExerciseItem> exerciseItems = getExerciseItems();
 		for (ExerciseItem item : exerciseItems) {
 			if (item.getName().equals(_exerciseItemName))
 				return item;
 		}
-		return new ExerciseItem();
+		return null;
 	}
 	
 	public int numExerciseItems() {
 		return exerciseItems.size();
 	}
 	
-	public double totalCalories() {
+	public double totalCaloriesBurned() {
 		double total = 0;
 		for (ExerciseItem item : getExerciseItems())
-			total += item.getBurnRate();
-		return total;
+			total += ((double)(item.getBurnRate30() * getDuration(item))) / (double)30;
+		if ((((double)Math.round(total * 10)) / (double)10) == 0)
+			System.out.println(" totalCaloriesBurned = 0");
+		else
+			System.out.println(" totalCaloriesBurned <> 0");
+		return ((double)Math.round(total * 10)) / (double)10;
+	}
+	
+	public int getDuration(ExerciseItem _exerciseItem) {
+		try {
+			return exerciseItemTimes.get(exerciseItems.indexOf(_exerciseItem));
+		} catch (IndexOutOfBoundsException e) { return 0; }
+	}
+	
+	public int getDuration(int _index) {
+		try {
+			return exerciseItemTimes.get(_index);
+		} catch (IndexOutOfBoundsException e) { return 0; }
 	}
 	
 	public boolean equals(Object o) {
 		if (o == null) return false;
 		Workout workout = (Workout)o;
-		return email.equals(workout.email) && label.equals(workout.label) && getExerciseItems().equals(workout.getExerciseItems());
+		return email.equals(workout.email) && id.equals(workout.id);
 	}
 	
 	public ArrayList<ExerciseItem> getExerciseItems() {
@@ -136,13 +171,21 @@ public class Workout implements IsSerializable, Serializable {
 	}
 	
 	public String toString() {
-		String str = "[LABEL:\"" + label + "\":(";
+		String str = "[LABEL:\"" + label + "\"[" + dateOfWorkout + "]:(";
 		for (ExerciseItem item : getExerciseItems())
-			str += "ITEM:" + item.toString() + ",";
-		if (str.length() <= 11 + label.length())
+			str += "EXERCISE:" + item.toString() + "[" + getDuration(item) + "mins],";
+		if (exerciseItems.size() > 0)
 			str = str.substring(0, str.length() - 1);
 		str += ")]";
 		return str;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long _id) {
+		id = _id;
 	}
 	
 }
