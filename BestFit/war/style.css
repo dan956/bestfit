@@ -460,8 +460,8 @@ html>body .gwt-DecoratorPanel {
 .mealsListHeader {
   background-color: #E80000;
   color: white;
-  font-style: italic;
-  font-size: small;
+  font-weight:Bold;
+  font-size: regular;
   text-align:center;
 }
 .mealsListRow {
@@ -474,3 +474,7 @@ html>body .gwt-DecoratorPanel {
   font-weight:Bold;
 }
 
+.calorieSummary {
+  text-align:left;
+  font-size: small;
+}
