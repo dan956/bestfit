@@ -356,8 +356,10 @@ public class Calculator implements EntryPoint {
 					flexTable.setText(0, 3, meal.totalFatGrams() + ",");
 					flexTable.setText(0, 4, meal.totalCarbohydrates() + ",");
 					flexTable.setText(0, 5, meal.totalProtein() + ")");
-					for (int i = 0; i < meal.getFoodItems().size(); i++)
+					for (int i = 0; i < meal.getFoodItems().size(); i++) {
 						flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
+						flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
+					}
 				}
 			}
 		});
@@ -384,8 +386,10 @@ public class Calculator implements EntryPoint {
 					WorkoutsListFlexTable.setWidget(workouts.indexOf(workout), 0, flexTable);
 					flexTable.setText(0, 0, workout.getLabel() + "[" + workout.getDateOfWorkout() + "]:");
 					flexTable.setText(0, 1, "(" + workout.totalCaloriesBurned() + ")");
-					for (int i = 0; i < workout.getExerciseItems().size(); i++)
+					for (int i = 0; i < workout.getExerciseItems().size(); i++) {
 						flexTable.setText(i + 1, 0, "-" + workout.getExerciseItems().get(i).getName());
+						flexTable.setText(i + 1, 1, workout.getDuration(i) + " mins");
+					}
 				}
 			}
 		});
