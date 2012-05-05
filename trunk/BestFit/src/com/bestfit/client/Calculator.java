@@ -12,6 +12,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -67,6 +68,7 @@ public class Calculator implements EntryPoint {
 		tabPanel = new TabPanel();
 		rootPanel.add(tabPanel);
 		tabPanel.setSize("500px", "350px");
+		tabPanel.setAnimationEnabled(true);
 		
 		tabPanel.addStyleName("table-center");
 		
@@ -117,6 +119,15 @@ public class Calculator implements EntryPoint {
 	    FoodsFlexTable.setText(0, 6, "Protein");
 		FoodsFlexTable.setStyleName("cw-FlexTable");
 		
+		FoodsFlexTable.getCellFormatter().addStyleName(0, 0, "calculatorlistheader");
+		FoodsFlexTable.getCellFormatter().addStyleName(0, 1, "calculatorlistheader");
+		FoodsFlexTable.getCellFormatter().addStyleName(0, 2, "calculatorlistheader");
+		FoodsFlexTable.getCellFormatter().addStyleName(0, 3, "calculatorlistheader");
+		FoodsFlexTable.getCellFormatter().addStyleName(0, 4, "calculatorlistheader");
+		FoodsFlexTable.getCellFormatter().addStyleName(0, 5, "calculatorlistheader");
+		FoodsFlexTable.getCellFormatter().addStyleName(0, 6, "calculatorlistheader");
+		FoodsFlexTable.setVisible(false);
+		
 		Label lblTotalCalories = new Label("Total Calories:");
 		lblTotalCalories.setStylePrimaryName("gwt-TotalCa");
 		MealFlexTable.setWidget(3, 0, lblTotalCalories);
@@ -152,7 +163,8 @@ public class Calculator implements EntryPoint {
 		
 		/* Previously stored Meals */
 		
-		MealVerticalPanel.add(new Label("Previous Meals:"));
+		MealVerticalPanel.add(new HTML("</br></br>Previous Meals:"));
+		
 		
 		MealsListFlexTable = new FlexTable();
 		MealVerticalPanel.add(MealsListFlexTable);
@@ -202,6 +214,10 @@ public class Calculator implements EntryPoint {
 	    ExercisesFlexTable.setText(0, 2, "Burn Rate (/ 30 mins)");
 		ExercisesFlexTable.setStyleName("cw-FlexTable");
 		
+		ExercisesFlexTable.getCellFormatter().addStyleName(0, 0, "calculatorlistheader");
+		ExercisesFlexTable.getCellFormatter().addStyleName(0, 1, "calculatorlistheader");
+		ExercisesFlexTable.getCellFormatter().addStyleName(0, 2, "calculatorlistheader");
+		ExercisesFlexTable.setVisible(false);
 		
 		Label lblTotalCaloriesBurned = new Label("Total Calories:");
 		lblTotalCaloriesBurned.setStylePrimaryName("gwt-TotalCa");
@@ -237,7 +253,7 @@ public class Calculator implements EntryPoint {
 
 		/* Previously stored Workouts */
 		
-		WorkoutVerticalPanel.add(new Label("Previous Workouts:"));
+		WorkoutVerticalPanel.add(new HTML("</br></br>Previous Workouts:"));
 		
 		WorkoutsListFlexTable = new FlexTable();
 		WorkoutVerticalPanel.add(WorkoutsListFlexTable);
@@ -260,6 +276,7 @@ public class Calculator implements EntryPoint {
 
 	protected void addFood() {
 		try {
+			FoodsFlexTable.setVisible(true);
 		    final FoodItem foodItem = foods.get(NewFoodItemList.getSelectedIndex());
 		    NewFoodItemList.setFocus(true);
 		    int row;
@@ -301,6 +318,7 @@ public class Calculator implements EntryPoint {
 
 	protected void addExercise() {
 		try {
+			ExercisesFlexTable.setVisible(true);
 		    final ExerciseItem exerciseItem = exercises.get(NewExerciseItemList.getSelectedIndex());
 		    NewExerciseItemList.setFocus(true);
 		    int row, qty;
