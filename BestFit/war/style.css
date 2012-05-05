@@ -351,7 +351,7 @@ td.datePickerMonth {
 }
 
 .gwt-TabPanelBottom {
-  background-color: #E8E8E8;
+  background-color: #FFFFFF;
 }
 
 .gwt-TabBar {
@@ -363,7 +363,7 @@ td.datePickerMonth {
 .gwt-TabBarItem {
   padding: 4px;
   cursor: pointer;
-  background-color: #e8e8e8;
+  background-color: #878787;
   border-bottom: 2px solid white;
   margin-right: 2px;
 }
@@ -373,7 +373,7 @@ td.datePickerMonth {
   font-weight: bold;
   cursor: default;
 
-  background-color: #878787;
+  background-color: #FFFFFF;
   border-bottom: 2px solid #87ffff;
   margin-right: 2px;
 }
@@ -465,7 +465,7 @@ html>body .gwt-DecoratorPanel {
   text-align:center;
 }
 .mealsListRow {
-  font-size: small;
+  font-size: small;  
 }
 
 .mealsTotalCalories {
@@ -477,4 +477,12 @@ html>body .gwt-DecoratorPanel {
 .calorieSummary {
   text-align:left;
   font-size: small;
+}
+
+.calculatorlistheader {
+  background-color: #E80000;
+  color: white;
+  font-weight:Bold;
+  font-size: regular;
+  text-align:center;
 }

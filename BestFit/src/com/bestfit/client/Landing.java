@@ -6,6 +6,7 @@ import com.bestfit.data.FoodItem;
 import com.bestfit.data.Meal;
 import com.bestfit.data.Workout;
 import com.bestfit.shared.Bridge;
+import com.google.gwt.thirdparty.guava.common.primitives.UnsignedBytes;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.core.client.EntryPoint;
@@ -84,32 +85,39 @@ public class Landing implements EntryPoint {
 						if(CalsPerDay>0){
 							message = "<b>You should gain: </b></br><pre>        "+CalsPerDay +" cal/day</pre>";
 						}else{
+							CalsPerDay = 0 - CalsPerDay;
 							message = "<b>You should burn: </b></br><pre>        "+CalsPerDay +" cal/day</pre>";
 						}
 						
 						message += "<b>Regular activitiy burns: </b></br><pre>        "+2000 +" cal/day</pre>";
 						
 						if(gainedToday>0){
-							message += "<b>Today you gained: </b></br><pre>        "+gainedToday +" cal</pre>";							
-						}else{
-							message += "<b>Today you burned: </b></br><pre>        "+gainedToday +" cal</pre>";
+							message += "<b>From today's meal/workout: </b></br><pre>        "+gainedToday +" cal</pre>";							
+						}else{							
+							message += "<b>From today's meal/workout</b></br><pre>        "+gainedToday +" cal</pre>";
+							gainedToday = 0 - gainedToday;
 						}
 						
-						HTML html = new HTML(message);
+						double resultCals = CalsPerDay - 2000 + gainedToday;
+						
+						if(resultCals>0){
+							
+							message += "<b>Today you gained: </b></br><pre>        "+resultCals +" cal</pre>";							
+						}else{
+							gainedToday = 0 - gainedToday;
+							message += "<b>Today you burned: </b></br><pre>        "+resultCals +" cal</pre>";
+						}
 						
 						
-						cPerDayFlexTable.setWidget(0, 0, html);					
-
+						HTML html = new HTML(message);						
+						cPerDayFlexTable.setWidget(0, 0, html);
 						cPerDayFlexTable.getCellFormatter().addStyleName(0, 0, "calorieSummary");
-						
 						perDayDecoratorPanel.add(cPerDayFlexTable);
-
 
 					}
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
 
 					}
 				});				
