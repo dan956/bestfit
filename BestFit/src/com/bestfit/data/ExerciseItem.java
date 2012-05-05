@@ -28,11 +28,11 @@ public class ExerciseItem implements IsSerializable, Serializable {
 		burnRate = _burnRate;
 	}
  
-	public double getBurnRate() {
+	public double getBurnRate30() {
 		return burnRate;
 	}
 
-	public void setBurnRate(double _burnRate) {
+	public void setBurnRate30(double _burnRate) {
 		burnRate = _burnRate;
 	}   
 	public String getName() {
@@ -46,7 +46,7 @@ public class ExerciseItem implements IsSerializable, Serializable {
 	public boolean equals(Object o) {
 		if (o == null) return false;
 		ExerciseItem item = (ExerciseItem)o;
-		return name.equals(item.name) && burnRate == item.burnRate;
+		return name.equals(item.name);
 	}
 
 	public String toString() {
