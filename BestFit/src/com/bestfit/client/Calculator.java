@@ -37,6 +37,8 @@ public class Calculator implements EntryPoint {
 	private FlexTable WorkoutFlexTable;
 	private FlexTable FoodsFlexTable;
 	private FlexTable ExercisesFlexTable;
+	private FlexTable MealsListFlexTable;
+	private FlexTable WorkoutsListFlexTable;
 	private TextBox MealLabelTextBox;
 	private TextBox WorkoutLabelTextBox;
 	private ListBox NewFoodItemList;
@@ -62,7 +64,7 @@ public class Calculator implements EntryPoint {
 		
 		tabPanel = new TabPanel();
 		rootPanel.add(tabPanel);
-		tabPanel.setSize("450px", "350px");
+		tabPanel.setSize("500px", "350px");
 		
 		tabPanel.addStyleName("table-center");
 		
@@ -77,7 +79,7 @@ public class Calculator implements EntryPoint {
 		
 		MealFlexTable = new FlexTable();
 		MealVerticalPanel.add(MealFlexTable);
-		MealFlexTable.setWidth("451px");
+		MealFlexTable.setWidth("500px");
 		
 		Label lblFoodItem = new Label("Food Item:");
 		MealFlexTable.setWidget(0, 0, lblFoodItem);
@@ -103,12 +105,13 @@ public class Calculator implements EntryPoint {
 		
 		FoodsFlexTable = new FlexTable();
 		MealVerticalPanel.add(FoodsFlexTable);
-		FoodsFlexTable.setWidth("451px");
+		FoodsFlexTable.setWidth("500px");
 	    FoodsFlexTable.setText(0, 0, "Food Items");
 	    FoodsFlexTable.setText(0, 1, "Calories");
-	    FoodsFlexTable.setText(0, 2, "Fat");
-	    FoodsFlexTable.setText(0,	3, "Carbs");
-	    FoodsFlexTable.setText(0, 4, "Protein");
+	    FoodsFlexTable.setText(0, 2, "Cals from Fat");
+	    FoodsFlexTable.setText(0, 3, "Fat");
+	    FoodsFlexTable.setText(0, 4, "Carbs");
+	    FoodsFlexTable.setText(0, 5, "Protein");
 		FoodsFlexTable.setStyleName("cw-FlexTable");
 		
 		Label lblTotalCalories = new Label("Total Calories:");
@@ -144,6 +147,14 @@ public class Calculator implements EntryPoint {
 		MealFlexTable.setWidget(4, 2, SaveMealPshBtn);
 		SaveMealPshBtn.setSize("60px", "25px");
 		
+		/* Previously stored Meals */
+		
+		MealVerticalPanel.add(new Label("Previous Meals:"));
+		
+		MealsListFlexTable = new FlexTable();
+		MealVerticalPanel.add(MealsListFlexTable);
+		MealsListFlexTable.setWidth("500px");
+		
 		/* Workout / Exercise */
 		
 		WorkoutVerticalPanel = new VerticalPanel();
@@ -155,7 +166,7 @@ public class Calculator implements EntryPoint {
 		
 		WorkoutFlexTable = new FlexTable();
 		WorkoutVerticalPanel.add(WorkoutFlexTable);
-		WorkoutFlexTable.setWidth("451px");
+		WorkoutFlexTable.setWidth("500px");
 		
 		Label lblExerciseItem = new Label("Exercise Item:");
 		WorkoutFlexTable.setWidget(0, 0, lblExerciseItem);
@@ -181,7 +192,7 @@ public class Calculator implements EntryPoint {
 		
 		ExercisesFlexTable = new FlexTable();
 		WorkoutVerticalPanel.add(ExercisesFlexTable);
-		ExercisesFlexTable.setWidth("451px");
+		ExercisesFlexTable.setWidth("500px");
 	    ExercisesFlexTable.setText(0, 0, "Exercise Items");
 	    ExercisesFlexTable.setText(0, 1, "Time Interval");
 	    ExercisesFlexTable.setText(0, 2, "Burn Rate");
@@ -220,6 +231,16 @@ public class Calculator implements EntryPoint {
 		WorkoutFlexTable.setWidget(4, 2, SaveWorkoutPshBtn);
 		SaveWorkoutPshBtn.setSize("60px", "25px");
 
+		/* Previously stored Workouts */
+		
+		WorkoutVerticalPanel.add(new Label("Previous Workouts:"));
+		
+		WorkoutsListFlexTable = new FlexTable();
+		WorkoutVerticalPanel.add(WorkoutsListFlexTable);
+		WorkoutsListFlexTable.setWidth("500px");
+		
+		/* */
+		
 		newMeal = new Meal(email);
 		newWorkout = new Workout(email);
 		startAsynchronous();
@@ -234,29 +255,27 @@ public class Calculator implements EntryPoint {
 
 	protected void addFood() {
 		try {
-	    final FoodItem foodItem = foods.get(NewFoodItemList.getSelectedIndex());
-	    NewFoodItemList.setFocus(true);
-	    newMeal.addFoodItem(foodItem);
-	    TotalCalsTextBox.setText(Double.toString(newMeal.totalCalories()));
-	    // add the stock to the list
-	    int row = FoodsFlexTable.getRowCount();
-	    FoodsFlexTable.setText(row, 0, foodItem.getName());
-	    FoodsFlexTable.setText(row, 1, Double.toString(foodItem.getCalories()));
-	    FoodsFlexTable.setText(row, 2, Double.toString(foodItem.getFatCalories()));
-	    FoodsFlexTable.setText(row,	3, Double.toString(foodItem.getFatGrams()));
-	    FoodsFlexTable.setText(row, 4, Double.toString(foodItem.getCarbohydrates()));
-
-	    // add button to remove this stock from the list
-	    Button removeFood = new Button("x");
-	    removeFood.addClickHandler(new ClickHandler() {
-	    public void onClick(ClickEvent event) {
-	        int removedIndex = newMeal.indexOfFoodItem(foodItem);
-	        newMeal.removeFoodItem(removedIndex);
-	        FoodsFlexTable.removeRow(removedIndex+1);
+		    final FoodItem foodItem = foods.get(NewFoodItemList.getSelectedIndex());
+		    NewFoodItemList.setFocus(true);
+		    newMeal.addFoodItem(foodItem);
 		    TotalCalsTextBox.setText(Double.toString(newMeal.totalCalories()));
-	    }
-	    });
-	    FoodsFlexTable.setWidget(row, 5, removeFood);
+		    int row = FoodsFlexTable.getRowCount();
+		    FoodsFlexTable.setText(row, 0, foodItem.getName());
+		    FoodsFlexTable.setText(row, 1, Double.toString(foodItem.getCalories()));
+		    FoodsFlexTable.setText(row, 2, Double.toString(foodItem.getFatCalories()));
+		    FoodsFlexTable.setText(row,	3, Double.toString(foodItem.getFatGrams()));
+		    FoodsFlexTable.setText(row, 4, Double.toString(foodItem.getCarbohydrates()));
+		    FoodsFlexTable.setText(row, 5, Double.toString(foodItem.getProtein()));
+		    Button removeFood = new Button("x");
+		    removeFood.addClickHandler(new ClickHandler() {
+		    public void onClick(ClickEvent event) {
+		        int removedIndex = newMeal.indexOfFoodItem(foodItem);
+		        newMeal.removeFoodItem(removedIndex);
+		        FoodsFlexTable.removeRow(removedIndex+1);
+			    TotalCalsTextBox.setText(Double.toString(newMeal.totalCalories()));
+		    }
+		    });
+		    FoodsFlexTable.setWidget(row, 6, removeFood);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -268,13 +287,10 @@ public class Calculator implements EntryPoint {
 		    NewExerciseItemList.setFocus(true);
 		    newWorkout.addExerciseItem(exerciseItem);
 		    TotalCalsBurnedTextBox.setText(Double.toString(newWorkout.totalCalories()));
-		    // add the stock to the list
 		    int row = ExercisesFlexTable.getRowCount();
 		    ExercisesFlexTable.setText(row, 0, exerciseItem.getName());
 		    ExercisesFlexTable.setText(row, 1, Integer.toString(10));
 		    ExercisesFlexTable.setText(row, 2, Double.toString(exerciseItem.getBurnRate()));
-
-		    // add button to remove this stock from the list
 		    Button removeExercise = new Button("x");
 		    removeExercise.addClickHandler(new ClickHandler() {
 		    public void onClick(ClickEvent event) {
@@ -285,15 +301,16 @@ public class Calculator implements EntryPoint {
 		    }
 		    });
 		    ExercisesFlexTable.setWidget(row, 3, removeExercise);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}	
 	
 	public void getUserMeals() {
 		rpc.getUserMeals(new AsyncCallback<Bridge>() {
 			public void onFailure(Throwable caught) {
-				Window.alert("Failed to retrieve user meals (communication error)");
+				MealsListFlexTable.setText(0, 0, "There are no meals to display.");
+//				Window.alert("Failed to retrieve user meals (communication error)");
 			}
 
 			public void onSuccess(Bridge result) {
@@ -301,10 +318,22 @@ public class Calculator implements EntryPoint {
 				if (result.meals != null)
 					meals.addAll(result.meals);
 				System.out.println("Retreived " + meals.size() + " meals.");
-				String str = "Meals restored from datastore:\n";
-				for (Meal meal : meals)
-					str += meal.toString() + "\n";
-				Window.alert(str);
+//				String str = "Meals restored from datastore:\n";
+//				for (Meal meal : meals)
+//					str += meal.toString() + "\n";
+//				Window.alert(str);
+				for (Meal meal : meals) {
+					FlexTable flexTable = new FlexTable();
+					MealsListFlexTable.setWidget(meals.indexOf(meal), 0, flexTable);
+					flexTable.setText(0, 0, meal.getLabel() + "[" + meal.getDateOfMeal() + "]:");
+					flexTable.setText(0, 1, "(" + meal.totalCalories() + ",");
+					flexTable.setText(0, 2, meal.totalFatCalories() + ",");
+					flexTable.setText(0, 3, meal.totalFatGrams() + ",");
+					flexTable.setText(0, 4, meal.totalCarbohydrates() + ",");
+					flexTable.setText(0, 5, meal.totalProtein() + ")");
+					for (int i = 0; i < meal.getFoodItems().size(); i++)
+						flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
+				}
 			}
 		});
 	}
@@ -312,7 +341,8 @@ public class Calculator implements EntryPoint {
 	public void getUserWorkouts() {
 		rpc.getUserWorkouts(new AsyncCallback<Bridge>() {
 			public void onFailure(Throwable caught) {
-				Window.alert("Failed to retrieve user workouts (communication error)");
+				WorkoutsListFlexTable.setText(0, 0, "There are no workouts to display.");
+//				Window.alert("Failed to retrieve user workouts (communication error)");
 			}
 
 			public void onSuccess(Bridge result) {
@@ -320,10 +350,18 @@ public class Calculator implements EntryPoint {
 				if (result.workouts != null)
 					workouts.addAll(result.workouts);
 				System.out.println("Retreived " + workouts.size() + " workouts.");
-				String str = "Workouts restored from datastore:\n";
-				for (Workout workout : workouts)
-					str += workout.toString() + "\n";
-				Window.alert(str);
+//				String str = "Workouts restored from datastore:\n";
+//				for (Workout workout : workouts)
+//					str += workout.toString() + "\n";
+//				Window.alert(str);
+				for (Workout workout : workouts) {
+					FlexTable flexTable = new FlexTable();
+					WorkoutsListFlexTable.setWidget(workouts.indexOf(workout), 0, flexTable);
+					flexTable.setText(0, 0, workout.getLabel() + "[" + workout.getDateOfWorkout() + ":");
+					flexTable.setText(0, 1, "(" + workout.totalCalories() + ")");
+					for (int i = 0; i < workout.getExerciseItems().size(); i++)
+						flexTable.setText(i + 1, 0, "-" + workout.getExerciseItems().get(i).getName());
+				}
 			}
 		});
 	}
