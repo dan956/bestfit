@@ -67,7 +67,7 @@ public class Calculator implements EntryPoint {
 	
 	private void setPageHeader() {
 		RootPanel headPanel = RootPanel.get("calculatorHeader");
-		headPanel.add(new HTML("<h3><b><font color=\"#308A4D\">Enter your meals and workouts to calculate<br />your net calorie intake.</font></b></h3>"));
+		headPanel.add(new HTML("<h3><b><font color=\"#308A4D\">Enter your meals and workouts!</font></b></h3>"));
 	}
 
 	public void onModuleLoad() {
@@ -179,6 +179,7 @@ public class Calculator implements EntryPoint {
 		MealVerticalPanel.add(PreviousMealsFlexTable);
 		PreviousMealsFlexTable.setText(0, 0, "Previous Meals:");
 		PreviousMeals = new ListBox();
+		
 		PreviousMealsFlexTable.setWidget(0, 1, PreviousMeals);
 		Button PreviousMealsPshBtn = new Button("Copy Meal");
 		PreviousMealsFlexTable.setWidget(0, 2, PreviousMealsPshBtn);
@@ -187,16 +188,21 @@ public class Calculator implements EntryPoint {
 			public void onChange(ChangeEvent event) {
 				Meal meal = meals.get(PreviousMeals.getSelectedIndex());
 				FlexTable flexTable = new FlexTable();
+				flexTable.setWidth("300px");
 				MealsListFlexTable.setWidget(0, 0, flexTable);
-				flexTable.setText(0, 0, meal.getLabel());
-				flexTable.setText(0, 1, "" + meal.totalCalories());
-				flexTable.setText(0, 2, "" + meal.totalFatCalories());
-				flexTable.setText(0, 3, "" + meal.totalFatGrams());
-				flexTable.setText(0, 4, "" + meal.totalCarbohydrates());
-				flexTable.setText(0, 5, "" + meal.totalProtein());
-				for (int i = 0; i < meal.getFoodItems().size(); i++) {
-					flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
-					flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
+//				flexTable.setText(0, 0, meal.getLabel());
+//				flexTable.setText(0, 1, "" + meal.totalCalories());
+//				flexTable.setText(0, 2, "" + meal.totalFatCalories());
+//				flexTable.setText(0, 3, "" + meal.totalFatGrams());
+//				flexTable.setText(0, 4, "" + meal.totalCarbohydrates());
+//				flexTable.setText(0, 5, "" + meal.totalProtein());
+				flexTable.setText(0, 0, "Items");
+				flexTable.setText(0, 1, "Qty");
+				flexTable.getCellFormatter().addStyleName(0, 0, "calculatorlistheader");
+				flexTable.getCellFormatter().addStyleName(0, 1, "calculatorlistheader");
+				for (int i = 1; i < meal.getFoodItems().size(); i++) {
+					flexTable.setText(i, 0, "-" + meal.getFoodItems().get(i).getName());
+					flexTable.setText(i, 1, "x" + meal.getQuantity(i));
 				}
 			}
 		});
@@ -242,7 +248,7 @@ public class Calculator implements EntryPoint {
 		MealsListFlexTable = new FlexTable();
 		MealVerticalPanel.add(MealsListFlexTable);
 		MealsListFlexTable.setWidth("500px");
-		MealsListFlexTable.setStyleName("cw-FlexTable");
+		//MealsListFlexTable.setStyleName("cw-FlexTable");
 		
 		/* Workout / Exercise */
 		
@@ -441,16 +447,21 @@ public class Calculator implements EntryPoint {
 					PreviousMeals.addItem(meal.getLabel());
 				Meal meal = meals.get(PreviousMeals.getSelectedIndex());
 				FlexTable flexTable = new FlexTable();
+				flexTable.setWidth("300px");
 				MealsListFlexTable.setWidget(0, 0, flexTable);
-				flexTable.setText(0, 0, meal.getLabel());
-				flexTable.setText(0, 1, "" + meal.totalCalories());
-				flexTable.setText(0, 2, "" + meal.totalFatCalories());
-				flexTable.setText(0, 3, "" + meal.totalFatGrams());
-				flexTable.setText(0, 4, "" + meal.totalCarbohydrates());
-				flexTable.setText(0, 5, "" + meal.totalProtein());
-				for (int i = 0; i < meal.getFoodItems().size(); i++) {
-					flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
-					flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
+//				flexTable.setText(0, 0, meal.getLabel());
+//				flexTable.setText(0, 1, "" + meal.totalCalories());
+//				flexTable.setText(0, 2, "" + meal.totalFatCalories());
+//				flexTable.setText(0, 3, "" + meal.totalFatGrams());
+//				flexTable.setText(0, 4, "" + meal.totalCarbohydrates());
+//				flexTable.setText(0, 5, "" + meal.totalProtein());
+				flexTable.setText(0, 0, "Items");
+				flexTable.setText(0, 1, "Qty");
+				flexTable.getCellFormatter().addStyleName(0, 0, "calculatorlistheader");
+				flexTable.getCellFormatter().addStyleName(0, 1, "calculatorlistheader");
+				for (int i = 1; i < meal.getFoodItems().size(); i++) {
+					flexTable.setText(i, 0, "-" + meal.getFoodItems().get(i).getName());
+					flexTable.setText(i, 1, "x" + meal.getQuantity(i));
 				}
 			}
 		});
