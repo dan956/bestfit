@@ -66,7 +66,6 @@ public class Landing implements EntryPoint {
 
 						double TargetWeight = result.goals.get(result.goals.size()-1).getTargetWeight();
 						double CurrentWeight = Double.valueOf(textBox.getText());
-						// CalsPerDay = BMR + 3500 * (Target_Weight - Current_Weight) / Days_Remaining
 						double CalsPerDay = Landing.bmr + 3500 * (TargetWeight - CurrentWeight ) / diff;
 
 
@@ -82,30 +81,21 @@ public class Landing implements EntryPoint {
 						String message="";
 						double gainedToday = Landing.mealCal - Landing.workoutCal;
 						
-						if(CalsPerDay>0){
-							message = "<b>You should gain: </b></br><pre>        "+CalsPerDay +" cal/day</pre>";
-						}else{
-							CalsPerDay = 0 - CalsPerDay;
-							message = "<b>You should burn: </b></br><pre>        "+CalsPerDay +" cal/day</pre>";
-						}
+						int a = (int) CalsPerDay;
 						
-						message += "<b>Regular activitiy burns: </b></br><pre>        "+2000 +" cal/day</pre>";
+						message = "<b>Daily net calorie: </b></br><pre>        "+ a +" cal/day</pre>";						
 						
-						if(gainedToday>0){
-							message += "<b>From today's meal/workout: </b></br><pre>        "+gainedToday +" cal</pre>";							
-						}else{							
-							message += "<b>From today's meal/workout</b></br><pre>        "+gainedToday +" cal</pre>";
-							gainedToday = 0 - gainedToday;
-						}
+						message += "<b>Regular activitiy burns: </b></br><pre>        "+2000 +" cal/day</pre>";						
+					
+						message += "<b>From today's meal/workout: </b></br><pre>        "+gainedToday +" cal</pre>";							
 						
-						double resultCals = CalsPerDay - 2000 + gainedToday;
+						double resultCals = (int)(CalsPerDay - 2000 + gainedToday);
 						
 						if(resultCals>0){
-							
-							message += "<b>Today you gained: </b></br><pre>        "+resultCals +" cal</pre>";							
+							message += "<b>You still need to burn: </b></br><pre>        "+resultCals +" cal</pre>";							
 						}else{
 							gainedToday = 0 - gainedToday;
-							message += "<b>Today you burned: </b></br><pre>        "+resultCals +" cal</pre>";
+							message += "<b>Exceeded your goal by: </b></br><pre>        "+resultCals +" cal</pre>";
 						}
 						
 						
@@ -284,7 +274,7 @@ public class Landing implements EntryPoint {
 					
 					Landing.mealCal = mealCalToday;
 					
-					HTML html = new HTML("</br>Total Calories ="+mealCalToday);
+					HTML html = new HTML("</br>Total calories consumed = "+mealCalToday);
 					mealsFlexTable.setWidget(row+1, 1, html);
 					mealsFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
 
@@ -353,7 +343,7 @@ public class Landing implements EntryPoint {
 					}
 
 					Landing.workoutCal = workOutCalToday;
-					HTML html = new HTML("</br>Total Calories ="+workOutCalToday);
+					HTML html = new HTML("</br>Total calories burned= "+workOutCalToday);
 					workoutFlexTable.setWidget(row+1, 1, html);
 					
 					workoutFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
@@ -383,7 +373,7 @@ public class Landing implements EntryPoint {
 
 				FlexTable userNameFlexTable = new FlexTable();
 				userNameFlexTable.setSize("200px", "60px");
-				userNameFlexTable.setText(0, 0, "Welcome "+ result+"!");
+				userNameFlexTable.setWidget(0, 0,new HTML("Welcome <i>"+ result+"!</i>"));
 				userNameFlexTable.setText(1, 0, "Below is your data for Today");
 
 				rootPanel.add(userNameFlexTable);
