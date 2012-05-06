@@ -157,7 +157,8 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 	}
 
 	@Override
-	public Bridge getUserMeals() throws IllegalArgumentException {
+	public Bridge getUserMeals(Bridge _msgIn) throws IllegalArgumentException {
+		Date date = _msgIn.startDate;
 		Bridge _msg = new Bridge();
 		_msg.email = getLoggedinUserEmail();
 		PersistenceManager pm = getPersistenceManager();
@@ -165,6 +166,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		try {
 			
 			Calendar calender = Calendar.getInstance();
+			calender.setTime(date);
 			calender.set(Calendar.HOUR_OF_DAY, 0);
 			calender.set(Calendar.MINUTE, 0);
 			calender.set(Calendar.SECOND, 0);

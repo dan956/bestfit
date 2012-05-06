@@ -354,7 +354,9 @@ public class Calculator implements EntryPoint {
 	}	
 	
 	public void getUserMeals() {
-		rpc.getUserMeals(new AsyncCallback<Bridge>() {
+		Bridge msg = new Bridge();
+		msg.startDate = new Date(0);
+		rpc.getUserMeals(msg, new AsyncCallback<Bridge>() {
 			public void onFailure(Throwable caught) {
 				MealsListFlexTable.setText(0, 0, "There are no meals to display.");
 //				Window.alert("Failed to retrieve user meals (communication error)");

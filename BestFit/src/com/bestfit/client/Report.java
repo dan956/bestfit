@@ -2,6 +2,7 @@ package com.bestfit.client;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.bestfit.data.*;
 import com.bestfit.shared.Bridge;
@@ -34,7 +35,9 @@ public class Report implements EntryPoint {
     
 	public void drawDailyMealComposition()
 	{
-		rpc.getUserMeals(new AsyncCallback<Bridge>() {
+		Bridge msg = new Bridge();
+		msg.startDate = new Date(); // get today's data
+		rpc.getUserMeals(msg, new AsyncCallback<Bridge>() {
 
 			@Override
 			public void onSuccess(Bridge result) {
@@ -71,8 +74,9 @@ public class Report implements EntryPoint {
 	{
 
 		
-		
-		rpc.getUserMeals(new AsyncCallback<Bridge>() {
+		Bridge msg = new Bridge();
+		msg.startDate = new Date();
+		rpc.getUserMeals(msg, new AsyncCallback<Bridge>() {
 
 			@Override
 			public void onSuccess(Bridge result) {
