@@ -6,6 +6,7 @@ import com.bestfit.shared.Bridge;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
@@ -23,6 +24,10 @@ public class Profile implements EntryPoint {
 	private TextBox WeightTextBox;
 	
 	public void onModuleLoad() {
+		
+		setPageHeader();
+		
+		
 		RootPanel rootPanel = RootPanel.get("profilecont");
 		
 		FlexTable flexTable = new FlexTable();
@@ -82,6 +87,15 @@ public class Profile implements EntryPoint {
 
 	}
 	
+	private void setPageHeader() {
+		RootPanel rpanel = RootPanel.get("profileheader");
+		
+		HTML html = new HTML("<h3><b><font color=\"#308A4D\">Your Personal information!</font></b></h3>");
+		
+		rpanel.add(html);
+		
+	}
+
 	public void getUserProfile()
 	{
 		rpc.getUserProfile(new AsyncCallback<Bridge>() {
