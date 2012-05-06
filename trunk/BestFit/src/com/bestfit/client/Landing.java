@@ -224,7 +224,9 @@ public class Landing implements EntryPoint {
 
 	public void getUserMeals()
 	{
-		rpc.getUserMeals(new AsyncCallback<Bridge>() {
+		Bridge msg = new Bridge();
+		msg.startDate = new Date();
+		rpc.getUserMeals(msg, new AsyncCallback<Bridge>() {
 
 			@Override
 			public void onSuccess(Bridge result) {
@@ -293,8 +295,9 @@ public class Landing implements EntryPoint {
 
 	public void getUserWorkout(){
 
-
-		rpc.getUserWorkouts(new AsyncCallback<Bridge>() {
+		Bridge msg = new Bridge();
+		msg.startDate = new Date();
+		rpc.getUserWorkouts(msg, new AsyncCallback<Bridge>() {
 
 			@Override
 			public void onSuccess(Bridge result) {
