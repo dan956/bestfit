@@ -1,17 +1,13 @@
 package com.bestfit.client;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import org.apache.james.mime4j.field.datetime.DateTime;
-
 import com.bestfit.shared.Bridge;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -20,7 +16,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
-import com.google.gwt.i18n.client.CurrencyData;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
@@ -35,15 +30,23 @@ public class Goal implements EntryPoint {
 	private Button btnNewButton_1;
 	private Button btnNewButton;
 	private DateBox dateBox;
-	static double BMR= 0.0;
 
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 	
 	public void onModuleLoad() {
 
 		getCurrentWeight();
+		setPageHeader();
 	}
 	
+	private void setPageHeader() {
+		RootPanel rpanel = RootPanel.get("goalheader");
+		
+		HTML html = new HTML("<h3><b><font color=\"#308A4D\">Set up your new goal!</font></b></h3>");
+		
+		rpanel.add(html);
+	}
+
 	public void getCurrentWeight()
 	{
 		rpc.getCurrentWeight(new AsyncCallback<String>(){
@@ -56,11 +59,13 @@ public class Goal implements EntryPoint {
 
 			@Override
 			public void onSuccess(String result) {
-				RootPanel rootPanel = RootPanel.get("goalCont");
+				RootPanel rootPanel = RootPanel.get("goalCont");				
+				
+				
 				FlexTable flexTable = new FlexTable();
 				rootPanel.add(flexTable, 0, 0);
 				flexTable.setSize("398px", "259px");
-				
+												
 				lblNewLabel = new Label("Current Weight:");
 				flexTable.setWidget(0, 0, lblNewLabel);
 				
@@ -85,7 +90,7 @@ public class Goal implements EntryPoint {
 				dateBox.getDatePicker().setStyleName("gwt-DatePicker");
 				
 				flexTable.setWidget(2, 1, dateBox);
-				dateBox.setSize("155px", "25px");
+				dateBox.setSize("150px", "25px");
 				
 				lblNewLabel_3 = new Label("Daily net calories to achieve goal:");
 				flexTable.setWidget(3, 0, lblNewLabel_3);
@@ -94,15 +99,12 @@ public class Goal implements EntryPoint {
 				textBox_3.setReadOnly(true);
 				flexTable.setWidget(3, 1, textBox_3);
 				textBox_3.setSize("155px", "25px");
-				
+				flexTable.setWidget(4, 1,new HTML("<i>* Regular daily activities burn 2000 cal</i></br></br>"));
 				btnNewButton_1 = new Button("New button");
-				flexTable.setWidget(4, 1, btnNewButton_1);
+				flexTable.setWidget(5, 1, btnNewButton_1);
 				btnNewButton_1.setSize("80px", "31px");
 				btnNewButton_1.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						
-						// First get BMR
-						
 						
 						rpc.getBMR(new AsyncCallback<Double>() {
 
@@ -115,21 +117,16 @@ public class Goal implements EntryPoint {
 							@Override
 							public void onSuccess(Double result) {
 								
-//								result =result;
-								
-								// calc time
-								Date today = new Date();
+							Date today = new Date();
 
 								long diff =   dateBox.getValue().getTime() - today.getTime();
 								
-								diff /=  (1000 * 60 * 60 * 24);
-								
+								diff /=  (1000 * 60 * 60 * 24);								
 								
 								// CalsPerDay = BMR + 3500 * (Target_Weight - Current_Weight) / Days_Remaining
 								double CalsPerDay = result + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
 								
-								
-								textBox_3.setText( String.valueOf(CalsPerDay));
+								textBox_3.setText( (int)CalsPerDay+"");
 								
 								
 							}
@@ -144,6 +141,7 @@ public class Goal implements EntryPoint {
 				});
 				btnNewButton_1.setText("Calculate");
 				flexTable.getCellFormatter().setHorizontalAlignment(4, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+				flexTable.getCellFormatter().setHorizontalAlignment(5, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 				flexTable.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 				flexTable.getCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 				flexTable.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_RIGHT);
@@ -180,9 +178,9 @@ public class Goal implements EntryPoint {
 					}
 				});
 				btnNewButton.setText("Save");
-				flexTable.setWidget(4, 2, btnNewButton);
+				flexTable.setWidget(5, 2, btnNewButton);
 				btnNewButton.setSize("80px", "31px");
-				flexTable.getCellFormatter().setHorizontalAlignment(4, 2, HasHorizontalAlignment.ALIGN_LEFT);
+				flexTable.getCellFormatter().setHorizontalAlignment(5, 2, HasHorizontalAlignment.ALIGN_LEFT);
 				
 			}
 			
