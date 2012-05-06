@@ -14,7 +14,7 @@ public interface RpcServices extends RemoteService {
 	boolean isNewUser() throws IllegalArgumentException;
 	String getEmail()throws IllegalArgumentException;
 	Bridge getUserProfile()throws IllegalArgumentException; 
-	Bridge getUserMeals() throws IllegalArgumentException;
+	Bridge getUserMeals(Bridge msg) throws IllegalArgumentException;
 	boolean saveUserMeal(Bridge msg) throws IllegalArgumentException;
 	Bridge getFoodItems() throws IllegalArgumentException;
 	boolean saveFoodItem(Bridge msg) throws IllegalArgumentException;

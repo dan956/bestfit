@@ -12,7 +12,7 @@ public interface RpcServicesAsync {
 	void isNewUser(AsyncCallback<Boolean> callback);
 	void getEmail(AsyncCallback<String> callback);
 	void getUserProfile(AsyncCallback<Bridge> callback);
-	void getUserMeals(AsyncCallback<Bridge> callback);
+	void getUserMeals(Bridge msg, AsyncCallback<Bridge> callback);
 	void saveUserMeal(Bridge msg, AsyncCallback<Boolean> callback);
 	void getFoodItems(AsyncCallback<Bridge> callback);
 	void saveFoodItem(Bridge msg, AsyncCallback<Boolean> callback);
