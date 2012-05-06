@@ -288,30 +288,30 @@ public class Calculator implements EntryPoint {
 		    	row =  FoodsFlexTable.getRowCount();
 			    FoodsFlexTable.setText(row, 0, foodItem.getName());
 			    FoodsFlexTable.setText(row, 1, "x1");
-			    FoodsFlexTable.setText(row, 2, Double.toString(foodItem.getCalories()));
-			    FoodsFlexTable.setText(row, 3, Double.toString(foodItem.getFatCalories()));
-			    FoodsFlexTable.setText(row,	4, Double.toString(foodItem.getFatGrams()));
-			    FoodsFlexTable.setText(row, 5, Double.toString(foodItem.getCarbohydrates()));
-			    FoodsFlexTable.setText(row, 6, Double.toString(foodItem.getProtein()));
+			    FoodsFlexTable.setText(row, 2, Double.toString((int)foodItem.getCalories()));
+			    FoodsFlexTable.setText(row, 3, Double.toString((int)foodItem.getFatCalories()));
+			    FoodsFlexTable.setText(row,	4, Double.toString((int)foodItem.getFatGrams()));
+			    FoodsFlexTable.setText(row, 5, Double.toString((int)foodItem.getCarbohydrates()));
+			    FoodsFlexTable.setText(row, 6, Double.toString((int)foodItem.getProtein()));
 		    }
 		    else {
 		    	row = newMeal.indexOfFoodItem(foodItem) + 1;
 		    	int qty = newMeal.getQuantity(foodItem);
 			    FoodsFlexTable.setText(row, 1, "x" + qty);
-			    FoodsFlexTable.setText(row, 2, Double.toString(foodItem.getCalories() * qty));
-			    FoodsFlexTable.setText(row, 3, Double.toString(foodItem.getFatCalories() * qty));
-			    FoodsFlexTable.setText(row,	4, Double.toString(foodItem.getFatGrams() * qty));
-			    FoodsFlexTable.setText(row, 5, Double.toString(foodItem.getCarbohydrates() * qty));
-			    FoodsFlexTable.setText(row, 6, Double.toString(foodItem.getProtein() * qty));
+			    FoodsFlexTable.setText(row, 2, Double.toString((int)foodItem.getCalories() * qty));
+			    FoodsFlexTable.setText(row, 3, Double.toString((int)foodItem.getFatCalories() * qty));
+			    FoodsFlexTable.setText(row,	4, Double.toString((int)foodItem.getFatGrams() * qty));
+			    FoodsFlexTable.setText(row, 5, Double.toString((int)foodItem.getCarbohydrates() * qty));
+			    FoodsFlexTable.setText(row, 6, Double.toString((int)foodItem.getProtein() * qty));
 		    }
-		    TotalCalsTextBox.setText(Double.toString(newMeal.totalCalories()));
+		    TotalCalsTextBox.setText(Double.toString((int)newMeal.totalCalories()));
 		    Button removeFood = new Button("x");
 		    removeFood.addClickHandler(new ClickHandler() {
 		    public void onClick(ClickEvent event) {
 		        int removedIndex = newMeal.indexOfFoodItem(foodItem);
 		        newMeal.removeFoodItem(removedIndex);
 		        FoodsFlexTable.removeRow(removedIndex+1);
-			    TotalCalsTextBox.setText(Double.toString(newMeal.totalCalories()));
+			    TotalCalsTextBox.setText(Double.toString((int)newMeal.totalCalories()));
 		    }
 		    });
 		    FoodsFlexTable.setWidget(row, 7, removeFood);
@@ -336,15 +336,15 @@ public class Calculator implements EntryPoint {
 		    	qty = newWorkout.getDuration(exerciseItem);
 		    }
 		    ExercisesFlexTable.setText(row, 1, qty + " mins");
-		    ExercisesFlexTable.setText(row, 2, Double.toString((exerciseItem.getBurnRate30() * qty) / 30));
-		    TotalCalsBurnedTextBox.setText(Double.toString(newWorkout.totalCaloriesBurned()));
+		    ExercisesFlexTable.setText(row, 2, Double.toString((int)(exerciseItem.getBurnRate30() * qty) / 30));
+		    TotalCalsBurnedTextBox.setText(Double.toString((int)(int)newWorkout.totalCaloriesBurned()));
 		    Button removeExercise = new Button("x");
 		    removeExercise.addClickHandler(new ClickHandler() {
 		    public void onClick(ClickEvent event) {
 		        int removedIndex = newWorkout.indexOfExerciseItem(exerciseItem);
 		        newWorkout.removeExerciseItem(removedIndex);
 		        ExercisesFlexTable.removeRow(removedIndex+1);
-			    TotalCalsBurnedTextBox.setText(Double.toString(newWorkout.totalCaloriesBurned()));
+			    TotalCalsBurnedTextBox.setText(Double.toString((int)newWorkout.totalCaloriesBurned()));
 		    }
 		    });
 		    ExercisesFlexTable.setWidget(row, 3, removeExercise);
