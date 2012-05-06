@@ -115,7 +115,7 @@ public class Goal implements EntryPoint {
 							@Override
 							public void onSuccess(Double result) {
 								
-								Goal.BMR =result;
+//								result =result;
 								
 								// calc time
 								Date today = new Date();
@@ -126,7 +126,7 @@ public class Goal implements EntryPoint {
 								
 								
 								// CalsPerDay = BMR + 3500 * (Target_Weight - Current_Weight) / Days_Remaining
-								double CalsPerDay = Goal.BMR + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
+								double CalsPerDay = result + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
 								
 								
 								textBox_3.setText( String.valueOf(CalsPerDay));
