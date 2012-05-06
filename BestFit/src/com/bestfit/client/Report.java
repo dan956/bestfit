@@ -1,6 +1,5 @@
 package com.bestfit.client;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -8,17 +7,14 @@ import com.bestfit.data.*;
 import com.bestfit.shared.Bridge;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.VisualizationUtils;
 import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.Selection;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
-import com.google.gwt.visualization.client.events.SelectHandler;
 import com.google.gwt.visualization.client.visualizations.LineChart;
 import com.google.gwt.visualization.client.visualizations.PieChart;
 import com.google.gwt.visualization.client.visualizations.PieChart.Options;
@@ -32,6 +28,69 @@ public class Report implements EntryPoint {
 	double Carbs=1.0;
 	int Fat=0;
 	private ArrayList<Weight> weights = new ArrayList<Weight>();
+	private ArrayList<Workout> workouts = new ArrayList<Workout>();
+	
+	private void setPageHeader() {
+		RootPanel rpanel = RootPanel.get("reportheader");
+		
+		HTML html = new HTML("<h3><b><font color=\"#308A4D\">Your Personal statistics!</font></b></h3>");
+		
+		rpanel.add(html);
+		
+	}
+	
+	public void drawDailyWorkoutComposition()
+	{
+		Bridge bridge = new Bridge();
+		bridge.startDate = new Date();
+		rpc.getUserWorkouts(bridge, new AsyncCallback<Bridge>() {
+
+			@Override
+			public void onSuccess(Bridge result) {
+				
+				workouts.addAll(result.workouts);
+				
+				Panel piePanel = RootPanel.get("WorkoutHistory");
+				PieChart pie = new PieChart(createTableDailyWorkout(), createWorkoutPieOptions());
+
+				piePanel.add(pie);
+			}
+
+			
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+	
+	private Options createWorkoutPieOptions() {
+		Options options = Options.create();
+		options.setWidth(300);
+		options.setHeight(240);
+		options.set3D(true);
+		options.setTitle("Daily Workouts");
+		return options;
+	}
+
+	private AbstractDataTable createTableDailyWorkout() {
+		DataTable data = DataTable.create();
+		data.addColumn(ColumnType.STRING, "Workouts");
+		data.addColumn(ColumnType.NUMBER, "CalorieBurned");
+		data.addRows(workouts.size());
+		
+		int row=0;
+		for(Workout wk : workouts){
+			data.setValue(row, 0, wk.getLabel());			
+			data.setValue(row, 1, wk.totalCaloriesBurned());
+			
+			row++;
+		}
+		
+		return data;
+	}
     
 	public void drawDailyMealComposition()
 	{
@@ -56,7 +115,6 @@ public class Report implements EntryPoint {
 				// Create a pie chart visualization.
 				PieChart pie = new PieChart(createTableDailyMealComposition(), createDailyMealCompositionPieOptions());
 
-				pie.addSelectHandler(createDailyMealCompositionSelectHandler(pie));
 				piePanel.add(pie);
 			}
 
@@ -93,7 +151,7 @@ public class Report implements EntryPoint {
 				// Create a pie chart visualization.
 				PieChart pie = new PieChart(createTableDailyCaloriesComposition(), createDailyCaloriesCompositionPieOptions());
 
-				pie.addSelectHandler(createDailyCaloriesCompositionSelectHandler(pie));
+				
 				piePanel.add(pie);
 			}
 
@@ -138,9 +196,11 @@ public class Report implements EntryPoint {
 		// has been loaded.
 		Runnable onLoadCallback = new Runnable() {
 			public void run() {
+				setPageHeader();
 				drawDailyMealComposition();
 				drawWeightHistory();
 				DrawDailyCaloriesComposition();
+				drawDailyWorkoutComposition();
 			}
 		};
 
@@ -169,88 +229,6 @@ public class Report implements EntryPoint {
 	
 	
 	
-	
-	private SelectHandler createDailyMealCompositionSelectHandler(final PieChart chart) {
-		return new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-//				String message = "";
-//
-//				// May be multiple selections.
-//				JsArray<Selection> selections = chart.getSelections();
-//
-//				for (int i = 0; i < selections.length(); i++) {
-//					// add a new line for each selection
-//					message += i == 0 ? "" : "\n";
-//
-//					Selection selection = selections.get(i);
-//
-//					if (selection.isCell()) {
-//						// isCell() returns true if a cell has been selected.
-//
-//						// getRow() returns the row number of the selected cell.
-//						int row = selection.getRow();
-//						// getColumn() returns the column number of the selected cell.
-//						int column = selection.getColumn();
-//						message += "cell " + row + ":" + column + " selected";
-//					} else if (selection.isRow()) {
-//						// isRow() returns true if an entire row has been selected.
-//
-//						// getRow() returns the row number of the selected row.
-//						int row = selection.getRow();
-//						message += "row " + row + " selected";
-//					} else {
-//						// unreachable
-//						message += "Pie chart selections should be either row selections or cell selections.";
-//						message += "  Other visualizations support column selections as well.";
-//					}
-//				}
-//
-//				Window.alert(message);
-			}
-		};
-	}
-
-	private SelectHandler createDailyCaloriesCompositionSelectHandler(final PieChart chart) {
-		return new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-//				String message = "";
-//
-//				// May be multiple selections.
-//				JsArray<Selection> selections = chart.getSelections();
-//
-//				for (int i = 0; i < selections.length(); i++) {
-//					// add a new line for each selection
-//					message += i == 0 ? "" : "\n";
-//
-//					Selection selection = selections.get(i);
-//
-//					if (selection.isCell()) {
-//						// isCell() returns true if a cell has been selected.
-//
-//						// getRow() returns the row number of the selected cell.
-//						int row = selection.getRow();
-//						// getColumn() returns the column number of the selected cell.
-//						int column = selection.getColumn();
-//						message += "cell " + row + ":" + column + " selected";
-//					} else if (selection.isRow()) {
-//						// isRow() returns true if an entire row has been selected.
-//
-//						// getRow() returns the row number of the selected row.
-//						int row = selection.getRow();
-//						message += "row " + row + " selected";
-//					} else {
-//						// unreachable
-//						message += "Pie chart selections should be either row selections or cell selections.";
-//						message += "  Other visualizations support column selections as well.";
-//					}
-//				}
-//
-//				Window.alert(message);
-			}
-		};
-	}
 	
 	
 	private AbstractDataTable createTableDailyMealComposition() {
