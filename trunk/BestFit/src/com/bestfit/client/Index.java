@@ -68,8 +68,10 @@ public class Index implements EntryPoint {
 						public void onSuccess(String result) {
 
 							flexTable = new FlexTable();
+							flexTable.setWidth("450px");
 
 							Label lblNewLabel = new Label("First Name");
+							lblNewLabel.setWidth("100px");
 							flexTable.setWidget(0, 0, lblNewLabel);
 
 							FirstNameTextBox = new TextBox();
@@ -113,13 +115,16 @@ public class Index implements EntryPoint {
 							HeightTextBox = new TextBox();
 							flexTable.setWidget(5, 1, HeightTextBox);
 							HeightTextBox.setHeight("25px");
+							flexTable.setText(5, 2, "inches");
 
 							Label lblNewLabel_6 = new Label("Weight");
 							flexTable.setWidget(6, 0, lblNewLabel_6);
+							
 
 							WeightTextBox = new TextBox();
 							flexTable.setWidget(6, 1, WeightTextBox);
 							WeightTextBox.setHeight("25px");
+							flexTable.setText(6, 2, "pounds");
 
 							SaveButton = new Button("New button");
 							SaveButton.setText("Register");
