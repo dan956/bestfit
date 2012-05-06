@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -63,7 +65,13 @@ public class Calculator implements EntryPoint {
 	private Workout newWorkout;
 	
 	
+	private void setPageHeader() {
+		RootPanel headPanel = RootPanel.get("calculatorHeader");
+		headPanel.add(new HTML("<h3><b><font color=\"#308A4D\">Enter your meals and workouts to calculate<br />your net calorie intake.</font></b></h3>"));
+	}
+
 	public void onModuleLoad() {
+		setPageHeader();
 		rootPanel = RootPanel.get("calculatorCont");
 		rootPanel.setSize("600px", "450px");
 		
@@ -166,7 +174,31 @@ public class Calculator implements EntryPoint {
 		
 		/* Previously stored Meals */
 		
-		MealVerticalPanel.add(new HTML("</br></br>Previous Meals:"));
+		MealVerticalPanel.add(new HTML("</br></br>"));
+		FlexTable PreviousMealsFlexTable = new FlexTable();
+		PreviousMealsFlexTable.setText(0, 0, "Previous Meals:");
+		PreviousMeals = new ListBox();
+		PreviousMealsFlexTable.setWidget(0, 1, PreviousMeals);
+		Button PreviousMealsPshBtn = new Button("Copy Meal");
+		PreviousMealsFlexTable.setWidget(0, 2, PreviousMealsPshBtn);
+		PreviousMeals.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				Meal meal = meals.get(PreviousMeals.getSelectedIndex());
+				FlexTable flexTable = new FlexTable();
+				MealsListFlexTable.setWidget(meals.indexOf(meal), 0, flexTable);
+				flexTable.setText(0, 0, meal.getLabel());
+				flexTable.setText(0, 1, "" + meal.totalCalories());
+				flexTable.setText(0, 2, "" + meal.totalFatCalories());
+				flexTable.setText(0, 3, "" + meal.totalFatGrams());
+				flexTable.setText(0, 4, "" + meal.totalCarbohydrates());
+				flexTable.setText(0, 5, "" + meal.totalProtein());
+				for (int i = 0; i < meal.getFoodItems().size(); i++) {
+					flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
+					flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
+				}
+			}
+		});
 		
 		
 		MealsListFlexTable = new FlexTable();
@@ -367,24 +399,6 @@ public class Calculator implements EntryPoint {
 				if (result.meals != null)
 					meals.addAll(result.meals);
 				System.out.println("Retreived " + meals.size() + " meals.");
-//				String str = "Meals restored from datastore:\n";
-//				for (Meal meal : meals)
-//					str += meal.toString() + "\n";
-//				Window.alert(str);
-				for (Meal meal : meals) {
-					FlexTable flexTable = new FlexTable();
-					MealsListFlexTable.setWidget(meals.indexOf(meal), 0, flexTable);
-					flexTable.setText(0, 0, meal.getLabel() + "[" + meal.getDateOfMeal() + "]:");
-					flexTable.setText(0, 1, "(" + meal.totalCalories() + ",");
-					flexTable.setText(0, 2, meal.totalFatCalories() + ",");
-					flexTable.setText(0, 3, meal.totalFatGrams() + ",");
-					flexTable.setText(0, 4, meal.totalCarbohydrates() + ",");
-					flexTable.setText(0, 5, meal.totalProtein() + ")");
-					for (int i = 0; i < meal.getFoodItems().size(); i++) {
-						flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
-						flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
-					}
-				}
 			}
 		});
 	}
