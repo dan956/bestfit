@@ -71,7 +71,7 @@ public class Index implements EntryPoint {
 							flexTable.setWidth("450px");
 
 							Label lblNewLabel = new Label("First Name");
-							lblNewLabel.setWidth("100px");
+							lblNewLabel.setWidth("110px");
 							flexTable.setWidget(0, 0, lblNewLabel);
 
 							FirstNameTextBox = new TextBox();
