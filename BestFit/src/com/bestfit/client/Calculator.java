@@ -176,6 +176,7 @@ public class Calculator implements EntryPoint {
 		
 		MealVerticalPanel.add(new HTML("</br></br>"));
 		FlexTable PreviousMealsFlexTable = new FlexTable();
+		MealVerticalPanel.add(PreviousMealsFlexTable);
 		PreviousMealsFlexTable.setText(0, 0, "Previous Meals:");
 		PreviousMeals = new ListBox();
 		PreviousMealsFlexTable.setWidget(0, 1, PreviousMeals);
@@ -186,7 +187,7 @@ public class Calculator implements EntryPoint {
 			public void onChange(ChangeEvent event) {
 				Meal meal = meals.get(PreviousMeals.getSelectedIndex());
 				FlexTable flexTable = new FlexTable();
-				MealsListFlexTable.setWidget(meals.indexOf(meal), 0, flexTable);
+				MealsListFlexTable.setWidget(0, 0, flexTable);
 				flexTable.setText(0, 0, meal.getLabel());
 				flexTable.setText(0, 1, "" + meal.totalCalories());
 				flexTable.setText(0, 2, "" + meal.totalFatCalories());
@@ -196,6 +197,43 @@ public class Calculator implements EntryPoint {
 				for (int i = 0; i < meal.getFoodItems().size(); i++) {
 					flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
 					flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
+				}
+			}
+		});
+		PreviousMealsPshBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				if (PreviousMeals.getValue(PreviousMeals.getSelectedIndex()) == null || PreviousMeals.getValue(PreviousMeals.getSelectedIndex()).trim().equals(""))
+					return;
+				FoodsFlexTable.setVisible(true);
+				Meal meal = meals.get(PreviousMeals.getSelectedIndex());
+				newMeal = new Meal();
+				for (FoodItem foodItem : meal.getFoodItems()) {
+					for (int i = 0; i < meal.getQuantity(foodItem); i++)
+						newMeal.addFoodItem(foodItem);
+			    	int row = newMeal.indexOfFoodItem(foodItem) + 1;
+			    	int qty = newMeal.getQuantity(foodItem);
+			    	final FoodItem foodItem2 = foodItem; 
+			    	FoodsFlexTable.setText(row, 0, foodItem.getName());
+				    FoodsFlexTable.setText(row, 1, "x" + qty);
+				    FoodsFlexTable.setText(row, 2, Double.toString((int)foodItem.getCalories() * qty));
+				    FoodsFlexTable.setText(row, 3, Double.toString((int)foodItem.getFatCalories() * qty));
+				    FoodsFlexTable.setText(row,	4, Double.toString((int)foodItem.getFatGrams() * qty));
+				    FoodsFlexTable.setText(row, 5, Double.toString((int)foodItem.getCarbohydrates() * qty));
+				    FoodsFlexTable.setText(row, 6, Double.toString((int)foodItem.getProtein() * qty));
+				    TotalCalsTextBox.setText(Double.toString((int)newMeal.totalCalories()));
+				    Button removeFood = new Button("x");
+				    removeFood.addClickHandler(new ClickHandler() {
+				    public void onClick(ClickEvent event) {
+				        int removedIndex = newMeal.indexOfFoodItem(foodItem2);
+				        newMeal.removeFoodItem(removedIndex);
+				        FoodsFlexTable.removeRow(removedIndex+1);
+					    TotalCalsTextBox.setText(Double.toString((int)newMeal.totalCalories()));
+				    }
+				    });
+				    FoodsFlexTable.setWidget(row, 7, removeFood);
 				}
 			}
 		});
@@ -399,6 +437,21 @@ public class Calculator implements EntryPoint {
 				if (result.meals != null)
 					meals.addAll(result.meals);
 				System.out.println("Retreived " + meals.size() + " meals.");
+				for (Meal meal : meals)
+					PreviousMeals.addItem(meal.getLabel());
+				Meal meal = meals.get(PreviousMeals.getSelectedIndex());
+				FlexTable flexTable = new FlexTable();
+				MealsListFlexTable.setWidget(0, 0, flexTable);
+				flexTable.setText(0, 0, meal.getLabel());
+				flexTable.setText(0, 1, "" + meal.totalCalories());
+				flexTable.setText(0, 2, "" + meal.totalFatCalories());
+				flexTable.setText(0, 3, "" + meal.totalFatGrams());
+				flexTable.setText(0, 4, "" + meal.totalCarbohydrates());
+				flexTable.setText(0, 5, "" + meal.totalProtein());
+				for (int i = 0; i < meal.getFoodItems().size(); i++) {
+					flexTable.setText(i + 1, 0, "-" + meal.getFoodItems().get(i).getName());
+					flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
+				}
 			}
 		});
 	}
