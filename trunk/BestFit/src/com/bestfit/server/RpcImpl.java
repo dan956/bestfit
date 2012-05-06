@@ -413,7 +413,8 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 	}
 	
 	@Override
-	public Bridge getUserWorkouts() throws IllegalArgumentException {
+	public Bridge getUserWorkouts(Bridge _msgIn) throws IllegalArgumentException {
+		Date date = _msgIn.startDate;
 		Bridge _msg = new Bridge();
 
 		_msg.email = getLoggedinUserEmail();
@@ -421,6 +422,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		try {
 			
 			Calendar calender = Calendar.getInstance();
+			calender.setTime(date);
 			calender.set(Calendar.HOUR_OF_DAY, 0);
 			calender.set(Calendar.MINUTE, 0);
 			calender.set(Calendar.SECOND, 0);
