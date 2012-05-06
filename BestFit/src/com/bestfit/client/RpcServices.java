@@ -23,7 +23,7 @@ public interface RpcServices extends RemoteService {
 	Bridge getGoalHistory()throws IllegalArgumentException;
 	String storeNewWeight(Double weight,Date currentDate) throws IllegalArgumentException;
 	Bridge getWeightHistory()throws IllegalArgumentException;
-	Bridge getUserWorkouts() throws IllegalArgumentException;
+	Bridge getUserWorkouts(Bridge msg) throws IllegalArgumentException;
 	boolean saveUserWorkout(Bridge msg) throws IllegalArgumentException;
 	Bridge getExerciseItems() throws IllegalArgumentException;
 	boolean saveExerciseItem(Bridge msg) throws IllegalArgumentException;

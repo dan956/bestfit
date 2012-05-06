@@ -390,7 +390,9 @@ public class Calculator implements EntryPoint {
 	}
 	
 	public void getUserWorkouts() {
-		rpc.getUserWorkouts(new AsyncCallback<Bridge>() {
+		Bridge msg = new Bridge();
+		msg.startDate = new Date(0);
+		rpc.getUserWorkouts(msg, new AsyncCallback<Bridge>() {
 			public void onFailure(Throwable caught) {
 				WorkoutsListFlexTable.setText(0, 0, "There are no workouts to display.");
 //				Window.alert("Failed to retrieve user workouts (communication error)");
