@@ -52,6 +52,8 @@ public class Calculator implements EntryPoint {
 	private TextBox TotalCalsBurnedTextBox;
 	private TextBox DateOfMealTextBox;
 	private TextBox DateOfWorkoutTextBox;
+	private ListBox PreviousMeals;
+	private ListBox PreviousWorkouts;
 	
 	private ArrayList<Meal> meals = new ArrayList<Meal>();
 	private ArrayList <Workout> workouts = new ArrayList<Workout>();
@@ -108,16 +110,17 @@ public class Calculator implements EntryPoint {
 		AddFoodPshBtn.setWidth("50px");
 		
 		FoodsFlexTable = new FlexTable();
+		MealVerticalPanel.add(new HTML("<br/><br/>"));
 		MealVerticalPanel.add(FoodsFlexTable);
 		FoodsFlexTable.setWidth("500px");
 	    FoodsFlexTable.setText(0, 0, "Food Items");
 	    FoodsFlexTable.setText(0, 1, "Qty");
 	    FoodsFlexTable.setText(0, 2, "Cals");
-	    FoodsFlexTable.setText(0, 3, "Cals from Fat");
+	    FoodsFlexTable.setText(0, 3, "Fat Cals");
 	    FoodsFlexTable.setText(0, 4, "Fat");
 	    FoodsFlexTable.setText(0, 5, "Carbs");
 	    FoodsFlexTable.setText(0, 6, "Protein");
-		FoodsFlexTable.setStyleName("cw-FlexTable");
+		//FoodsFlexTable.setStyleName("cw-FlexTable");
 		
 		FoodsFlexTable.getCellFormatter().addStyleName(0, 0, "calculatorlistheader");
 		FoodsFlexTable.getCellFormatter().addStyleName(0, 1, "calculatorlistheader");
@@ -207,6 +210,7 @@ public class Calculator implements EntryPoint {
 		AddExercisePshBtn.setWidth("50px");
 		
 		ExercisesFlexTable = new FlexTable();
+		WorkoutVerticalPanel.add(new HTML("<br/><br/>"));
 		WorkoutVerticalPanel.add(ExercisesFlexTable);
 		ExercisesFlexTable.setWidth("500px");
 	    ExercisesFlexTable.setText(0, 0, "Exercise Items");
