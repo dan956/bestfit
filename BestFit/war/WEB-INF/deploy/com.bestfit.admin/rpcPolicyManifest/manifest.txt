@@ -1,0 +1,3 @@
+# Module com.bestfit.admin
+# RPC service class, partial path of RPC policy file
+com.bestfit.client.RpcServices, 721D9995BC4A91D19EB5CC2AF804EA0E.gwt.rpc
