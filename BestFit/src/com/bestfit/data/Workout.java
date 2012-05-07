@@ -37,7 +37,7 @@ public class Workout implements IsSerializable, Serializable {
 	private static final long serialVersionUID = -7885309053181899174L;
     
     public Workout() {
-    	super();
+    	this("DefaultEmail", "DefaultWorkoutLabel", new Date());
     }
     
     public Workout(String _email) {
@@ -45,6 +45,7 @@ public class Workout implements IsSerializable, Serializable {
     }
     
 	public Workout(String _email, String _label, Date _dateOfWorkout) {
+		super();
 		email = _email;
 		label = _label;
 		dateOfWorkout = _dateOfWorkout;
@@ -90,6 +91,10 @@ public class Workout implements IsSerializable, Serializable {
 	 * was already in list and only quantity was incremented
 	 */
 	public boolean addExerciseItem(ExerciseItem _exerciseItem) {
+		if (_exerciseItem == null)
+			throw new NullPointerException("_exerciseItem is null");
+		if (exerciseItems == null)
+			throw new NullPointerException("exerciseItems is null");
 		int index = exerciseItems.indexOf(_exerciseItem);
 		if (index < 0) {
 			exerciseItems.add(_exerciseItem);
