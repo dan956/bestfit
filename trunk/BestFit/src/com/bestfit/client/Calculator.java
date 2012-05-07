@@ -200,9 +200,9 @@ public class Calculator implements EntryPoint {
 				flexTable.setText(0, 1, "Qty");
 				flexTable.getCellFormatter().addStyleName(0, 0, "calculatorlistheader");
 				flexTable.getCellFormatter().addStyleName(0, 1, "calculatorlistheader");
-				for (int i = 1; i < meal.getFoodItems().size(); i++) {
-					flexTable.setText(i, 0, "-" + meal.getFoodItems().get(i).getName());
-					flexTable.setText(i, 1, "x" + meal.getQuantity(i));
+				for (int i = 0; i < meal.getFoodItems().size(); i++) {
+					flexTable.setText(i+1, 0, "-" + meal.getFoodItems().get(i).getName());
+					flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
 				}
 			}
 		});
@@ -459,9 +459,9 @@ public class Calculator implements EntryPoint {
 				flexTable.setText(0, 1, "Qty");
 				flexTable.getCellFormatter().addStyleName(0, 0, "calculatorlistheader");
 				flexTable.getCellFormatter().addStyleName(0, 1, "calculatorlistheader");
-				for (int i = 1; i < meal.getFoodItems().size(); i++) {
-					flexTable.setText(i, 0, "-" + meal.getFoodItems().get(i).getName());
-					flexTable.setText(i, 1, "x" + meal.getQuantity(i));
+				for (int i = 0; i < meal.getFoodItems().size(); i++) {
+					flexTable.setText(i+1, 0, "-" + meal.getFoodItems().get(i).getName());
+					flexTable.setText(i+1, 1, "x" + meal.getQuantity(i));
 				}
 			}
 		});
