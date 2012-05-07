@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -33,17 +34,19 @@ public class Index implements EntryPoint {
 
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	@Override
 	public void onModuleLoad() {
 		CheckUser();
 	}
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
+	private void setPageHeader() {
+		RootPanel rpanel = RootPanel.get("RegHeader");
+		//
+		HTML html = new HTML("<h2><font color=\"#308A4D\">Sign up for bestfit!</font></h2>Please complete the following form and click 'Submit' at the bottom of this page.</br>");
+		
+		rpanel.add(html);
+		
+	}
 	public void CheckUser() {
 		rpc.isNewUser(new AsyncCallback<Boolean>() {
 
@@ -66,7 +69,7 @@ public class Index implements EntryPoint {
 
 						@Override
 						public void onSuccess(String result) {
-
+							setPageHeader();
 							flexTable = new FlexTable();
 							flexTable.setWidth("450px");
 
@@ -204,6 +207,8 @@ public class Index implements EntryPoint {
 							
 
 						}
+
+
 
 					});
 
