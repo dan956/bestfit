@@ -32,12 +32,8 @@ public class Landing implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		getCurrentWeight();
-		getCurrentGoal();
-		getUserMeals();
-		getUserWorkout();
 		getUserName();
-		calculateCalorios();
+		getCurrentWeight();
 
 	}
 
@@ -175,6 +171,8 @@ public class Landing implements EntryPoint {
 				btnNewButton.setText("Update");
 				weightFlexTable.setWidget(2, 0, btnNewButton);
 				weightFlexTable.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+				getCurrentGoal();
+
 
 			}
 
@@ -211,6 +209,8 @@ public class Landing implements EntryPoint {
 
 					Label lblNewLabel = new Label(displayGoal);
 					weightFlexTable.setWidget(0, 0, lblNewLabel);
+					getUserMeals();
+
 				}
 			}
 
@@ -281,6 +281,9 @@ public class Landing implements EntryPoint {
 					mealsFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
 
 					rootPanel.add(mealsFlexTable);
+					getUserWorkout();
+
+					calculateCalorios();
 				}
 			}
 
