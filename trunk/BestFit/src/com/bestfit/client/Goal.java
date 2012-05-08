@@ -99,7 +99,7 @@ public class Goal implements EntryPoint {
 				textBox_3.setReadOnly(true);
 				flexTable.setWidget(3, 1, textBox_3);
 				textBox_3.setSize("155px", "25px");
-				flexTable.setWidget(4, 1,new HTML("<i>* Regular daily activities burn 2000 cal</i></br></br>"));
+				flexTable.setWidget(4, 1,new HTML("</br>"));
 				btnNewButton_1 = new Button("New button");
 				flexTable.setWidget(5, 1, btnNewButton_1);
 				btnNewButton_1.setSize("80px", "31px");
@@ -126,16 +126,10 @@ public class Goal implements EntryPoint {
 								// CalsPerDay = BMR + 3500 * (Target_Weight - Current_Weight) / Days_Remaining
 								double CalsPerDay = result + 3500 * (Double.valueOf(textBox_1.getText())- Double.valueOf(textBox.getText()))/diff;
 								
-								textBox_3.setText( (int)CalsPerDay+"");
-								
+								textBox_3.setText( (int)CalsPerDay+"");								
 								
 							}
 						});
-						
-						
-						
-						
-						
 
 					}
 				});

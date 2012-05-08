@@ -1,4 +1,5 @@
 package com.bestfit.client;
+
 import java.util.Date;
 
 import com.bestfit.data.ExerciseItem;
@@ -37,13 +38,9 @@ public class Landing implements EntryPoint {
 
 	}
 
+	static double bmr = 0.0;
 
-	static double bmr=0.0;
-
-
-
-	public void calculateCalorios()
-	{
+	public void calculateCalorios() {
 		rpc.getBMR(new AsyncCallback<Double>() {
 
 			@Override
@@ -55,49 +52,71 @@ public class Landing implements EntryPoint {
 					public void onSuccess(Bridge result) {
 						Date today = new Date();
 
-						Date TargetDate = result.goals.get(result.goals.size()-1).getTargetDate();
-						long diff =   TargetDate.getTime() - today.getTime();
+						Date TargetDate = result.goals.get(
+								result.goals.size() - 1).getTargetDate();
+						long diff = TargetDate.getTime() - today.getTime();
 
-						diff /=  (1000 * 60 * 60 * 24);
+						diff /= (1000 * 60 * 60 * 24);
 
-						double TargetWeight = result.goals.get(result.goals.size()-1).getTargetWeight();
+						double TargetWeight = result.goals.get(
+								result.goals.size() - 1).getTargetWeight();
 						double CurrentWeight = Double.valueOf(textBox.getText());
-						double CalsPerDay = Landing.bmr + 3500 * (TargetWeight - CurrentWeight ) / diff;
-
+						double CalsPerDay = Landing.bmr + 3500
+								* (TargetWeight - CurrentWeight) / diff;
 
 						RootPanel root = RootPanel.get("CalPerDay");
-						
+
 						DecoratorPanel perDayDecoratorPanel = new DecoratorPanel();
 						perDayDecoratorPanel.setWidth("180px");
 						root.add(perDayDecoratorPanel);
-						
+
 						FlexTable cPerDayFlexTable = new FlexTable();
 
-						
-						String message="";
-						double gainedToday = Landing.mealCal - Landing.workoutCal;
-						
+						String message = "";
+
+						double gainedToday = Landing.mealCal
+								- Landing.workoutCal;
+
 						int a = (int) CalsPerDay;
-						
-						message = "<b>Daily net calorie: </b></br><pre>        "+ a +" cal/day</pre>";						
-						
-						message += "<b>Regular activitiy burns: </b></br><pre>        "+2000 +" cal/day</pre>";						
-					
-						message += "<b>From today's meal/workout: </b></br><pre>        "+gainedToday +" cal</pre>";							
-						
-						double resultCals = (int)(CalsPerDay - 2000 + gainedToday);
-						
-						if(resultCals>0){
-							message += "<b>You still need to burn: </b></br><pre>        "+resultCals +" cal</pre>";							
-						}else{
-							gainedToday = 0 - gainedToday;
-							message += "<b>Exceeded your goal by: </b></br><pre>        "+resultCals +" cal</pre>";
+
+						message = "<b>Daily net calorie: </b></br><pre>        "
+								+ a + " cal/day</pre>";
+
+						message += "<b>From today's meal/workout: </b></br><pre>        "
+								+ (int) gainedToday + " cal</pre>";
+
+						double resultCals = (int) (CalsPerDay - gainedToday);
+
+						resultCals = 0 - resultCals;
+
+						if (resultCals > a) {
+							int res = (int) (CalsPerDay - gainedToday);
+
+							if (res > 0) {
+								message += "<b>Exceeded your goal by : </b></br><pre>        "
+										+ res + " cal</pre>";
+							} else {
+								res = 0 - res;
+								message += "<b>Exceeded your goal by : </b></br><pre>        "
+										+ res + " cal</pre>";
+							}
+
+						} else {
+
+							if (resultCals > 0) {
+								message += "<b>You can eat up to: </b></br><pre>        "
+										+ resultCals + " cal</pre>";
+							} else {
+								resultCals = 0 - resultCals;
+								message += "<b>You can eat up to: </b></br><pre>        "
+										+ resultCals + " cal</pre>";
+							}
 						}
-						
-						
-						HTML html = new HTML(message);						
+
+						HTML html = new HTML(message);
 						cPerDayFlexTable.setWidget(0, 0, html);
-						cPerDayFlexTable.getCellFormatter().addStyleName(0, 0, "calorieSummary");
+						cPerDayFlexTable.getCellFormatter().addStyleName(0, 0,
+								"calorieSummary");
 						perDayDecoratorPanel.add(cPerDayFlexTable);
 
 					}
@@ -106,7 +125,7 @@ public class Landing implements EntryPoint {
 					public void onFailure(Throwable caught) {
 
 					}
-				});				
+				});
 
 			}
 
@@ -118,13 +137,12 @@ public class Landing implements EntryPoint {
 		});
 	}
 
-	public void getCurrentWeight()
-	{
-		rpc.getCurrentWeight(new AsyncCallback<String>(){
+	public void getCurrentWeight() {
+		rpc.getCurrentWeight(new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				//WTextBox.setText(caught.getMessage());
+				// WTextBox.setText(caught.getMessage());
 
 			}
 
@@ -151,42 +169,41 @@ public class Landing implements EntryPoint {
 				btnNewButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 
-						rpc.storeNewWeight(Double.valueOf(textBox.getValue()), new Date(), new AsyncCallback<String>() {
+						rpc.storeNewWeight(Double.valueOf(textBox.getValue()),
+								new Date(), new AsyncCallback<String>() {
 
-							@Override
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
 
-							}
+									}
 
-							@Override
-							public void onSuccess(String result) {
-								Window.alert("Your weight has been successfully submittted!");
+									@Override
+									public void onSuccess(String result) {
+										Window.alert("Your weight has been successfully submittted!");
 
-							}
-						} );
+									}
+								});
 
 					}
 				});
 				btnNewButton.setText("Update");
 				weightFlexTable.setWidget(2, 0, btnNewButton);
-				weightFlexTable.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+				weightFlexTable.getCellFormatter().setHorizontalAlignment(2, 0,
+						HasHorizontalAlignment.ALIGN_RIGHT);
 				getCurrentGoal();
 
-
 			}
-
 
 		});
 	}
 
-	public void getCurrentGoal()
-	{
+	public void getCurrentGoal() {
 		rpc.getGoalHistory(new AsyncCallback<Bridge>() {
 
 			@Override
 			public void onSuccess(Bridge result) {
-				if(result.goals.size()>0){
+				if (result.goals.size() > 0) {
 					RootPanel rootPanel = RootPanel.get("goalHistory");
 
 					DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
@@ -196,16 +213,20 @@ public class Landing implements EntryPoint {
 					weightFlexTable.setSize("380px", "80px");
 					goalDecoratorPanel.setWidget(weightFlexTable);
 
-					String displayGoal ="";
+					String displayGoal = "";
 
 					Date today = new Date();
 
-					long diff =  result.goals.get(result.goals.size()-1).getTargetDate().getTime() - today.getTime();
+					long diff = result.goals.get(result.goals.size() - 1)
+							.getTargetDate().getTime()
+							- today.getTime();
 
-					diff /=  (1000 * 60 * 60 * 24);
-					
-					displayGoal+="Your current goal is to maintain "+result.goals.get(result.goals.size()-1).getTargetWeight()
-							+" pounds in "+ String.valueOf(diff) +" days";
+					diff /= (1000 * 60 * 60 * 24);
+
+					displayGoal += "Your current goal is to maintain "
+							+ result.goals.get(result.goals.size() - 1)
+									.getTargetWeight() + " pounds in "
+							+ String.valueOf(diff) + " days";
 
 					Label lblNewLabel = new Label(displayGoal);
 					weightFlexTable.setWidget(0, 0, lblNewLabel);
@@ -222,68 +243,74 @@ public class Landing implements EntryPoint {
 		});
 	}
 
-	public void getUserMeals()
-	{
+	public void getUserMeals() {
 		Bridge msg = new Bridge();
 		msg.startDate = new Date();
 		rpc.getUserMeals(msg, new AsyncCallback<Bridge>() {
 
 			@Override
 			public void onSuccess(Bridge result) {
-				if(result.meals.size()>0){
-
+				if (result.meals.size() > 0) {
 
 					RootPanel rootPanel = RootPanel.get("UserMeals");
 
-					//	DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
-					//rootPanel.add(goalDecoratorPanel);
+					// DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
+					// rootPanel.add(goalDecoratorPanel);
 
 					FlexTable mealsFlexTable = new FlexTable();
-					//mealsFlexTable.setStyleName("cw-FlexTable");
-					//mealsFlexTable.setSize("270px", "300px");
+					// mealsFlexTable.setStyleName("cw-FlexTable");
+					// mealsFlexTable.setSize("270px", "300px");
 					mealsFlexTable.setWidth("390px");
 
 					mealsFlexTable.setText(0, 0, "Name");
 					mealsFlexTable.setText(0, 1, "Meal Items");
 					mealsFlexTable.setText(0, 2, "Calories");
 
-					mealsFlexTable.getCellFormatter().addStyleName(0, 0, "mealsListHeader");
-					mealsFlexTable.getCellFormatter().addStyleName(0, 1, "mealsListHeader");
-					mealsFlexTable.getCellFormatter().addStyleName(0, 2, "mealsListHeader");
+					mealsFlexTable.getCellFormatter().addStyleName(0, 0,
+							"mealsListHeader");
+					mealsFlexTable.getCellFormatter().addStyleName(0, 1,
+							"mealsListHeader");
+					mealsFlexTable.getCellFormatter().addStyleName(0, 2,
+							"mealsListHeader");
 
-					double mealCalToday =0.0;
-					int row=0;
+					double mealCalToday = 0.0;
+					int row = 0;
 
-					for(Meal meal: result.meals){
+					for (Meal meal : result.meals) {
 						row++;
 						mealsFlexTable.setText(row, 0, meal.getLabel());
-						mealsFlexTable.getCellFormatter().addStyleName(row, 0, "mealsListRow");
-						String itemTitle="";
-						for(FoodItem item: meal.getFoodItems()){
-							itemTitle+=item.getName() +"</br>";							
+						mealsFlexTable.getCellFormatter().addStyleName(row, 0,
+								"mealsListRow");
+						String itemTitle = "";
+						for (FoodItem item : meal.getFoodItems()) {
+							itemTitle += item.getName() + "</br>";
 						}
-						
-						HTML html = new HTML(itemTitle);
-						
-						mealsFlexTable.setWidget(row, 1, html);
-						mealsFlexTable.getCellFormatter().addStyleName(row, 1, "mealsListRow");
-						mealsFlexTable.setText(row, 2, String.valueOf(meal.totalCalories()));
-						mealsFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
 
-						mealCalToday +=  meal.totalCalories();
+						HTML html = new HTML(itemTitle);
+
+						mealsFlexTable.setWidget(row, 1, html);
+						mealsFlexTable.getCellFormatter().addStyleName(row, 1,
+								"mealsListRow");
+						mealsFlexTable.setText(row, 2,
+								String.valueOf(meal.totalCalories()));
+						mealsFlexTable.getCellFormatter().addStyleName(row, 2,
+								"mealsListRow");
+
+						mealCalToday += meal.totalCalories();
 
 					}
-					
+
 					Landing.mealCal = mealCalToday;
-					
-					HTML html = new HTML("</br>Total calories consumed = "+mealCalToday);
-					mealsFlexTable.setWidget(row+1, 1, html);
-					mealsFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
+
+					HTML html = new HTML("</br>Total calories consumed = "
+							+ mealCalToday);
+					mealsFlexTable.setWidget(row + 1, 1, html);
+					mealsFlexTable.getCellFormatter().addStyleName(row + 1, 1,
+							"mealsTotalCalories");
 
 					rootPanel.add(mealsFlexTable);
 					getUserWorkout();
 
-					calculateCalorios();
 				}
 			}
 
@@ -296,7 +323,7 @@ public class Landing implements EntryPoint {
 
 	}
 
-	public void getUserWorkout(){
+	public void getUserWorkout() {
 
 		Bridge msg = new Bridge();
 		msg.startDate = new Date();
@@ -304,11 +331,11 @@ public class Landing implements EntryPoint {
 
 			@Override
 			public void onSuccess(Bridge result) {
-				if(result.workouts.size()>0){
+				if (result.workouts.size() > 0) {
 					RootPanel rootPanel = RootPanel.get("UserWorkout");
 
-					//DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
-					//rootPanel.add(goalDecoratorPanel);
+					// DecoratorPanel goalDecoratorPanel = new DecoratorPanel();
+					// rootPanel.add(goalDecoratorPanel);
 
 					FlexTable workoutFlexTable = new FlexTable();
 					workoutFlexTable.setWidth("390px");
@@ -317,44 +344,50 @@ public class Landing implements EntryPoint {
 					workoutFlexTable.setText(0, 1, "Workout");
 					workoutFlexTable.setText(0, 2, "Calories");
 
+					workoutFlexTable.getCellFormatter().addStyleName(0, 0,
+							"mealsListHeader");
+					workoutFlexTable.getCellFormatter().addStyleName(0, 1,
+							"mealsListHeader");
+					workoutFlexTable.getCellFormatter().addStyleName(0, 2,
+							"mealsListHeader");
 
-					workoutFlexTable.getCellFormatter().addStyleName(0, 0, "mealsListHeader");
-					workoutFlexTable.getCellFormatter().addStyleName(0, 1, "mealsListHeader");
-					workoutFlexTable.getCellFormatter().addStyleName(0, 2, "mealsListHeader");
+					double workOutCalToday = 0.0;
+					int row = 0;
 
-
-					double workOutCalToday =0.0;
-					int row=0;
-					
-					for(Workout work : result.workouts)
-					{
+					for (Workout work : result.workouts) {
 						row++;
 						workoutFlexTable.setText(row, 0, work.getLabel());
-						workoutFlexTable.getCellFormatter().addStyleName(row, 0, "mealsListRow");
-						String itemTitle="";
-						for(ExerciseItem item: work.getExerciseItems()){
-							itemTitle+=item.getName() +"</br>";
+						workoutFlexTable.getCellFormatter().addStyleName(row,
+								0, "mealsListRow");
+						String itemTitle = "";
+						for (ExerciseItem item : work.getExerciseItems()) {
+							itemTitle += item.getName() + "</br>";
 						}
-						
+
 						HTML html = new HTML(itemTitle);
 
 						workoutFlexTable.setWidget(row, 1, html);
-						workoutFlexTable.getCellFormatter().addStyleName(row, 1, "mealsListRow");
-						workoutFlexTable.setText(row, 2, String.valueOf(work.totalCaloriesBurned()));
-						workoutFlexTable.getCellFormatter().addStyleName(row, 2, "mealsListRow");
+						workoutFlexTable.getCellFormatter().addStyleName(row,
+								1, "mealsListRow");
+						workoutFlexTable.setText(row, 2,
+								String.valueOf(work.totalCaloriesBurned()));
+						workoutFlexTable.getCellFormatter().addStyleName(row,
+								2, "mealsListRow");
 
-						workOutCalToday +=  work.totalCaloriesBurned();
-
+						workOutCalToday += work.totalCaloriesBurned();
 
 					}
 
 					Landing.workoutCal = workOutCalToday;
-					HTML html = new HTML("</br>Total calories burned= "+workOutCalToday);
-					workoutFlexTable.setWidget(row+1, 1, html);
-					
-					workoutFlexTable.getCellFormatter().addStyleName(row+1, 1, "mealsTotalCalories");
-					
+					HTML html = new HTML("</br>Total calories burned= "
+							+ workOutCalToday);
+					workoutFlexTable.setWidget(row + 1, 1, html);
+
+					workoutFlexTable.getCellFormatter().addStyleName(row + 1,
+							1, "mealsTotalCalories");
+
 					rootPanel.add(workoutFlexTable);
+					calculateCalorios();
 				}
 
 			}
@@ -366,11 +399,9 @@ public class Landing implements EntryPoint {
 			}
 		});
 
-
 	}
 
-	public void getUserName()
-	{
+	public void getUserName() {
 		rpc.getUserName(new AsyncCallback<String>() {
 
 			@Override
@@ -379,7 +410,8 @@ public class Landing implements EntryPoint {
 
 				FlexTable userNameFlexTable = new FlexTable();
 				userNameFlexTable.setSize("200px", "60px");
-				userNameFlexTable.setWidget(0, 0,new HTML("Welcome <i>"+ result+"!</i>"));
+				userNameFlexTable.setWidget(0, 0, new HTML("Welcome <i>"
+						+ result + "!</i>"));
 				userNameFlexTable.setText(1, 0, "Below is your data for Today");
 
 				rootPanel.add(userNameFlexTable);
