@@ -35,8 +35,29 @@ public class Goal implements EntryPoint {
 	
 	public void onModuleLoad() {
 
-		getCurrentWeight();
-		setPageHeader();
+		rpc.isNewUser(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				if(!result)
+				{
+					getCurrentWeight();
+					setPageHeader();
+				}
+				else
+				{
+					Window.Location.assign("/registration.html");
+				}
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 	
 	private void setPageHeader() {

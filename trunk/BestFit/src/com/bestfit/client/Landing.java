@@ -33,8 +33,29 @@ public class Landing implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		getUserName();
-		getCurrentWeight();
+		rpc.isNewUser(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				if(!result)
+				{
+					getUserName();
+					getCurrentWeight();
+				}
+				else
+				{
+					Window.Location.assign("/registration.html");
+				}
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 
 	}
 
@@ -80,7 +101,7 @@ public class Landing implements EntryPoint {
 						int a = (int) CalsPerDay;
 
 						message = "<b>Daily net calorie: </b></br><pre>        "
-								+ a + " cal/day</pre>";
+								+ (int)CalsPerDay + " cal/day</pre>";
 
 						message += "<b>From today's meal/workout: </b></br><pre>        "
 								+ (int) gainedToday + " cal</pre>";
@@ -223,7 +244,7 @@ public class Landing implements EntryPoint {
 
 					diff /= (1000 * 60 * 60 * 24);
 
-					displayGoal += "Your current goal is to maintain "
+					displayGoal += "Your current goal is to achieve "
 							+ result.goals.get(result.goals.size() - 1)
 									.getTargetWeight() + " pounds in "
 							+ String.valueOf(diff) + " days";
@@ -303,7 +324,7 @@ public class Landing implements EntryPoint {
 					Landing.mealCal = mealCalToday;
 
 					HTML html = new HTML("</br>Total calories consumed = "
-							+ mealCalToday);
+							+ (int)mealCalToday);
 					mealsFlexTable.setWidget(row + 1, 1, html);
 					mealsFlexTable.getCellFormatter().addStyleName(row + 1, 1,
 							"mealsTotalCalories");
@@ -380,7 +401,7 @@ public class Landing implements EntryPoint {
 
 					Landing.workoutCal = workOutCalToday;
 					HTML html = new HTML("</br>Total calories burned= "
-							+ workOutCalToday);
+							+ (int)workOutCalToday);
 					workoutFlexTable.setWidget(row + 1, 1, html);
 
 					workoutFlexTable.getCellFormatter().addStyleName(row + 1,
