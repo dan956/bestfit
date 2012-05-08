@@ -5,6 +5,7 @@ import com.bestfit.shared.Bridge;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -24,7 +25,32 @@ public class Profile implements EntryPoint {
 	private TextBox WeightTextBox;
 	
 	public void onModuleLoad() {
+		rpc.isNewUser(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				if(!result)
+				{
+					loadPage();
+
+				}
+				else
+				{
+					Window.Location.assign("/registration.html");
+				}
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
+	}
+
+	private void loadPage() {
 		setPageHeader();
 		
 		
@@ -84,7 +110,6 @@ public class Profile implements EntryPoint {
 		WeightTextBox.setHeight("25px");
 		
 		getUserProfile();
-
 	}
 	
 	private void setPageHeader() {

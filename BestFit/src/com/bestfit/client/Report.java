@@ -7,6 +7,7 @@ import com.bestfit.data.*;
 import com.bestfit.shared.Bridge;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
@@ -190,8 +191,33 @@ public class Report implements EntryPoint {
 	}
 	
 	public void onModuleLoad() {
+		rpc.isNewUser(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				if(!result)
+				{
+					loadPage();
 
+				}
+				else
+				{
+					Window.Location.assign("/registration.html");
+				}
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
+		
+	}
+
+	private void loadPage() {
 		// Create a callback to be called when the visualization API
 		// has been loaded.
 		Runnable onLoadCallback = new Runnable() {
