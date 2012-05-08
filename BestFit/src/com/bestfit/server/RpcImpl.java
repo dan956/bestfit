@@ -347,7 +347,7 @@ public class RpcImpl extends RemoteServiceServlet implements RpcServices {
 		PersistenceManager pm = getPersistenceManager();
 
 		try {
-			Query q = pm.newQuery(GoalHistory.class, "email == u");
+			Query q = pm.newQuery(GoalHistory.class, "email == u Order by startDate asc");
 			q.declareParameters("com.bestfit.data.GoalHistory u");
 
 			List<GoalHistory> goals = (List<GoalHistory>) q.execute(getLoggedinUserEmail());
