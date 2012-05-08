@@ -25,8 +25,8 @@ public class Report implements EntryPoint {
 
 	private final RpcServicesAsync rpc = GWT.create(RpcServices.class);
 
-	double Protein=2.9;
-	double Carbs=1.0;
+	double Protein=0;
+	double Carbs=0;
 	int Fat=0;
 	private ArrayList<Weight> weights = new ArrayList<Weight>();
 	private ArrayList<Workout> workouts = new ArrayList<Workout>();
